@@ -40,6 +40,9 @@ INSTALLED_APPS = [
 
     'tailwind',
     'lfainfo22.theme',
+
+    'account',
+    'api',
 ]
 
 MIDDLEWARE = [
@@ -122,4 +125,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# Tailwind
+
 TAILWIND_APP_NAME = 'lfainfo22.theme'
+
+# Account system
+
+AUTH_USER_MODEL = 'account.User'
