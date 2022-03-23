@@ -10,10 +10,16 @@
     <title>{% block title %}{% trans 'Club Info 2022' %}{% endblock %}</title>
 
     {% tailwind_css %}
-
+    <script src="/static/home/js/utils/toggler.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"
+      rel="stylesheet">
+    
     {% block extrahead %}{% endblock %}
 </head>
 <body>
+
+    {% include 'base/navbar.html' %}
+
     {% block content %}{% endblock %}
 </body>
 </html>
