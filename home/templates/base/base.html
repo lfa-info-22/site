@@ -13,13 +13,15 @@
     <script src="/static/home/js/utils/toggler.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"
       rel="stylesheet">
-    
+
     {% block extrahead %}{% endblock %}
 </head>
-<body>
+<body class="w-screen h-screen">
 
     {% include 'base/navbar.html' %}
 
-    {% block content %}{% endblock %}
+    {% block content %}
+    {% include 'base/head.html' with head_url="/static/home/media/image/home_background.jpg" title="Club info" subtitle="Un blog par les élèves du club informatique du Lycée Franco-Allemand de Buc" %}
+    {% endblock %}
 </body>
 </html>

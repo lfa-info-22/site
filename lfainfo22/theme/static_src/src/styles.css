@@ -4,7 +4,7 @@
 
 @layer components {
     .nav-link {
-        @apply text-gray-500 hover:text-gray-600 cursor-pointer select-none
+        @apply text-gray-300 hover:text-gray-200 cursor-pointer select-none
     }
     .phone-nav-link {
         @apply text-gray-500 hover:text-gray-600 hover:bg-gray-100 cursor-pointer select-none p-5 px-10
@@ -12,6 +12,9 @@
 
     .center-w {
         @apply left-[50%] translate-x-[-50%]
+    }
+    .center-h {
+        @apply top-[50%] translate-y-[-50%]
     }
 
     .phone-navbar {
