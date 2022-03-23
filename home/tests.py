@@ -1,3 +1,6 @@
 from django.test import TestCase
+from lfainfo22.tests import ClientTestCase
 
-# Create your tests here.
+class HomeTest(ClientTestCase):
+    def test_access(self):
+        self.send_request('/', {})

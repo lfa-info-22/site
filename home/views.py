@@ -1,3 +1,6 @@
 from django.shortcuts import render
+from lfainfo22.views  import BaseView
 
-# Create your views here.
+class HomeView(BaseView):
+    TEMPLATE_NAME = 'home/index.html'
+

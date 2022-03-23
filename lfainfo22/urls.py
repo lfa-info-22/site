@@ -18,9 +18,11 @@ from django.urls import path
 
 import api.urls
 import account.urls
+import home.urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('account/', account.urls.urlpatterns),
-    path('api/', api.urls.urlpatterns)
+    path('api/', api.urls.urlpatterns),
+    path('', home.urls.urlpatterns)
 ]

@@ -43,6 +43,7 @@ INSTALLED_APPS = [
 
     'account',
     'api',
+    'home',
 ]
 
 INSTALLED_APIS = [
