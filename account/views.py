@@ -60,7 +60,7 @@ class LoginView(ApiView):
         if json_resp:
             return JsonResponse({ "status": user is not None })
         
-        if user is not None:
+        if user is None:
             return redirect(
                 reverse( self.LOGIN_REDIRECTOR ) \
                     + '?' + self.LOGIN_REDIRECTOR__NEXT_GET_ARG + '=' \
