@@ -1,5 +1,8 @@
 
+import importlib
 from django.urls import path
+
+from django.conf import settings
 
 urlpatterns = ([
 
@@ -12,7 +15,11 @@ def api(cls):
         path(f"v{object.VERSION}/{object.APPLICATION}/{object.ROUTE}", object)
     )
 
+    return cls
+
 
 #
 # Load apis (import views that contains api views)
 # 
+for installed_api in settings.INSTALLED_APIS:
+    module = importlib.__import__(installed_api)

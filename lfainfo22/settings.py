@@ -45,6 +45,10 @@ INSTALLED_APPS = [
     'api',
 ]
 
+INSTALLED_APIS = [
+    'account.views',
+]
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
