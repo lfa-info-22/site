@@ -68,3 +68,24 @@ class LoginView(ApiView):
             )
 
         return redirect( redirector )
+
+@api
+class LogoutView(ApiView):
+    VERSION     = 1
+    APPLICATION = "account"
+    ROUTE       = "logout/"
+
+    ALLOWED_METHODS = [ 'GET', 'POST' ]
+
+    def post_call(self, request, *args, **kwargs):
+        return self.get_call(request, *args, **kwargs)
+    def get_call(self, request, *args, **kwargs):
+        logout(request)
+
+        redirector = request.GET['next'] if 'next' in request.GET else '/' 
+        json_resp  = 'json_resp' in request.GET and request.GET['json_resp'] == 'true'
+
+        if json_resp:
+            return JsonResponse({ "status": request.user.is_anonymous })
+
+        return redirect(redirector)

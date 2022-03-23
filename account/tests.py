@@ -1,6 +1,6 @@
 
 from lfainfo22.tests import ClientTestCase
-from account.views   import LoginView
+from account.views   import LoginView, LogoutView
 from django.test     import TestCase
 
 class LoginTest(ClientTestCase):
@@ -28,3 +28,22 @@ class LoginTest(ClientTestCase):
 
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.wsgi_request.user.username, '')
+    ## TODO add more tests
+
+class LogoutTest(ClientTestCase):
+    VIEW = LogoutView()
+
+    ROUTE = f"/api/v{VIEW.VERSION}/{VIEW.APPLICATION}/{VIEW.ROUTE}"
+
+    def test_get_logout(self):
+        response = self.client.get(self.ROUTE)
+
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(response.wsgi_request.user.is_anonymous)
+
+    def test_post_logout(self):
+        response = self.client.post(self.ROUTE)
+
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(response.wsgi_request.user.is_anonymous)
+
