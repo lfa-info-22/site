@@ -73,10 +73,41 @@ class LogoutTest(ClientTestCase):
 
         self.assertEqual(response.status_code, 302)
         self.assertTrue(response.wsgi_request.user.is_anonymous)
+        self.assertEqual(response.url, '/')
 
     def test_post_logout(self):
         response = self.client.post(self.ROUTE)
 
         self.assertEqual(response.status_code, 302)
         self.assertTrue(response.wsgi_request.user.is_anonymous)
+        self.assertEqual(response.url, '/')
 
+    def test_redirector(self):
+        NROUTE = self.ROUTE + '?next=/url'
+
+        response = self.client.post(NROUTE)
+
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(response.wsgi_request.user.is_anonymous)
+        self.assertEqual(response.url, '/url')
+
+        response = self.staff_client.get(NROUTE)
+
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(response.wsgi_request.user.is_anonymous)
+        self.assertEqual(response.url, '/url')
+    
+    def test_json_resp(self):
+        NROUTE = self.ROUTE + '?json_resp=true'
+
+        response = self.client.post(NROUTE)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.wsgi_request.user.is_anonymous)
+        self.assertEqual(response.json(), { 'status': True })
+
+        response = self.staff_client.get(NROUTE)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.wsgi_request.user.is_anonymous)
+        self.assertEqual(response.json(), { 'status': True })
