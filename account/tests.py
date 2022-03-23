@@ -12,5 +12,19 @@ class LoginTest(ClientTestCase):
         username, email, password = ('user', 'user@test.com', 'password')
         response = self.anonymous_client.post(self.ROUTE, { 'user': username, 'password': password })
 
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.request.user.username, username)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.wsgi_request.user.username, username)
+
+        self.anonymous_client.logout()
+
+        response = self.anonymous_client.post(self.ROUTE, { 'user': email, 'password': password })
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.wsgi_request.user.username, username)
+
+        self.anonymous_client.logout()
+
+        response = self.anonymous_client.post(self.ROUTE, { 'user': username, 'password': 'A' })
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.wsgi_request.user.username, '')

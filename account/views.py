@@ -27,7 +27,7 @@ class LoginView(ApiView):
     USERNAME_AUTH = True
     EMAIL_AUTH = True
 
-    LOGIN_REDIRECTOR = 'account.login'
+    LOGIN_REDIRECTOR = 'account:login'
     LOGIN_REDIRECTOR__NEXT_GET_ARG = 'next'
 
     def authenticate(self, username, password):
