@@ -982,6 +982,18 @@ select {
   overflow-x: hidden;
 }
 
+.whitespace-pre {
+  white-space: pre;
+}
+
+.whitespace-pre-line {
+  white-space: pre-line;
+}
+
+.whitespace-pre-wrap {
+  white-space: pre-wrap;
+}
+
 .border {
   border-width: 1px;
 }
@@ -1355,6 +1367,21 @@ select {
     padding-right: 10rem;
   }
 
+  .lg\:px-\[40rem\] {
+    padding-left: 40rem;
+    padding-right: 40rem;
+  }
+
+  .lg\:px-\[25rem\] {
+    padding-left: 25rem;
+    padding-right: 25rem;
+  }
+
+  .lg\:px-\[15rem\] {
+    padding-left: 15rem;
+    padding-right: 15rem;
+  }
+
   .lg\:text-7xl {
     font-size: 4.5rem;
     line-height: 1;
@@ -1374,6 +1401,11 @@ select {
     font-size: 1.5rem;
     line-height: 2rem;
   }
+
+  .lg\:text-4xl {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+  }
 }
 
 @media (min-width: 1280px) {
@@ -1391,5 +1423,27 @@ select {
 
   .xl\:w-\[calc\(25\%-40px\)\] {
     width: calc(25% - 40px);
+  }
+
+  .xl\:px-\[25rem\] {
+    padding-left: 25rem;
+    padding-right: 25rem;
+  }
+
+  .xl\:px-\[15rem\] {
+    padding-left: 15rem;
+    padding-right: 15rem;
+  }
+
+  .xl\:px-\[12\.5rem\] {
+    padding-left: 12.5rem;
+    padding-right: 12.5rem;
+  }
+}
+
+@media (min-width: 1536px) {
+  .\32xl\:px-\[15rem\] {
+    padding-left: 15rem;
+    padding-right: 15rem;
   }
 }
