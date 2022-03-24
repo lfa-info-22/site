@@ -17,14 +17,20 @@
 
     {% block extrahead %}{% endblock %}
 </head>
-<body class="w-screen h-screen">
-
+<body class="w-screen h-screen overflow-x-hidden">
+    {% block navbar %}
     {% include 'base/navbar.html' %}
+    {% endblock %}
 
-    {% block content %}
+    {% block head %}
     {% include 'base/head.html' with head_url="/static/home/media/image/home_background.jpg" title="Club info" subtitle="Un blog par les élèves du club informatique du Lycée Franco-Allemand de Buc" %}
     {% endblock %}
 
+    {% block content %}
+    {% endblock %}
+
+    {% block footer%}
     {% include 'base/footer.html' %}
+    {% endblock %}
 </body>
 </html>

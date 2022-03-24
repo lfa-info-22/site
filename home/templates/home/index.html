@@ -1,2 +1,8 @@
 {% extends 'base/base.html' %}
 
+{% block content %}
+
+{% include 'home/text/base.html' with title="Qui sommes-nous ?" text="Elèves en première au Lycée Franco-Allemand de Buc, nous avons formé le projet de créer un site destiné à tous ceux qui désirent s'entraîner aux matières scientifiques via des QCM et des exercices dédiés. <br> Vous cherchez à en apprendre plus sur le club ou découvrir les outils qu'il propose? <a href='#' class='underline hover:text-sky-700'>C'est par ici !</a>" %}
+{% include 'home/text/base.html' with title="Le club informatique en bref" text="Dans le cadre du Club info, nous nous intéressons également à la cryptographie 🤿 (Enigma, méthodes de chiffrement, etc.) et nous préparons au concours <a href='https://concours-alkindi.fr/' class='underline hover:text-sky-700'>Alkindi</a> (jusqu'à la seconde inclue)<br><br>Nous nous entraînons à la programmation en Python 🐍 avec <a href='www.france-ioi.org' class='underline hover:text-sky-700'>France-IOI</a> " %}
+
+{% endblock %}
