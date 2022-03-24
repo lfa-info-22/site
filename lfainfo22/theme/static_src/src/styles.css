@@ -4,7 +4,7 @@
 
 @layer components {
     .nav-link {
-        @apply text-gray-300 hover:text-gray-200 cursor-pointer select-none
+        @apply text-white hover:text-gray-300 cursor-pointer select-none uppercase font-medium text-sm py-[1px]
     }
     .phone-nav-link {
         @apply text-gray-500 hover:text-gray-600 hover:bg-gray-100 cursor-pointer select-none p-5 px-10
