@@ -863,8 +863,8 @@ select {
   max-width: 100%;
 }
 
-.max-w-\[700px\] {
-  max-width: 700px;
+.max-w-\[800px\] {
+  max-width: 800px;
 }
 
 .flex-1 {
@@ -1000,11 +1000,6 @@ select {
   line-height: 1.75rem;
 }
 
-.text-lg {
-  font-size: 1.125rem;
-  line-height: 1.75rem;
-}
-
 .text-3xl {
   font-size: 1.875rem;
   line-height: 2.25rem;
@@ -1074,18 +1069,6 @@ select {
   color: rgb(3 105 161 / var(--tw-text-opacity));
 }
 
-@media (min-width: 640px) {
-  .sm\:text-3xl {
-    font-size: 1.875rem;
-    line-height: 2.25rem;
-  }
-
-  .sm\:text-lg {
-    font-size: 1.125rem;
-    line-height: 1.75rem;
-  }
-}
-
 @media (min-width: 768px) {
   .phone-navbar.md\:hidden {
     height: 0px;
@@ -1130,16 +1113,6 @@ select {
     line-height: 1.75rem;
   }
 
-  .md\:text-2xl {
-    font-size: 1.5rem;
-    line-height: 2rem;
-  }
-
-  .md\:text-4xl {
-    font-size: 2.25rem;
-    line-height: 2.5rem;
-  }
-
   .md\:text-gray-100 {
     --tw-text-opacity: 1;
     color: rgb(243 244 246 / var(--tw-text-opacity));
@@ -1159,8 +1132,8 @@ select {
     width: auto;
   }
 
-  .lg\:max-w-\[900px\] {
-    max-width: 900px;
+  .lg\:max-w-\[1100px\] {
+    max-width: 1100px;
   }
 
   .lg\:pr-5 {
@@ -1190,6 +1163,11 @@ select {
   .lg\:text-2xl {
     font-size: 1.5rem;
     line-height: 2rem;
+  }
+
+  .lg\:text-5xl {
+    font-size: 3rem;
+    line-height: 1;
   }
 }
 

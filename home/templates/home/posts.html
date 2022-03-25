@@ -1,5 +1,9 @@
 {% extends 'base/base.html' %}
 
+{% block head %}
+{% include 'base/head.html' with head_url="/static/home/media/image/post_bg.jpg" title="Le Club info propose" subtitle="des QCMs, des exercices variés et des articles autour des sciences" %}
+{% endblock %}
+
 {% block content %}
 
 {% include 'home/text/base.html' with title="Qui sommes-nous ?" text="Elèves en première au Lycée Franco-Allemand de Buc, nous avons formé le projet de créer un site destiné à tous ceux qui désirent s'entraîner aux matières scientifiques via des QCM et des exercices dédiés. <br> Vous cherchez à en apprendre plus sur le club ou découvrir les outils qu'il propose? <a href='#' class='underline hover:text-sky-700'>C'est par ici !</a>" %}
