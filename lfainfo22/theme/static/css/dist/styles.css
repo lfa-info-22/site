@@ -866,6 +866,12 @@ select {
   height: 1.25rem;
 }
 
+.h-min {
+  height: -webkit-min-content;
+  height: -moz-min-content;
+  height: min-content;
+}
+
 .max-h-\[75vh\] {
   max-height: 75vh;
 }
@@ -919,6 +925,10 @@ select {
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
+}
+
+.flex-col {
+  flex-direction: column;
 }
 
 .flex-wrap {
@@ -1085,6 +1095,10 @@ select {
   text-align: center;
 }
 
+.align-middle {
+  vertical-align: middle;
+}
+
 .font-serif {
   font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
 }
@@ -1226,6 +1240,13 @@ select {
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
+@media (min-width: 640px) {
+  .sm\:text-xl {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
+}
+
 @media (min-width: 768px) {
   .phone-navbar.md\:hidden {
     height: 0px;
@@ -1280,6 +1301,11 @@ select {
   .md\:text-xl {
     font-size: 1.25rem;
     line-height: 1.75rem;
+  }
+
+  .md\:text-2xl {
+    font-size: 1.5rem;
+    line-height: 2rem;
   }
 
   .md\:text-gray-100 {
@@ -1365,11 +1391,26 @@ select {
     padding-left: 12.5rem;
     padding-right: 12.5rem;
   }
+
+  .xl\:text-3xl {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+  }
+
+  .xl\:text-xl {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
 }
 
 @media (min-width: 1536px) {
   .\32xl\:px-\[15rem\] {
     padding-left: 15rem;
     padding-right: 15rem;
+  }
+
+  .\32xl\:text-3xl {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
   }
 }
