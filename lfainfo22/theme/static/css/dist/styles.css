@@ -859,6 +859,10 @@ select {
   height: 64px;
 }
 
+.h-\[32px\] {
+  height: 32px;
+}
+
 .max-h-\[75vh\] {
   max-height: 75vh;
 }
