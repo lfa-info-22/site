@@ -1,3 +1,5 @@
 from django.shortcuts import render
+from lfainfo22.views import BaseView
 
-# Create your views here.
+class TrainIndexView(BaseView):
+    TEMPLATE_NAME = 'train/base.html'
