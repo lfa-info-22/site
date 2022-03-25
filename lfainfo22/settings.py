@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'account',
     'api',
     'home',
+
+    'train',
 ]
 
 INSTALLED_APIS = [
