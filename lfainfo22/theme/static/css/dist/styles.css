@@ -855,10 +855,6 @@ select {
   height: 64px;
 }
 
-.h-16 {
-  height: 4rem;
-}
-
 .max-h-\[75vh\] {
   max-height: 75vh;
 }
@@ -885,22 +881,6 @@ select {
   width: -webkit-min-content;
   width: -moz-min-content;
   width: min-content;
-}
-
-.w-16 {
-  width: 4rem;
-}
-
-.w-32 {
-  width: 8rem;
-}
-
-.w-24 {
-  width: 6rem;
-}
-
-.w-\[6\.5rem\] {
-  width: 6.5rem;
 }
 
 .w-\[calc\(40px\+4rem\)\] {
@@ -938,10 +918,6 @@ select {
   grid-auto-flow: column;
 }
 
-.grid-cols-3 {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
 .grid-rows-3 {
   grid-template-rows: repeat(3, minmax(0, 1fr));
 }
@@ -960,10 +936,6 @@ select {
 
 .justify-center {
   justify-content: center;
-}
-
-.justify-around {
-  justify-content: space-around;
 }
 
 .divide-x-\[2rem\] > :not([hidden]) ~ :not([hidden]) {
@@ -1065,6 +1037,11 @@ select {
   padding-right: 7.5rem;
 }
 
+.px-\[1rem\] {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
 .px-5 {
   padding-left: 1.25rem;
   padding-right: 1.25rem;
@@ -1100,14 +1077,14 @@ select {
   padding-right: 2.5rem;
 }
 
-.px-2 {
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-}
-
 .px-3 {
   padding-left: 0.75rem;
   padding-right: 0.75rem;
+}
+
+.px-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
 }
 
 .pb-10 {
@@ -1116,14 +1093,6 @@ select {
 
 .pb-5 {
   padding-bottom: 1.25rem;
-}
-
-.pr-2 {
-  padding-right: 0.5rem;
-}
-
-.pl-2 {
-  padding-left: 0.5rem;
 }
 
 .text-center {
@@ -1154,21 +1123,12 @@ select {
   line-height: 1.75rem;
 }
 
-.text-sm {
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-}
-
 .font-medium {
   font-weight: 500;
 }
 
 .font-light {
   font-weight: 300;
-}
-
-.font-bold {
-  font-weight: 700;
 }
 
 .italic {
@@ -1308,26 +1268,12 @@ select {
     width: calc(50% - 40px);
   }
 
-  .md\:w-\[80\%\] {
-    width: 80%;
-  }
-
   .md\:w-\[90\%\] {
     width: 90%;
   }
 
   .md\:bg-transparent {
     background-color: transparent;
-  }
-
-  .md\:px-5 {
-    padding-left: 1.25rem;
-    padding-right: 1.25rem;
-  }
-
-  .md\:text-xl {
-    font-size: 1.25rem;
-    line-height: 1.75rem;
   }
 
   .md\:text-gray-100 {
@@ -1349,8 +1295,8 @@ select {
     width: auto;
   }
 
-  .lg\:w-\[60\%\] {
-    width: 60%;
+  .lg\:w-\[calc\(50\%-40px\)\] {
+    width: calc(50% - 40px);
   }
 
   .lg\:w-\[80\%\] {
@@ -1359,6 +1305,11 @@ select {
 
   .lg\:max-w-\[800px\] {
     max-width: 800px;
+  }
+
+  .lg\:px-\[7\.5rem\] {
+    padding-left: 7.5rem;
+    padding-right: 7.5rem;
   }
 
   .lg\:pr-5 {
@@ -1393,10 +1344,6 @@ select {
 
   .xl\:w-\[calc\(25\%-40px\)\] {
     width: calc(25% - 40px);
-  }
-
-  .xl\:w-\[calc\(50\%-40px\)\] {
-    width: calc(50% - 40px);
   }
 
   .xl\:px-\[12\.5rem\] {
