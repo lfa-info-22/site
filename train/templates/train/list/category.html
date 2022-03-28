@@ -1,12 +1,10 @@
 
 <div class="font-medium text-gray-600">
-    Category Name
+    {{ name }}
 </div>
 
-<div class="grid grid-flow-col grid-rows-3">
-    {% include 'train/list/exercice.html' %}
-    {% include 'train/list/exercice.html' %}
-    {% include 'train/list/exercice.html' %}
-    {% include 'train/list/exercice.html' %}
-    {% include 'train/list/exercice.html' %}
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-7 2xl:grid-cols-10">
+    {% for exercice in exercices %}
+    {% include 'train/list/exercice.html' with text=exercice.text gicon=exercice.icon %}
+    {% endfor %}
 </div>

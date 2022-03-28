@@ -1,0 +1,14 @@
+<div class="absolute h-[calc(100vh-4rem)] w-full 
+            md:w-[400px] md:border-l border-gray-200
+            bottom-0 right-0 bg-white">
+    <div class="w-full h-full relative">
+        <div class="p-3 text-center text-3xl">
+            Exercice Name
+        </div>
+        <span class="material-icons-outlined absolute left-1 top-1" style="font-size: 52px;">
+            close
+        </span>
+
+        {% include 'utils/select/select.html' with label="Plan" default="---" choices=properties.schedulers %}
+    </div>
+</div>

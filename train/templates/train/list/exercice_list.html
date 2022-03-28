@@ -1,8 +1,10 @@
 {% extends 'train/base.html' %}
 
 {% block content %}
-<div class="w-full md:w-[90%] lg:w-[80%] p-5
+<div class="w-screen max-w-screen md:w-[90%] lg:w-[80%] p-5
             relative center-w">
-    {% include 'train/list/category.html' %}
+    {% include 'train/list/category.html' with name="Category name" %}
 </div>
+
+{% include 'train/list/properties.html' %}
 {% endblock %}
