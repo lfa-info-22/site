@@ -1,6 +1,6 @@
 from django.test import TestCase
 from lfainfo22.tests import ClientTestCase
-from train.views import GetAllTrainingPlans
+from train.views import GetAllTrainingPlans, GetTimedExercices
 from train.models import *
 
 class GetAllTrainingPlansTest(ClientTestCase):
@@ -46,3 +46,25 @@ class GetAllTrainingPlansTest(ClientTestCase):
         for data in json['data']:
             self.assertEqual(data, { 'id': idx, 'name': f"PLAN{idx-1}", 'exercices':[1]})
             idx -= 1
+
+class GetTimedExerciceTest(ClientTestCase):
+    VIEW = GetTimedExercices()
+
+    ROUTE = f"/api/v{VIEW.VERSION}/{VIEW.APPLICATION}/{VIEW.ROUTE}"
+
+    def setUp(self):
+        super().setUp()
+
+        exercice = Exercice.objects.create(name="EX")
+        texercice = TimedExercice.objects.create(exercice=exercice, minutes=10, seconds=10)
+
+        self.FROUTE = self.ROUTE.replace('<int:id>', str(texercice.id + 1))
+        self.ROUTE  = self.ROUTE.replace('<int:id>', str(texercice.id))
+    def test_access(self):
+        self.send_request(self.ROUTE, {})
+        self.send_request(self.FROUTE, {}, 404, 404, 404)
+    def test_value(self):
+        resp = self.client.get(self.ROUTE, {})
+        json = resp.json()
+
+        self.assertEqual(json, {'data': {'exercice': 'EX', 'minutes': 10, 'seconds': 10}, 'status': 200})

@@ -4,7 +4,7 @@ from account.models import User
 from lfainfo22.views import BaseView
 from api.urls import api
 from api.views import ApiView
-from train.models import TrainingPlan
+from train.models import TimedExercice, TrainingPlan
 
 class TrainIndexView(BaseView):
     TEMPLATE_NAME = 'train/list/exercice_list.html'
@@ -61,5 +61,26 @@ class GetAllTrainingPlans(ApiView):
 
         return JsonResponse({
             'data': list(map(self.get_data, training_plans)),
+            'status': 200
+        })
+
+@api
+class GetTimedExercices(ApiView):
+    VERSION = 1
+    APPLICATION = "train"
+    ROUTE = "get/exercice/timed/<int:id>"
+    
+    def permission(self, request, *args, **kwargs):
+        self.obj = get_object_or_404(TimedExercice, id=kwargs['id'])
+
+        return super().permission(request, *args, **kwargs)
+
+    def get_call(self, request, *args, **kwargs):
+        return JsonResponse({
+            'data': {
+                'exercice': self.obj.exercice.name,
+                'minutes': self.obj.minutes,
+                'seconds': self.obj.seconds,
+            },
             'status': 200
         })
