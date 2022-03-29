@@ -55,9 +55,9 @@ class GetAllTrainingPlans(ApiView):
 
     def get_call(self, request, *args, **kwargs):
         if 'last_seen' in request.GET:
-            training_plans = TrainingPlan.objects.filter(user__username=self.username, id__lte=int(request.GET['last_seen']))[:self.PAGINATION]
+            training_plans = TrainingPlan.objects.filter(user__username=self.username, id__lt=int(request.GET['last_seen'])).order_by('-id')[:self.PAGINATION]
         else:
-            training_plans = TrainingPlan.objects.filter(user__username=self.username)[:self.PAGINATION]
+            training_plans = TrainingPlan.objects.filter(user__username=self.username).order_by('-id')[:self.PAGINATION]
 
         return JsonResponse({
             'data': list(map(self.get_data, training_plans)),
