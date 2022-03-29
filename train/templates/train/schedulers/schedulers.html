@@ -5,7 +5,14 @@
             relative center-w">
     <div class="font-medium text-xl md:text-2xl lg:text-4xl px-10">Plans de révisions</div>
 
-    
+    <!-- HIDDEN -->
+    <div id="scheduler-template" class="hidden">
+        {% include 'train/schedulers/scheduler.html' with name=":name:" url=":url:" %}
+    </div>
+
+    <div id="scheduler-container">
+        
+    </div>
 
     <div class="relative center-w w-min py-[2.5rem]" id="waiter-container">
         {% include 'utils/wait.html' %}
