@@ -1,5 +1,10 @@
-from django.shortcuts import render
+from django.http import Http404, JsonResponse
+from django.shortcuts import get_object_or_404, render
+from account.models import User
 from lfainfo22.views import BaseView
+from api.urls import api
+from api.views import ApiView
+from train.models import TrainingPlan
 
 class TrainIndexView(BaseView):
     TEMPLATE_NAME = 'train/list/exercice_list.html'
@@ -20,3 +25,41 @@ class TrainIndexView(BaseView):
         }
 
         return ctx
+
+#
+# API
+#
+
+@api
+class GetAllTrainingPlans(ApiView):
+    VERSION = 1
+    APPLICATION = "train"
+    ROUTE = "get/plan/all/"
+
+    PAGINATION = 10
+
+    def permission(self, request, *args, **kwargs):
+        self.username = '' if request.user.is_anonymous else request.user.username
+        if 'related' in request.GET:
+            self.username = request.GET['related']
+        
+        if self.username == '':
+            raise Http404()
+    
+    def get_data(self, training_plan):
+        return {
+            'id': training_plan.id,
+            'name': training_plan.name,
+            'exercices': list(map(lambda x: x.id, training_plan.timed_exercices.all()))
+        }
+
+    def get_call(self, request, *args, **kwargs):
+        if 'last_seen' in request.GET:
+            training_plans = TrainingPlan.objects.filter(user__username=self.username, id__lte=int(request.GET['last_seen']))[:self.PAGINATION]
+        else:
+            training_plans = TrainingPlan.objects.filter(user__username=self.username)[:self.PAGINATION]
+
+        return JsonResponse({
+            'data': list(map(self.get_data, training_plans)),
+            'status': 200
+        })
