@@ -27,6 +27,9 @@ class TrainIndexView(BaseView):
 
         return ctx
 
+class TrainSchedulersView(BaseView):
+    TEMPLATE_NAME = 'train/schedulers/schedulers.html'
+
 #
 # API
 #

@@ -1,8 +1,9 @@
 
 from django.urls import path
 
-from train.views import TrainIndexView
+from train.views import TrainIndexView, TrainSchedulersView
 
 urlpatterns = ([
-    path('', TrainIndexView())
+    path('', TrainIndexView()),
+    path('schedule/', TrainSchedulersView())
 ], "train", "train")
