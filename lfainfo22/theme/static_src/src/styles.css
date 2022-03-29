@@ -27,4 +27,56 @@
     .phone-navbar.hidden {
         @apply h-0
     }
+
+    .waiter-0 {
+        animation: wait-animation 6s infinite;
+        transform: translate(100%, 100%);
+    }
+    .waiter-1 {
+        animation: wait-animation 6s infinite -2000ms;
+        transform: translate(100%, 100%);
+    }
+    .waiter-2 {
+        animation: wait-animation 6s infinite -4000ms;
+        transform: translate(100%, 100%);
+    }
+
+    @keyframes wait-animation {
+        0% {
+            right: 100%;
+            bottom: 100%;
+        }
+        8.3% {
+            right: 0px;
+            bottom: 100%;
+        }
+        25% {
+            right: 0px;
+            bottom: 100%;
+        }
+        33.3% {
+            right: 0px;
+            bottom: 0px;
+        }
+        50% {
+            right: 0px;
+            bottom: 0px;
+        }
+        58.3% {
+            right: 100%;
+            bottom: 0px;
+        }
+        75% {
+            right: 100%;
+            bottom: 0px;
+        }
+        83.3% {
+            right: 100%;
+            bottom: 100%;
+        }
+        100% {
+            right: 100%;
+            bottom: 100%;
+        }
+    }
   }

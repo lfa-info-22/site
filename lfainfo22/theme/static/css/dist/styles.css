@@ -746,6 +746,118 @@ select {
   height: 0px;
 }
 
+.waiter-0 {
+  -webkit-animation: wait-animation 6s infinite;
+          animation: wait-animation 6s infinite;
+  transform: translate(100%, 100%);
+}
+
+.waiter-1 {
+  -webkit-animation: wait-animation 6s infinite -2000ms;
+          animation: wait-animation 6s infinite -2000ms;
+  transform: translate(100%, 100%);
+}
+
+.waiter-2 {
+  -webkit-animation: wait-animation 6s infinite -4000ms;
+          animation: wait-animation 6s infinite -4000ms;
+  transform: translate(100%, 100%);
+}
+
+@-webkit-keyframes wait-animation {
+  0% {
+    right: 100%;
+    bottom: 100%;
+  }
+
+  8.3% {
+    right: 0px;
+    bottom: 100%;
+  }
+
+  25% {
+    right: 0px;
+    bottom: 100%;
+  }
+
+  33.3% {
+    right: 0px;
+    bottom: 0px;
+  }
+
+  50% {
+    right: 0px;
+    bottom: 0px;
+  }
+
+  58.3% {
+    right: 100%;
+    bottom: 0px;
+  }
+
+  75% {
+    right: 100%;
+    bottom: 0px;
+  }
+
+  83.3% {
+    right: 100%;
+    bottom: 100%;
+  }
+
+  100% {
+    right: 100%;
+    bottom: 100%;
+  }
+}
+
+@keyframes wait-animation {
+  0% {
+    right: 100%;
+    bottom: 100%;
+  }
+
+  8.3% {
+    right: 0px;
+    bottom: 100%;
+  }
+
+  25% {
+    right: 0px;
+    bottom: 100%;
+  }
+
+  33.3% {
+    right: 0px;
+    bottom: 0px;
+  }
+
+  50% {
+    right: 0px;
+    bottom: 0px;
+  }
+
+  58.3% {
+    right: 100%;
+    bottom: 0px;
+  }
+
+  75% {
+    right: 100%;
+    bottom: 0px;
+  }
+
+  83.3% {
+    right: 100%;
+    bottom: 100%;
+  }
+
+  100% {
+    right: 100%;
+    bottom: 100%;
+  }
+}
+
 .pointer-events-none {
   pointer-events: none;
 }
@@ -875,6 +987,10 @@ select {
   height: 32px;
 }
 
+.h-8 {
+  height: 2rem;
+}
+
 .h-screen {
   height: 100vh;
 }
@@ -921,6 +1037,10 @@ select {
 
 .w-20 {
   width: 5rem;
+}
+
+.w-8 {
+  width: 2rem;
 }
 
 .w-min {
@@ -970,6 +1090,10 @@ select {
 
 .grid-cols-2 {
   grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.grid-rows-2 {
+  grid-template-rows: repeat(2, minmax(0, 1fr));
 }
 
 .flex-col {
@@ -1068,6 +1192,21 @@ select {
 .bg-gray-50 {
   --tw-bg-opacity: 1;
   background-color: rgb(249 250 251 / var(--tw-bg-opacity));
+}
+
+.bg-gray-300 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(209 213 219 / var(--tw-bg-opacity));
+}
+
+.bg-gray-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(229 231 235 / var(--tw-bg-opacity));
+}
+
+.bg-gray-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 244 246 / var(--tw-bg-opacity));
 }
 
 .bg-white {
@@ -1172,6 +1311,16 @@ select {
 .px-2 {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
+}
+
+.py-10 {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+
+.py-\[2\.5rem\] {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
 }
 
 .pb-10 {
@@ -1501,6 +1650,11 @@ select {
     background-color: transparent;
   }
 
+  .md\:text-2xl {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+
   .md\:text-gray-100 {
     --tw-text-opacity: 1;
     color: rgb(243 244 246 / var(--tw-text-opacity));
@@ -1558,6 +1712,11 @@ select {
   .lg\:text-xl {
     font-size: 1.25rem;
     line-height: 1.75rem;
+  }
+
+  .lg\:text-4xl {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
   }
 }
 
