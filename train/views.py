@@ -1,3 +1,4 @@
+from sched import scheduler
 from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from account.models import User
@@ -12,16 +13,16 @@ class TrainIndexView(BaseView):
     def get_context_data(self, request, *args, **kwargs):
         ctx = super().get_context_data(request, *args, **kwargs)
 
+        schedulers = [
+            {"type":"text", "text":"Révisions de maths"} for plan in TrainingPlan.objects.filter(user=request.user)
+        ] if request.user.is_authenticated else []
+        schedulers.append({"type":"link", "text":"Nouveau plan", "url": "/train/schedule", "icon": "create"})
+
         ctx['exercices'] = [
             { 'text':'Text', 'icon': 'home' } for i in range(20)
         ]
         ctx['properties'] = {
-            'schedulers': [ 
-                {"type":"text", "text":"Révisions de maths"},
-                {"type":"text", "text":"Révisions de maths"},
-                {"type":"text", "text":"Révisions de maths"},
-                {"type":"link", "text":"Nouveau plan", "url": "/train/schedule", "icon": "create"}
-            ]
+            'schedulers': schedulers
         }
 
         return ctx
