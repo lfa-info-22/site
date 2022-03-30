@@ -2,67 +2,83 @@
 
 {% block content %}
 
-<div>
-    Introduction à la théorie des langages I
+<div class="p-5 divide-transparent max-w-[600px] lg:max-w-[800px] relative center-w">
+    <div class="font-medium text-2xl py-8">Introduction à la théorie des langages I</div>
+    
+    <div class="text-xl px-1">
+        La théorie des langages est aujourd'hui l'un des champs de recherche 
+        les plus importants en informatique, étant à la base de tous les langages de programmation.
+        Alors que les ordinateurs deviennent de plus en plus puissants, l'effet des optimisations que cette théorie
+        apporte est malheuresement moins visible. Mais, comment fonctionne cette idée qui est aujourd'hui à la base de
+        tout ordinateur ? Nous allons le découvrir en développant ici un calculateur basique, et nous continuerons de
+        l'améliorer au fil de plusieurs articles.
+    </div>
+
+    <div class="text-xl px-1 pt-8">
+        Tout d'abord, comment fonctionne un langage de programmation ? Il faut d'abord faire la différence
+        entre les langages interprétés comme python et les langages compilés qui génèrent un fichier
+        binaire. Mais derrière, le fonctionnement est assez semblable dans les deux cas. En effet, le principe
+        est toujours de transformer une chaîne de caractères en une liste d'instructions, qui peuvent ensuite
+        être stockées sous un fichier binaire ou éxecutées par un interpréteur.
+    </div>
+
+    <div class="text-xl px-1 pt-8">
+        Le problème que l'on a avec les chaînes de caractères, c'est qu'elles peuvent être de toutes formes,
+        on peut très bien imaginer un utilisateur qui met un millier d'espaces comme un qui n'en met pas un seul.
+        Les informaticiens ont donc prit la décision de diviser cette étape de transformation d'une chaîne de
+        caractères en deux étapes distinctes, l'étape effectuée par le "Lexer" et celle du "Parser".
+    </div>
+
+    <div class="text-xl px-1 pt-8">
+        Le principe du "Lexer" est ainsi de générer à partir d'une chaîne de caractères une liste de "Token".
+        Ceux-ci représentent alors des caractères spéciaux, des noms ou même des nombres. Ils permettent ainsi
+        de se débarasser des espaces en trop. Le principe d'un lexer est donc de parcourir la chaîne de caractère
+        et de répertorier les tokens intéressants. Un premier algorithme en pseudo code pour détecter les caractères spéciaux peut ainsi
+        ressembler à celui-ci :
+    </div>
+
+    <div class="text-sm font-light text-right text-gray-400">Pseudo-Code</div>
+    <div class="flex flex-wrap bg-stone-800 text-gray-200 rounded-xl p-3">
+        <div class="text-right w-8 px-2 text-gray-300">1</div>
+        <div class="w-[calc(100%-40px)]">
+            <span class="text-sky-500">fonction</span> 
+            <span class="text-orange-300">lexer</span>(<span class="text-sky-300">string</span>): 
+        </div>
+
+
+        <div class="text-right w-8 px-2 text-gray-300">2</div>
+        <p class="whitespace-pre w-[calc(100%-40px)]">    <span class="text-sky-300">tokens</span> := []</p>
+        <div class="text-right w-8 px-2 text-gray-300">3</div>
+        <p class="whitespace-pre w-[calc(100%-40px)]">    <span class="text-sky-300">id</span> := 0</p>
+        <div class="text-right w-8 px-2 text-gray-300">4</div>
+        <p class="whitespace-pre w-[calc(100%-40px)]"></p>
+        <div class="text-right w-8 px-2 text-gray-300">5</div>
+        <p class="whitespace-pre w-[calc(100%-40px)]">    <span class="text-violet-400">tant que</span> <span class="text-sky-300">id</span> est inférieur à <span class="text-emerald-300">la longueur de</span> <span class="text-sky-300">string</span></p>
+        <div class="text-right w-8 px-2 text-gray-300">6</div>
+        <p class="whitespace-pre w-[calc(100%-40px)]">        <span class="text-violet-400">si</span> le caractère à l'index <span class="text-sky-300">id</span> de <span class="text-sky-300">string</span> est égal à <span class="text-green-600">'+'</span></p>
+        <div class="text-right w-8 px-2 text-gray-300">7</div>
+        <p class="whitespace-pre w-[calc(100%-40px)]">            <span class="text-violet-400">ajouter</span> [<span class="text-green-600">'PLUS'</span>, <span class="text-green-600">''</span>] à <span class="text-sky-300">tokens</span></p>
+        <div class="text-right w-8 px-2 text-gray-300">8</div>
+        <div class="w-[calc(100%-40px)]">
+            <p class="whitespace-pre text-xs h-min relative center-h lg:text-sm">            <span class="text-emerald-200">// (un token est représenté par un nom et une valeur pour éviter des incohérences)</span></p>
+        </div>
+        <div class="text-right w-8 px-2 text-gray-300">9</div>
+        <p class="whitespace-pre w-[calc(100%-40px)]">        <span class="text-violet-400">si</span> le caractère à l'index <span class="text-sky-300">id</span> de <span class="text-sky-300">string</span> est égal à <span class="text-green-600">'-'</span></p>
+        <div class="text-right w-8 px-2 text-gray-300">10</div>
+        <p class="whitespace-pre w-[calc(100%-40px)]">            <span class="text-violet-400">ajouter</span> [<span class="text-green-600">'MINUS'</span>, <span class="text-green-600">''</span>] à <span class="text-sky-300">tokens</span></p>
+        <div class="text-right w-8 px-2 text-gray-300">11</div>
+        <p class="whitespace-pre w-[calc(100%-40px)]">        ...</p>
+        <div class="text-right w-8 px-2 text-gray-300">12</div>
+        <p class="whitespace-pre w-[calc(100%-40px)]">        <span class="text-violet-400">ajouter</span> 1 à <span class="text-sky-300">id</span></p>
+    </div>
+
+    <div class="text-xl px-1 pt-8">
+        Ainsi, le lexer ci-dessus nous permet de trouver les caractères spéciaux, mais qu'en est-il des chaînes 
+        de caractères plus avancées comme les nombres ou les noms. Pour ceux-là, on continue d'ajouter des caractères 
+        tant que ceux-ci correspondent à la valeur du token. On ajoute ainsi le pseudo code suivant :
+    </div>
 </div>
 
-<div style="height: 20px;"></div>
-
-<div>
-    La théorie des langages est aujourd'hui l'un des champs de recherche 
-    les plus importants en informatique, étant à la base de tous les langages de programmation.
-    Alors que les ordinateurs deviennent de plus en plus puissants, l'effet des optimisations que cette théorie
-    apporte est malheuresement moins visible. Mais, comment fonctionne cette idée qui est aujourd'hui à la base de
-    tout ordinateur ? Nous allons le découvrir en développant ici un calculateur basique, et nous continuerons de
-    l'améliorer au fil de plusieurs articles.
-</div>
-
-<div style="height: 20px;"></div>
-
-<div>
-    Tout d'abord, comment fonctionne un langage de programmation ? Il faut d'abord faire la différence
-    entre les langages interprétés comme python et les langages compilés qui génèrent un fichier
-    binaire. Mais derrière, le fonctionnement est assez semblable dans les deux cas. En effet, le principe
-    est toujours de transformer une chaîne de caractères en une liste d'instructions, qui peuvent ensuite
-    être stockées sous un fichier binaire ou éxecutées par un interpréteur.
-</div>
-
-<div style="height: 20px;"></div>
-
-<div>
-    Le problème que l'on a avec les chaînes de caractères, c'est qu'elles peuvent être de toutes formes,
-    on peut très bien imaginer un utilisateur qui met un millier d'espaces comme un qui n'en met pas un seul.
-    Les informaticiens ont donc prit la décision de diviser cette étape de transformation d'une chaîne de
-    caractères en deux étapes distinctes, l'étape effectuée par le "Lexer" et celle du "Parser".
-</div>
-
-<div style="height: 20px;"></div>
-
-<div>
-    Le principe du "Lexer" est ainsi de générer à partir d'une chaîne de caractères une liste de "Token".
-    Ceux-ci représentent alors des caractères spéciaux, des noms ou même des nombres. Ils permettent ainsi
-    de se débarasser des espaces en trop. Le principe d'un lexer est donc de parcourir la chaîne de caractère
-    et de répertorier les tokens intéressants. Un premier algorithme en pseudo code pour détecter les caractères spéciaux peut ainsi
-    ressembler à celui-ci :
-</div>
-
-<div style="height: 20px;"></div>
-
-<div style="font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;">
-    <div> fonction lexer (string) </div>
-    <div style="padding-left: 40px;"> tokens := []</div>
-    <div style="padding-left: 40px;"> id := 0</div>
-    <div style="height: 20px;"></div>
-    <div style="padding-left: 40px;"> tant que id est inférieur à la longueur de string</div>
-    <div style="padding-left: 80px;"> si le caractère à l'index id de string est égal à '+' alors</div>
-    <div style="padding-left: 120px;"> ajouter ['PLUS', ''] à tokens (un token est représenté par un nom et une valeur pour éviter des incohérences)</div>
-    <div style="padding-left: 80px;"> si le caractère à l'index id de string est égal à '-' alors</div>
-    <div style="padding-left: 120px;"> ajouter ['MINUS', ''] à tokens</div>
-    <div style="padding-left: 80px;"> ...</div>
-    <div style="padding-left: 80px;"> ajouter 1 à id</div>
-</div>
-
-<div style="height: 20px;"></div>
 
 <div>
     Ainsi, le lexer ci-dessus nous permet de trouver les caractères spéciaux, mais qu'en est-il des chaînes 
