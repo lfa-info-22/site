@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'api',
     'home',
 
+    'articles',
     'train',
 ]
 
@@ -139,3 +140,17 @@ TAILWIND_APP_NAME = 'lfainfo22.theme'
 # Account system
 
 AUTH_USER_MODEL = 'account.User'
+
+ARTICLES_CONF = []
+
+try:
+    import json
+    import os
+    
+    with open('./articles/articles.json', 'r', encoding='utf-8') as file:
+        text = file.read()
+        ARTICLES_CONF = json.loads(text)
+    
+except Exception as e:
+    print('Could not find articles.json')
+    print(e)

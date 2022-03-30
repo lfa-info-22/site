@@ -1,0 +1,9 @@
+[
+    {
+        "name": "Théorie des languages I",
+        "description": "Les mécanismes derrière la création d'un langage de programmation",
+        "template": "articles/language-theory.html",
+        "view": "ArticleView",
+        "route": "lang-theory-1/"
+    }
+]

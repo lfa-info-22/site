@@ -20,11 +20,13 @@ import api.urls
 import account.urls
 import home.urls
 import train.urls
+import articles.urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('account/', account.urls.urlpatterns),
     path('api/', api.urls.urlpatterns),
     path('train/', train.urls.urlpatterns),
+    path('articles/', articles.urls.urlpatterns),
     path('', home.urls.urlpatterns)
 ]
