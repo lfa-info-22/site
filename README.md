@@ -9,3 +9,9 @@ To install the website, clone the code and use the following command to setup th
 ```
 make setup
 ```
+
+To run the server :
+
+```
+make run
+```
