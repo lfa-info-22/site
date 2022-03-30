@@ -104,7 +104,8 @@ class BaseView():
         return
 
     def __call__(self, request, *args, **kwargs):
-        if (redirector := self.permission(request, *args, **kwargs)) != None:
+        redirector = self.permission(request, *args, **kwargs)
+        if redirector != None:
             return redirector
         
         if request.method == 'GET':
