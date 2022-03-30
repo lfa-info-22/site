@@ -1,5 +1,13 @@
 {% extends 'train/base.html' %}
 
+{% block extrahead %}
+
+<script src="/static/train/sdk/get-schedulers.js"></script>
+
+{% block extrahead2 %}
+{% endblock %}
+{% endblock %}
+
 {% block content %}
 <div class="w-screen max-w-screen md:w-[90%] lg:w-[80%] p-5
             relative center-w">
