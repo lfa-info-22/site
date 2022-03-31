@@ -1,5 +1,7 @@
-<div class="flex">
+<div class="flex group-odd:bg-gray-100 p-5">
     <div class="font-light text-xl">{{ name }}</div>
     <div class="flex-1"></div>
-    <a href="{{ url }}">Accéder</a>
+    <div class="italic text-gray-700">{{ exercice_count }} exercices</div>
+    <div class="w-[40px] lg:w-[200px]"></div>
+    <a href="{{ url }}" class="underline font-light hover:text-sky-700">Accéder</a>
 </div>

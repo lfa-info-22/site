@@ -30,9 +30,13 @@ const ApiListTemplate = {
                         let HTML = template.innerHTML
                         for (let i = 0; i < keys.length; i++) {
                             HTML = HTML.split(':' + keys[i] + ':').join(json[keys[i]])
+                            if (json[keys[i]] instanceof Array) {
+                                HTML = HTML.split(':' + keys[i] + '.length:').join(json[keys[i]].length)
+                            }
                         }
 
                         let div = document.createElement('div')
+                        div.className = "group"
                         div.innerHTML = HTML
 
                         container.appendChild(div)
