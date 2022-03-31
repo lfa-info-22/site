@@ -33,9 +33,9 @@ class CodeBlockNode(template.Node):
         output = self.nodelist.render(context)
 
         lines = getattr(self, f"render_{self.lang}")(output)
-        while lines[0] == '':
+        while len(lines) > 0 and lines[0] == '':
             lines = lines[1:]
-        while lines[-1] == '':
+        while len(lines) > 0 and lines[-1] == '':
             lines = lines[:len(lines) - 1]
 
         for lidx in range(len(lines)):
