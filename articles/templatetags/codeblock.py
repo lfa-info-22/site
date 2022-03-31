@@ -45,7 +45,7 @@ class CodeBlockNode(template.Node):
         LANG = self.get_lang_name(self.lang)
         TEMPLATE = f'''
             <div class="text-sm font-light text-right text-gray-400">{LANG}</div>
-            <div class="flex flex-wrap bg-stone-800 text-gray-200 rounded-xl p-3">
+            <div class="flex flex-wrap bg-stone-800 text-gray-200 rounded-xl p-3 overflow-x-auto">
                 {LINES}
             </div>
         '''
@@ -58,7 +58,7 @@ class CodeBlockNode(template.Node):
     def create_line(self, line, idx):
         return f'''
         <div class="text-right w-8 px-2 text-gray-300">{idx}</div>
-        <div class="w-[calc(100%-40px)] whitespace-pre">{line}</div>
+        <div class="w-[calc(100%-40px)] whitespace-pre pr-6">{line}</div>
     '''
     
     def render_psc(self, string):

@@ -1,11 +1,13 @@
 {% extends 'base/base.html' %}
 
+{% block head %}
+{% include 'base/head.html' with head_url="/static/home/media/image/home_background.jpg" title="Introduction à la théorie des langages I" subtitle="Les mécanismes derrière les langages de programmation" %}
+{% endblock %}
+
 {% block content %}
 {% load codeblock %}
 
 <div class="p-5 divide-transparent max-w-[600px] lg:max-w-[800px] relative center-w">
-    <div class="font-medium text-2xl py-8">Introduction à la théorie des langages I</div>
-    
     <div class="text-xl px-1">
         La théorie des langages est aujourd'hui l'un des champs de recherche 
         les plus importants en informatique, étant à la base de tous les langages de programmation.
