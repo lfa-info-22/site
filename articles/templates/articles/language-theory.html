@@ -1,6 +1,7 @@
 {% extends 'base/base.html' %}
 
 {% block content %}
+{% load codeblock %}
 
 <div class="p-5 divide-transparent max-w-[600px] lg:max-w-[800px] relative center-w">
     <div class="font-medium text-2xl py-8">Introduction à la théorie des langages I</div>
@@ -37,40 +38,23 @@
         ressembler à celui-ci :
     </div>
 
-    <div class="text-sm font-light text-right text-gray-400">Pseudo-Code</div>
-    <div class="flex flex-wrap bg-stone-800 text-gray-200 rounded-xl p-3">
-        <div class="text-right w-8 px-2 text-gray-300">1</div>
-        <div class="w-[calc(100%-40px)]">
-            <span class="text-sky-500">fonction</span> 
-            <span class="text-orange-300">lexer</span>(<span class="text-sky-300">string</span>): 
-        </div>
+<div class="hidden text-orange-300"></div>
+<div class="hidden text-emerald-300"></div>
+{% codeblock psc lexer:text-orange-300 la__longueur__de:text-emerald-300 %}
+fonction lexer(string):
+    tokens := []
+    id := 0
 
+    tant que id est inférieur à la longueur de string
+        si le caractère à l'index id de string est égal à "+"
+            ajouter ["PLUS", ""] à tokens
+            // (un token est représenté par un nom et une valeur pour éviter des incohérences)
+        si le caractère à l'index id de string est égal à "-"
+            ajouter ["MINUS", ""] à tokens
+        ...
+        ajouter 1 à id
 
-        <div class="text-right w-8 px-2 text-gray-300">2</div>
-        <p class="whitespace-pre w-[calc(100%-40px)]">    <span class="text-sky-300">tokens</span> := []</p>
-        <div class="text-right w-8 px-2 text-gray-300">3</div>
-        <p class="whitespace-pre w-[calc(100%-40px)]">    <span class="text-sky-300">id</span> := 0</p>
-        <div class="text-right w-8 px-2 text-gray-300">4</div>
-        <p class="whitespace-pre w-[calc(100%-40px)]"></p>
-        <div class="text-right w-8 px-2 text-gray-300">5</div>
-        <p class="whitespace-pre w-[calc(100%-40px)]">    <span class="text-violet-400">tant que</span> <span class="text-sky-300">id</span> est inférieur à <span class="text-emerald-300">la longueur de</span> <span class="text-sky-300">string</span></p>
-        <div class="text-right w-8 px-2 text-gray-300">6</div>
-        <p class="whitespace-pre w-[calc(100%-40px)]">        <span class="text-violet-400">si</span> le caractère à l'index <span class="text-sky-300">id</span> de <span class="text-sky-300">string</span> est égal à <span class="text-green-600">'+'</span></p>
-        <div class="text-right w-8 px-2 text-gray-300">7</div>
-        <p class="whitespace-pre w-[calc(100%-40px)]">            <span class="text-violet-400">ajouter</span> [<span class="text-green-600">'PLUS'</span>, <span class="text-green-600">''</span>] à <span class="text-sky-300">tokens</span></p>
-        <div class="text-right w-8 px-2 text-gray-300">8</div>
-        <div class="w-[calc(100%-40px)]">
-            <p class="whitespace-pre text-xs h-min relative center-h lg:text-sm">            <span class="text-emerald-200">// (un token est représenté par un nom et une valeur pour éviter des incohérences)</span></p>
-        </div>
-        <div class="text-right w-8 px-2 text-gray-300">9</div>
-        <p class="whitespace-pre w-[calc(100%-40px)]">        <span class="text-violet-400">si</span> le caractère à l'index <span class="text-sky-300">id</span> de <span class="text-sky-300">string</span> est égal à <span class="text-green-600">'-'</span></p>
-        <div class="text-right w-8 px-2 text-gray-300">10</div>
-        <p class="whitespace-pre w-[calc(100%-40px)]">            <span class="text-violet-400">ajouter</span> [<span class="text-green-600">'MINUS'</span>, <span class="text-green-600">''</span>] à <span class="text-sky-300">tokens</span></p>
-        <div class="text-right w-8 px-2 text-gray-300">11</div>
-        <p class="whitespace-pre w-[calc(100%-40px)]">        ...</p>
-        <div class="text-right w-8 px-2 text-gray-300">12</div>
-        <p class="whitespace-pre w-[calc(100%-40px)]">        <span class="text-violet-400">ajouter</span> 1 à <span class="text-sky-300">id</span></p>
-    </div>
+{% endcodeblock %}
 
     <div class="text-xl px-1 pt-8">
         Ainsi, le lexer ci-dessus nous permet de trouver les caractères spéciaux, mais qu'en est-il des chaînes 
