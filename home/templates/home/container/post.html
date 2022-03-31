@@ -1,9 +1,9 @@
 <div class="w-full lg:w-[calc(50%-40px)] m-5 border border-gray-300">
     <div class="pb-5 flex flex-col h-full">
-        <div class="w-full bg-cover bg-center aspect-[1] md:aspect-[1.5] lg:aspect-2 mb-5"
+        <a href="{{ url }}" class="w-full bg-cover bg-center aspect-[1] md:aspect-[1.5] lg:aspect-2 mb-5"
             style="background-image: url('{{ img_url }}');">
 
-        </div>
+        </a>
 
         <div class="px-5 font-medium text-2xl lg:text-3xl">{{ title }}</div>
         <div class="px-7 py-[3rem] text-xl" style="word-wrap: break-word;">{{ text }}</div>
@@ -11,7 +11,7 @@
         <div class="flex-1"></div>
 
         <div class="flex px-5">
-            <a href="" class="h-min text-xl font-medium border border-gray-600 text-gray-500 hover:bg-gray-600 hover:text-white transition-all duration-300 w-min cursor-pointer p-3 px-6">
+            <a href="{{ url }}" class="h-min text-xl font-medium border border-gray-600 text-gray-500 hover:bg-gray-600 hover:text-white transition-all duration-300 w-min cursor-pointer p-3 px-6">
                 Lire
             </a>
             <div class="flex-1 p-5"></div>

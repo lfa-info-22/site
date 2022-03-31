@@ -4,5 +4,5 @@ from home.views  import HomeView, PublicationsView
 
 urlpatterns = ([
     path('', HomeView()),
-    path('posts/', PublicationsView())
+    path('articles/', PublicationsView())
 ], "home", "home")

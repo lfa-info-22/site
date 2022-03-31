@@ -1,0 +1,52 @@
+[
+    {
+        "name": "Théorie des languages I",
+        "description": "Les mécanismes derrière la création d'un langage de programmation",
+        "template": "articles/language-theory.html",
+        "view": "ArticleView",
+        "route": "lang-theory-1/",
+        "full_route": "/articles/lang-theory-1/",
+        "image": "/static/home/media/image/crypto_post.jpg",
+        "writing": false
+    },
+    {
+        "name": "Cryptographie",
+        "description": "Le chiffrage et l'analyse de fréquence",
+        "template": "",
+        "view": "None",
+        "route": "",
+        "full_route": "/posts/",
+        "image": "/static/home/media/image/crypto_post.jpg",
+        "writing": true
+    },
+    {
+        "name": "Gymnastique mathématique",
+        "description": "Des exercices de révisions pour s'entraîner",
+        "template": "",
+        "view": "None",
+        "route": "",
+        "full_route": "/train/",
+        "image": "/static/home/media/image/entrainement_post.jpg",
+        "writing": true
+    },
+    {
+        "name": "QCM de Mathématiques",
+        "description": "Accédez à des QCMs variés et corrigés",
+        "template": "",
+        "view": "None",
+        "route": "",
+        "full_route": "/posts/",
+        "image": "/static/home/media/image/qcm_post.jpg",
+        "writing": true
+    },
+    {
+        "name": "Vigenère",
+        "description": "Découvrez le chiffrement de Vigenère",
+        "template": "",
+        "view": "None",
+        "route": "",
+        "full_route": "/posts/",
+        "image": "/static/home/media/image/vigenere_post.jpg",
+        "writing": true
+    }
+]

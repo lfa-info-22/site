@@ -1,0 +1,136 @@
+{% extends 'base/base.html' %}
+
+{% block head %}
+{% include 'base/head.html' with head_url="/static/home/media/image/home_background.jpg" title="Introduction à la théorie des langages I" subtitle="Les mécanismes derrière les langages de programmation" %}
+{% endblock %}
+
+{% block content %}
+{% load codeblock %}
+
+<div class="p-5 divide-transparent max-w-[600px] lg:max-w-[800px] relative center-w">
+    <div class="text-xl px-1">
+        La théorie des langages est aujourd'hui l'un des champs de recherche 
+        les plus importants en informatique, étant à la base de tous les langages de programmation.
+        Alors que les ordinateurs deviennent de plus en plus puissants, l'effet des optimisations que cette théorie
+        apporte est malheuresement moins visible. Mais, comment fonctionne cette idée qui est aujourd'hui à la base de
+        tout ordinateur ? Nous allons le découvrir en développant ici un calculateur basique, et nous continuerons de
+        l'améliorer au fil de plusieurs articles.
+    </div>
+
+    <div class="text-xl px-1 pt-8">
+        Tout d'abord, comment fonctionne un langage de programmation ? Il faut d'abord faire la différence
+        entre les langages interprétés comme python et les langages compilés qui génèrent un fichier
+        binaire. Mais derrière, le fonctionnement est assez semblable dans les deux cas. En effet, le principe
+        est toujours de transformer une chaîne de caractères en une liste d'instructions, qui peuvent ensuite
+        être stockées sous un fichier binaire ou éxecutées par un interpréteur.
+    </div>
+
+    <div class="text-xl px-1 pt-8">
+        Le problème que l'on a avec les chaînes de caractères, c'est qu'elles peuvent être de toutes formes,
+        on peut très bien imaginer un utilisateur qui met un millier d'espaces comme un qui n'en met pas un seul.
+        Les informaticiens ont donc prit la décision de diviser cette étape de transformation d'une chaîne de
+        caractères en deux étapes distinctes, l'étape effectuée par le "Lexer" et celle du "Parser".
+    </div>
+
+    <div class="text-xl px-1 pt-8">
+        Le principe du "Lexer" est ainsi de générer à partir d'une chaîne de caractères une liste de "Token".
+        Ceux-ci représentent alors des caractères spéciaux, des noms ou même des nombres. Ils permettent ainsi
+        de se débarasser des espaces en trop. Le principe d'un lexer est donc de parcourir la chaîne de caractère
+        et de répertorier les tokens intéressants. Un premier algorithme en pseudo code pour détecter les caractères spéciaux peut ainsi
+        ressembler à celui-ci :
+    </div>
+
+<div class="hidden text-orange-300"></div>
+<div class="hidden text-emerald-300"></div>
+{% codeblock psc lexer:text-orange-300 la__longueur__de:text-emerald-300 retourner:text-violet-400 %}
+fonction lexer(string):
+    tokens := []
+    id := 0
+
+    tant que id est inférieur à la longueur de string
+        si le caractère à l'index id de string est égal à "+"
+            ajouter ["PLUS", ""] à tokens
+            // (un token est représenté par un nom et une valeur pour éviter des incohérences)
+        si le caractère à l'index id de string est égal à "-"
+            ajouter ["MINUS", ""] à tokens
+        ...
+        ajouter 1 à id
+    
+    retourner tokens
+
+{% endcodeblock %}
+
+    <div class="text-xl px-1 pt-8">
+        Ainsi, le lexer ci-dessus nous permet de trouver les caractères spéciaux, mais qu'en est-il des chaînes 
+        de caractères plus avancées comme les nombres ou les noms. Pour ceux-là, on continue d'ajouter des caractères 
+        tant que ceux-ci correspondent à la valeur du token. On ajoute ainsi le pseudo code suivant :
+    </div>
+
+{% codeblock psc 1:text-sky-500 %}
+
+    ...
+    si le caractère à l'index id de string est un chiffre alors
+        nombre := ""
+
+        tant que id est inférieur à la longueur de string 
+        et que le caractère à l'index id de string est un chiffre:
+            ajouter le caractère à l'index id de string à nombre
+            ajouter 1 à id
+        
+        retirer 1 à id
+        ajouter ["NUMBER", nombre] à tokens
+    ...
+
+{% endcodeblock psc %}
+
+    <div class="text-xl px-1 pt-8">
+        On peut faire de même pour les noms, chaînes de caractères et autres, mais cela n'est pas nécessaire dans le cadre
+        de cet article. Cela le sera cependant dans les suivants. On doit maintenant s'intéresser à la deuxième étape, le
+        Parser. Lorsque que l'on regarde les principes d'opérations et de priorité en mathématique, on voit que ce principe
+        peut être appliqué à notre liste de tokens. En effet, nous sommes d'abord intéressé par les calculs de multiplication
+        et de division, puis par ceux d'addition et de soustraction. D'un point de vu algorithmique, cela signifie que l'on
+        doit chercher les calculs par ordre de priorité. Cela peut-être fait de manière récursive en cherchant les calculs prioritaires
+        avant, soit dans des appels plus avancées de notre récursive. On peut donc définir le code suivant qui permet le calcul :
+    </div>
+
+{% codeblock psc parse_add:text-orange-300 parse_expr:text-orange-300 parse_mult:text-orange-300 left:text-sky-300 right:text-sky-300 premier__indice:text-emerald-300 nombre:text-green-600 opérateur:text-sky-500 on__retire:text-violet-400 on__récupère:text-violet-400 on__stocke:text-violet-400 retourner:text-violet-400 %}
+
+fonction parse_expr (tokens)
+    retourner parse_add(tokens)
+
+fonction parse_add (tokens)
+    left := parse_mult(tokens)
+
+    tant que le token 0 est un plus ou un moins
+        on retire l'opérateur de la liste de tokens
+        right := parse_mult(tokens)
+        on stocke l'application du calcul de left et right avec l'opérateur dans left
+    
+    retourner left
+
+fonction parse_mult (tokens)
+    on récupère le nombre stocké au premier indice dans left
+    on retire le nombre de la liste de tokens
+
+    tant que le token 0 est un fois ou un slash
+        on retire l'opérateur de la liste de tokens
+        on récupère le nombre stocké au premier indice dans right
+        on retire le nombre de la liste de tokens
+        on stocke l'application du calcul de left et right avec l'opérateur dans left
+
+    retourner left
+
+{% endcodeblock %}
+    <div class="text-xl px-1 pt-8">
+        Ainsi, le pseudo code ci-dessus nous permet d'effectuer le calcul de chaînes de caractères. Si on souhaite ajouter
+        le principe des parenthèses, il suffit juste de relancer parse_add si le token rencontré dans parse_mult est une
+        parenthèse. Un point important que je n'ai pas expliqué ici est l'évaluation paresseuse, "lazy" en anglais. Elle
+        consiste à stocker un arbre de calculs à effectuer et non de directement appliquer le calcul. Nous verrons cela
+        dans une seconde partie de l'article, où nous introduirons les variables.
+    </div>
+
+    <div class="text-xl text-gray-400 italic text-right pt-8">Théo Hollender, élève au Lycée Franco-Allemand de Buc</div>
+</div>
+
+
+{% endblock %}
