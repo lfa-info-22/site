@@ -6,7 +6,7 @@ class HomeView(BaseView):
     TEMPLATE_NAME = 'home/index.html'
 
 class PublicationsView(BaseView):
-    TEMPLATE_NAME = 'home/posts.html'
+    TEMPLATE_NAME = 'home/articles.html'
 
     def get_context_data(self, request, *args, **kwargs):
         ctx = super().get_context_data(request, *args, **kwargs)
