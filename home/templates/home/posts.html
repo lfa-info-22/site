@@ -8,10 +8,9 @@
 
 <div class="bg-gray-50 my-10 p-20 px-[1rem] lg:px-[7.5rem] xl:px-[12.5rem] 2xl:px-[15rem] max-w-full">
     <div class="flex flex-wrap justify-center">
-        {% include 'home/container/post.html' with img_url="/static/home/media/image/crypto_post.jpg"       title="Cryptographie"        text="Le chiffrage et l'analyse de fréquence" %}
-        {% include 'home/container/post.html' with img_url="/static/home/media/image/entrainement_post.jpg" title="Entraînement"         text="Des exercices pour vos révisions"       %}
-        {% include 'home/container/post.html' with img_url="/static/home/media/image/qcm_post.jpg"          title="QCM de Mathématiques" text="Accédez à des QCMs variés et corrigés"  %}
-        {% include 'home/container/post.html' with img_url="/static/home/media/image/vigenere_post.jpg"     title="Vigenère"             text="Découvrez le chiffrement de Vigenère"   under_writing=True %}
+        {% for publication in publications %}
+            {% include 'home/container/post.html' with img_url=publication.image       title=publication.name       text=publication.description url=publication.full_route under_writing=publication.writing %}
+        {% endfor %}
     </div>
 </div>
 
