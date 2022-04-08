@@ -2,7 +2,7 @@ from sched import scheduler
 from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from account.models import User
-from lfainfo22.views import BaseView
+from lfainfo22.views import BaseView, ItemView
 from api.urls import api
 from api.views import ApiView
 from train.models import TimedExercice, TrainingPlan
@@ -27,8 +27,17 @@ class TrainIndexView(BaseView):
 
         return ctx
 
-class TrainSchedulersView(BaseView):
+class TrainSchedulerListView(BaseView):
     TEMPLATE_NAME = 'train/schedulers/list/index.html'
+
+class TrainSchedulerItemView(ItemView):
+    TEMPLATE_NAME = 'train/schedulers/item/index.html'
+
+    FILTER_ARGUMENTS = [
+        ('URL', 'id', 'id')
+    ]
+    ITEM_MODEL   = TrainingPlan
+    ITEM_CONTEXT = 'scheduler'
 
 #
 # API
@@ -48,7 +57,11 @@ class GetAllTrainingPlans(ApiView):
             self.username = request.GET['related']
         
         if self.username == '':
-            raise Http404()
+            return JsonResponse({
+                'data': [],
+                'status': 404,
+                'error': 'Cannot search for all global training plans'
+            })
     
     def get_data(self, training_plan):
         return {

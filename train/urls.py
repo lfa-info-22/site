@@ -1,9 +1,10 @@
 
 from django.urls import path
 
-from train.views import TrainIndexView, TrainSchedulersView
+from train.views import TrainIndexView, TrainSchedulerListView, TrainSchedulerItemView
 
 urlpatterns = ([
     path('', TrainIndexView()),
-    path('schedule/', TrainSchedulersView())
+    path('schedule/', TrainSchedulerListView()),
+    path('schedule/<int:id>/', TrainSchedulerItemView())
 ], "train", "train")

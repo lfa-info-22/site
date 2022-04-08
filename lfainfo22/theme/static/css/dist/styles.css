@@ -1406,6 +1406,10 @@ select {
   padding-right: 0.5rem;
 }
 
+.pr-3 {
+  padding-right: 0.75rem;
+}
+
 .text-left {
   text-align: left;
 }
@@ -1576,6 +1580,11 @@ select {
   color: rgb(75 85 99 / var(--tw-text-opacity));
 }
 
+.text-red-300 {
+  --tw-text-opacity: 1;
+  color: rgb(252 165 165 / var(--tw-text-opacity));
+}
+
 .underline {
   -webkit-text-decoration-line: underline;
           text-decoration-line: underline;
@@ -1583,6 +1592,10 @@ select {
 
 .opacity-50 {
   opacity: 0.5;
+}
+
+.opacity-0 {
+  opacity: 0;
 }
 
 .shadow-sm {
@@ -1693,9 +1706,17 @@ select {
   background-color: rgb(243 244 246 / var(--tw-bg-opacity));
 }
 
+.group:hover .group-hover\:block {
+  display: block;
+}
+
 .group:hover .group-hover\:text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+.group:hover .group-hover\:opacity-100 {
+  opacity: 1;
 }
 
 @media (min-width: 640px) {
@@ -1769,6 +1790,16 @@ select {
     line-height: 2rem;
   }
 
+  .md\:text-xl {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
+
+  .md\:text-lg {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+  }
+
   .md\:text-gray-100 {
     --tw-text-opacity: 1;
     color: rgb(243 244 246 / var(--tw-text-opacity));
@@ -1813,6 +1844,11 @@ select {
     padding-right: 7.5rem;
   }
 
+  .lg\:px-10 {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+
   .lg\:pr-5 {
     padding-right: 1.25rem;
   }
@@ -1840,6 +1876,11 @@ select {
   .lg\:text-4xl {
     font-size: 2.25rem;
     line-height: 2.5rem;
+  }
+
+  .lg\:text-2xl {
+    font-size: 1.5rem;
+    line-height: 2rem;
   }
 }
 
