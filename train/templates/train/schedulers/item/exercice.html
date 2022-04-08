@@ -1,5 +1,5 @@
 
-<div class="py-2 flex flex-wrap group">
+<div class="py-2 flex flex-wrap group" reference="{{ exercice.id }}">
     <!-- Exercice name -->
     <div class="px-3 text-lg lg:text-xl">
         <div class="relative h-min center-h">{{ exercice.exercice.name }}</div>
@@ -11,14 +11,14 @@
     <div class="flex">
         <div class="ml-4 opacity-100 md:opacity-0 group-hover:opacity-100 transition-all duration-300">
             <div class="h-[48px] relative center-h flex flex-col">
-                <div class="material-icons-outlined cursor-pointer text-red-300">clear</div>
-                <div class="material-icons-outlined cursor-pointer text-emerald-300">file_copy</div>
+                <div class="material-icons-outlined cursor-pointer text-red-300"     action="delete">clear</div>
+                <div class="material-icons-outlined cursor-pointer text-emerald-300" action="clone" >file_copy</div>
             </div>
         </div>
         <div class="mr-4 opacity-100 md:opacity-0 group-hover:opacity-100 transition-all duration-300">
             <div class="h-[48px] relative center-h flex flex-col">
-                <div class="material-icons-outlined cursor-pointer text-gray-500 group-first:text-gray-200 group-first:cursor-default">expand_less</div>
-                <div class="material-icons-outlined cursor-pointer text-gray-500 group-last:text-gray-200  group-last:cursor-default">expand_more</div>
+                <div class="material-icons-outlined cursor-pointer text-gray-500 group-first:text-gray-200 group-first:cursor-default" action="swap" direction="-">expand_less</div>
+                <div class="material-icons-outlined cursor-pointer text-gray-500 group-last:text-gray-200  group-last:cursor-default"  action="swap" direction="+">expand_more</div>
             </div>
         </div>
     </div>
