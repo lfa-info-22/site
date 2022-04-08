@@ -12,7 +12,7 @@
     <a href="/train/" class="px-3 sm:px-5 border-gray-700 hover:bg-gray-50 {% if request.path == '/train/' %} border-b-2 {% endif %}">
         <p class="relative h-min center-h sm:text-xl">Exercices</p>
     </a>
-    <a href="/train/schedule/" class="px-2 sm:px-5 border-gray-700 hover:bg-gray-50 {% if request.path == '/train/schedule/' %} border-b-2 {% endif %}">
+    <a href="/train/schedule/" class="px-2 sm:px-5 border-gray-700 hover:bg-gray-50 {% if '/train/schedule/' in request.path  %} border-b-2 {% endif %}">
         <p class="relative h-min center-h sm:text-xl">Plan de révisions</p>
     </a>
 </nav>
