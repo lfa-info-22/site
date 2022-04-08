@@ -1,6 +1,6 @@
 from sched import scheduler
 from django.http import Http404, JsonResponse
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from account.models import User
 from lfainfo22.views import BaseView, ItemView
 from api.urls import api
@@ -101,3 +101,32 @@ class GetTimedExercices(ApiView):
             },
             'status': 200
         })
+
+@api
+class DeleteTrainingPlan(ApiView):
+    VERSION = 1
+    APPLICATION = "train"
+    ROUTE = "delete/scheduler/<int:id>"
+
+    def permission(self, request, *args, **kwargs):
+        self.object = get_object_or_404(TrainingPlan, id=kwargs['id'])
+        if self.object.user != request.user: raise Http404()
+
+        return super().permission(request, *args, **kwargs)
+    
+    def get_call(self, request, *args, **kwargs):
+        json_resp = False
+        if 'json_resp' in request.GET: json_resp = request.GET['json_resp'] in ["True", True, "true"]
+
+        next = '/train/schedule/'
+        if 'next' in request.GET: next = request.GET['next']
+
+        self.object.delete()
+
+        if json_resp:
+            return JsonResponse({
+                "status": 200,
+                "data": True,
+            })
+        
+        return redirect(next)

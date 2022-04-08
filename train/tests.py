@@ -1,6 +1,6 @@
 from django.test import TestCase
 from lfainfo22.tests import ClientTestCase
-from train.views import GetAllTrainingPlans, GetTimedExercices
+from train.views import DeleteTrainingPlan, GetAllTrainingPlans, GetTimedExercices
 from train.models import *
 
 class GetAllTrainingPlansTest(ClientTestCase):
@@ -68,3 +68,54 @@ class GetTimedExerciceTest(ClientTestCase):
         json = resp.json()
 
         self.assertEqual(json, {'data': {'exercice': 'EX', 'minutes': 10, 'seconds': 10}, 'status': 200})
+
+class DeleteTrainingPlanTest(ClientTestCase):
+    VIEW = DeleteTrainingPlan()
+
+    ROUTE = f"/api/v{VIEW.VERSION}/{VIEW.APPLICATION}/{VIEW.ROUTE}"
+
+    def setUp(self):
+        super().setUp()
+
+        exercice = Exercice.objects.create(name="EX")
+        texercice = TimedExercice.objects.create(exercice=exercice, minutes=10, seconds=10)
+
+        plan = TrainingPlan.objects.create(name="PLAN", user=self.staff_user)
+        plan.timed_exercices.add(texercice)
+    
+    def test_can_access(self):
+        rROUTE  = self.ROUTE.replace("<int:id>", "1")
+        response = self.staff_client.get(rROUTE)
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/train/schedule/")
+        self.assertEqual(TrainingPlan.objects.count(), 0)
+    def test_can_other_access(self):
+        rROUTE  = self.ROUTE.replace("<int:id>", "1")
+        response = self.client.get(rROUTE)
+
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(TrainingPlan.objects.count(), 1)
+
+        response = self.anonymous_client.get(rROUTE)
+
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(TrainingPlan.objects.count(), 1)
+    def test_next(self):
+        rROUTE  = self.ROUTE.replace("<int:id>", "1")
+        response = self.staff_client.get(rROUTE, { "next": "/next/" })
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/next/")
+    def test_json_resp(self):
+        rROUTE  = self.ROUTE.replace("<int:id>", "1")
+        response = self.staff_client.get(rROUTE, { "json_resp": "True" })
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), { "status": 200, "data": True})
+    def test_false_input(self):
+        rROUTE  = self.ROUTE.replace("<int:id>", "0")
+        response = self.staff_client.get(rROUTE)
+
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(TrainingPlan.objects.count(), 1)
