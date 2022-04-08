@@ -1,6 +1,6 @@
 from django.test import TestCase
 from lfainfo22.tests import ClientTestCase
-from train.views import DeleteTrainingPlan, GetAllTrainingPlans, GetTimedExercices
+from train.views import DeleteTrainingPlan, DuplicateTrainingPlan, GetAllTrainingPlans, GetTimedExercices
 from train.models import *
 
 class GetAllTrainingPlansTest(ClientTestCase):
@@ -119,3 +119,66 @@ class DeleteTrainingPlanTest(ClientTestCase):
 
         self.assertEqual(response.status_code, 404)
         self.assertEqual(TrainingPlan.objects.count(), 1)
+
+class DuplicateTrainingPlanTest(ClientTestCase):
+    VIEW = DuplicateTrainingPlan()
+
+    ROUTE = f"/api/v{VIEW.VERSION}/{VIEW.APPLICATION}/{VIEW.ROUTE}"
+
+    def setUp(self):
+        super().setUp()
+
+        exercice = Exercice.objects.create(name="EX")
+        texercice = TimedExercice.objects.create(exercice=exercice, minutes=10, seconds=10)
+
+        plan = TrainingPlan.objects.create(name="PLAN", user=self.staff_user)
+        plan.timed_exercices.add(texercice)
+    def get_route(self, id):
+        return self.ROUTE.replace("<int:id>", str(id))
+    
+    def test_access(self):
+        self.send_request(self.get_route(1), {}, 302, 302, 404)
+        self.assertEqual(TimedExercice.objects.count(), 3)
+        self.assertEqual(TrainingPlan.objects.count(), 3)
+
+        for exercice in TimedExercice.objects.all():
+            self.assertEqual(exercice.exercice.id, 1)
+            self.assertEqual(exercice.seconds, 10)
+            self.assertEqual(exercice.minutes, 10)
+        
+        self.assertEqual(TrainingPlan.objects.all()[0].user, self.staff_user)
+        self.assertEqual(TrainingPlan.objects.all()[1].user, self.user)
+        self.assertEqual(TrainingPlan.objects.all()[2].user, self.staff_user)
+
+        for idx in range(3):
+            self.assertEqual(TrainingPlan.objects.all()[idx].name, "PLAN")
+            self.assertEqual(TrainingPlan.objects.all()[idx].timed_exercices.count(), 1)
+            self.assertEqual(TrainingPlan.objects.all()[idx].timed_exercices.filter(id=idx + 1).count(), 1)
+        
+    def test_false_access(self):
+        self.send_request(self.get_route(0), {}, 404, 404, 404)
+        self.assertEqual(TimedExercice.objects.count(), 1)
+        self.assertEqual(TrainingPlan.objects.count(), 1)
+
+        for exercice in TimedExercice.objects.all():
+            self.assertEqual(exercice.exercice.id, 1)
+            self.assertEqual(exercice.seconds, 10)
+            self.assertEqual(exercice.minutes, 10)
+        
+        self.assertEqual(TrainingPlan.objects.all()[0].user, self.staff_user)
+
+        self.assertEqual(TrainingPlan.objects.all()[0].name, "PLAN")
+        self.assertEqual(TrainingPlan.objects.all()[0].timed_exercices.count(), 1)
+        self.assertEqual(TrainingPlan.objects.all()[0].timed_exercices.filter(id=1).count(), 1)
+    def test_next(self):
+        rROUTE  = self.ROUTE.replace("<int:id>", "1")
+        response = self.staff_client.get(rROUTE, { "next": "/next/" })
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/next/")
+    def test_json_resp(self):
+        rROUTE  = self.ROUTE.replace("<int:id>", "1")
+        response = self.staff_client.get(rROUTE, { "json_resp": "True" })
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), { "status": 200, "data": 2})

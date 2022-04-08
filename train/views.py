@@ -130,3 +130,42 @@ class DeleteTrainingPlan(ApiView):
             })
         
         return redirect(next)
+
+@api
+class DuplicateTrainingPlan(ApiView):
+    VERSION = 1
+    APPLICATION = "train"
+    ROUTE = "copy/scheduler/<int:id>"
+
+    NEEDS_AUTHENTICATION = True
+
+    def permission(self, request, *args, **kwargs):
+        self.object = get_object_or_404(TrainingPlan, id=kwargs['id'])
+
+        return super().permission(request, *args, **kwargs)
+
+    def get_call(self, request, *args, **kwargs):
+        json_resp = False
+        if 'json_resp' in request.GET: json_resp = request.GET['json_resp'] in ["True", True, "true"]
+
+        next = '/train/schedule/'
+        if 'next' in request.GET: next = request.GET['next']
+
+        self.new_object = TrainingPlan.objects.create(name=self.object.name, user=request.user)
+
+        for timed_exercice in self.object.timed_exercices.all():
+            new_exercice = TimedExercice.objects.create(
+                exercice = timed_exercice.exercice,
+                seconds  = timed_exercice.seconds,
+                minutes  = timed_exercice.minutes
+            )
+
+            self.new_object.timed_exercices.add(new_exercice)
+        
+        if json_resp:
+            return JsonResponse({
+                "status": 200,
+                "data": self.new_object.id,
+            })
+        
+        return redirect(next.replace("<id>", str(self.new_object.id)))
