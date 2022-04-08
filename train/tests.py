@@ -172,10 +172,16 @@ class DuplicateTrainingPlanTest(ClientTestCase):
         self.assertEqual(TrainingPlan.objects.all()[0].timed_exercices.filter(id=1).count(), 1)
     def test_next(self):
         rROUTE  = self.ROUTE.replace("<int:id>", "1")
-        response = self.staff_client.get(rROUTE, { "next": "/next/" })
+        response = self.staff_client.get(rROUTE, { "next": "/next/<id>" })
 
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, "/next/")
+        self.assertEqual(response.url, "/next/2")
+    def test_redirect(self):
+        rROUTE  = self.ROUTE.replace("<int:id>", "1")
+        response = self.staff_client.get(rROUTE)
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/train/schedule/2")
     def test_json_resp(self):
         rROUTE  = self.ROUTE.replace("<int:id>", "1")
         response = self.staff_client.get(rROUTE, { "json_resp": "True" })

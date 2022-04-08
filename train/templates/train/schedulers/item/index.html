@@ -13,9 +13,12 @@
                         delete
                     </a>
                 {% endif %}
-                <span title="Dupliquer" class="material-icons-outlined h-min relative center-h text-emerald-300 pr-3 cursor-pointer">
-                    file_copy
-                </span>
+
+                {% if request.user.is_authenticated %}
+                    <a href="/api/v1/train/copy/scheduler/{{ scheduler.id }}" title="Dupliquer" class="material-icons-outlined h-min relative center-h text-emerald-300 pr-3 cursor-pointer">
+                        file_copy
+                    </a>
+                {% endif %}
             </div>
         </div>
         <div class="flex-1"> </div>

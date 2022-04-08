@@ -148,7 +148,7 @@ class DuplicateTrainingPlan(ApiView):
         json_resp = False
         if 'json_resp' in request.GET: json_resp = request.GET['json_resp'] in ["True", True, "true"]
 
-        next = '/train/schedule/'
+        next = '/train/schedule/<id>'
         if 'next' in request.GET: next = request.GET['next']
 
         self.new_object = TrainingPlan.objects.create(name=self.object.name, user=request.user)
