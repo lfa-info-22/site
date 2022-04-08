@@ -25,13 +25,15 @@
         <div class="md:text-lg lg:text-xl text-gray-400 italic">
             <p class="relative h-min center-h">Created by {{ scheduler.user.username }}</p>
         </div>
-
-        {% if scheduler.timed_exercices.count != 0 %}
-            {% for timed_exercice in scheduler.timed_exercices.all %}
-                
-            {% endfor %}
-        {% endif %}
     </div>
+
+    {% if scheduler.timed_exercices.count != 0 %}
+        <div class="divide-y divide-gray-200">
+            {% for timed_exercice in scheduler.timed_exercices.all %}
+                {% include 'train/schedulers/item/exercice.html' with exercice=timed_exercice %}
+            {% endfor %}
+        </div>
+    {% endif %}
 
 </div>
 {% endblock %}

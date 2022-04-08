@@ -931,6 +931,10 @@ select {
   top: 0.75rem;
 }
 
+.left-0 {
+  left: 0px;
+}
+
 .z-10 {
   z-index: 10;
 }
@@ -947,6 +951,10 @@ select {
   margin: 0.5rem;
 }
 
+.m-auto {
+  margin: auto;
+}
+
 .my-10 {
   margin-top: 2.5rem;
   margin-bottom: 2.5rem;
@@ -955,6 +963,11 @@ select {
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
+}
+
+.mx-4 {
+  margin-left: 1rem;
+  margin-right: 1rem;
 }
 
 .mt-10 {
@@ -987,6 +1000,18 @@ select {
 
 .mt-5 {
   margin-top: 1.25rem;
+}
+
+.mr-2 {
+  margin-right: 0.5rem;
+}
+
+.ml-4 {
+  margin-left: 1rem;
+}
+
+.mr-4 {
+  margin-right: 1rem;
 }
 
 .block {
@@ -1049,6 +1074,10 @@ select {
   height: 64px;
 }
 
+.h-\[48px\] {
+  height: 48px;
+}
+
 .max-h-\[75vh\] {
   max-height: 75vh;
 }
@@ -1099,6 +1128,18 @@ select {
 
 .w-\[40px\] {
   width: 40px;
+}
+
+.w-12 {
+  width: 3rem;
+}
+
+.w-\[80px\] {
+  width: 80px;
+}
+
+.w-\[120px\] {
+  width: 120px;
 }
 
 .max-w-\[600px\] {
@@ -1162,8 +1203,19 @@ select {
   border-left-width: calc(2rem * calc(1 - var(--tw-divide-x-reverse)));
 }
 
+.divide-y > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-y-reverse: 0;
+  border-top-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));
+  border-bottom-width: calc(1px * var(--tw-divide-y-reverse));
+}
+
 .divide-transparent > :not([hidden]) ~ :not([hidden]) {
   border-color: transparent;
+}
+
+.divide-gray-200 > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-opacity: 1;
+  border-color: rgb(229 231 235 / var(--tw-divide-opacity));
 }
 
 .overflow-auto {
@@ -1410,6 +1462,18 @@ select {
   padding-right: 0.75rem;
 }
 
+.pl-7 {
+  padding-left: 1.75rem;
+}
+
+.pr-12 {
+  padding-right: 3rem;
+}
+
+.pl-4 {
+  padding-left: 1rem;
+}
+
 .text-left {
   text-align: left;
 }
@@ -1585,6 +1649,11 @@ select {
   color: rgb(252 165 165 / var(--tw-text-opacity));
 }
 
+.text-red-200 {
+  --tw-text-opacity: 1;
+  color: rgb(254 202 202 / var(--tw-text-opacity));
+}
+
 .underline {
   -webkit-text-decoration-line: underline;
           text-decoration-line: underline;
@@ -1699,6 +1768,24 @@ select {
 .focus\:ring-indigo-500:focus {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(99 102 241 / var(--tw-ring-opacity));
+}
+
+.group:first-child .group-first\:cursor-default {
+  cursor: default;
+}
+
+.group:first-child .group-first\:text-gray-200 {
+  --tw-text-opacity: 1;
+  color: rgb(229 231 235 / var(--tw-text-opacity));
+}
+
+.group:last-child .group-last\:cursor-default {
+  cursor: default;
+}
+
+.group:last-child .group-last\:text-gray-200 {
+  --tw-text-opacity: 1;
+  color: rgb(229 231 235 / var(--tw-text-opacity));
 }
 
 .group:nth-child(odd) .group-odd\:bg-gray-100 {
@@ -1829,6 +1916,10 @@ select {
 
   .lg\:w-\[200px\] {
     width: 200px;
+  }
+
+  .lg\:w-\[120px\] {
+    width: 120px;
   }
 
   .lg\:max-w-\[800px\] {
