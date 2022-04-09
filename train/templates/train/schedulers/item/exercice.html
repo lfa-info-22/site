@@ -25,14 +25,14 @@
 
     <!-- Time inputs -->
     <div class="flex">
-        <div>
+        <div default="0" input ref="minutes" for="/api/v1/train/modify/scheduler/{{ scheduler.id }}/exercice/{{ exercice.id }}">
             <label for="minutes-{{ exercice.id }}" class="block text-sm font-medium text-gray-700">Minutes</label>
             <div class="mt-1 relative rounded-md shadow-sm">
                 <input min="0" max="59" type="number" name="minutes-{{ exercice.id }}" id="minutes-{{ exercice.id }}" class="focus:ring-indigo-500 focus:border-indigo-500 block w-[80px] lg:w-[120px] pl-3 pr-2 sm:text-sm border-gray-300 rounded-md" placeholder="0" value="{{ exercice.minutes }}">
             </div>
         </div>
 
-        <div class="ml-4">
+        <div class="ml-4" default="0" input ref="seconds" for="/api/v1/train/modify/scheduler/{{ scheduler.id }}/exercice/{{ exercice.id }}">
             <label for="seconds-{{ exercice.id }}" class="block text-sm font-medium text-gray-700">Secondes</label>
             <div class="mt-1 relative rounded-md shadow-sm">
                 <input min="0" max="59" type="number" name="seconds-{{ exercice.id }}" id="seconds-{{ exercice.id }}" class="focus:ring-indigo-500 focus:border-indigo-500 block w-[80px] lg:w-[120px] pl-3 pr-2 sm:text-sm border-gray-300 rounded-md" placeholder="0" value="{{ exercice.seconds }}">

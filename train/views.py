@@ -304,3 +304,39 @@ class SwapTimedExercice(ApiView):
         self.ex1.save()
 
         return self.get_return(request)
+
+@api
+class ModifyTimedExercice(ApiView):
+    VERSION = 1
+    APPLICATION = "train"
+    ROUTE = "modify/scheduler/<int:s_id>/exercice/<int:e_id>"
+
+    def permission(self, request, *args, **kwargs):
+        self.object = get_object_or_404(TrainingPlan, id=kwargs['s_id'])
+        if self.object.user != request.user: raise Http404()
+        
+        self.exercice = get_object_or_404(self.object.timed_exercices, id=kwargs['e_id'])
+
+        return super().permission(request, *args, **kwargs)
+
+    def get_return(self, request):
+        json_resp = False
+        if 'json_resp' in request.GET: json_resp = request.GET['json_resp'] in ["True", True, "true"]
+
+        next = '/train/schedule/<id>'
+        if 'next' in request.GET: next = request.GET['next']
+
+        if json_resp:
+            return JsonResponse({
+                "status": 200,
+                "data": True,
+            })
+        
+        return redirect(next.replace("<id>", str(self.object.id)))
+
+    def get_call(self, request, *args, **kwargs):
+        self.exercice.minutes = int(request.GET['minutes']) if 'minutes' in request.GET else self.exercice.minutes
+        self.exercice.seconds = int(request.GET['seconds']) if 'seconds' in request.GET else self.exercice.seconds
+        self.exercice.save()
+
+        return self.get_return(request)
