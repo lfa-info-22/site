@@ -336,7 +336,7 @@ class ModifyTimedExercice(ApiView):
 
     def get_call(self, request, *args, **kwargs):
         self.exercice.minutes = int(request.GET['minutes']) if 'minutes' in request.GET else self.exercice.minutes
-        self.exercice.seconds = int(request.GET['seconds']) if 'seconds' in request.GET else self.exercice.seconds
+        self.exercice.seconds = min(59, max(0, int(request.GET['seconds']))) if 'seconds' in request.GET else self.exercice.seconds
         self.exercice.save()
 
         return self.get_return(request)
