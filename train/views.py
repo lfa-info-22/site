@@ -14,7 +14,7 @@ class TrainIndexView(BaseView):
         ctx = super().get_context_data(request, *args, **kwargs)
 
         schedulers = [
-            {"type":"text", "text":"Révisions de maths"} for plan in TrainingPlan.objects.filter(user=request.user)
+            {"type":"text", "text":plan.name, "value": plan.id} for plan in TrainingPlan.objects.filter(user=request.user).order_by("-id")
         ] if request.user.is_authenticated else []
         schedulers.append({"type":"link", "text":"Nouveau plan", "url": "/train/schedule", "icon": "create"})
 

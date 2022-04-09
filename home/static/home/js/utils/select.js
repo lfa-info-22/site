@@ -32,6 +32,7 @@ const SELECT_API = function(ev){
                 
                 let target = ev.target
                 while (target.nodeName != 'LI') target = target.parentNode
+                select_area.querySelector("input[type=hidden]").value = target.getAttribute("value")
 
                 target.querySelector('span.text-indigo-600').classList.remove('hidden')
 
@@ -67,6 +68,7 @@ const SELECT_API = function(ev){
             possibility.querySelector('span.text-indigo-600').classList.remove('hidden')
 
             toggler_button.querySelector('span>span').innerHTML = possibility.querySelector('div.flex>span').innerHTML
+            select_area.querySelector("input[type=hidden]").value = possibility.getAttribute("value")
 
             let event = new CustomEvent('input', 
                 {

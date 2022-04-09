@@ -1,14 +1,27 @@
 <div class="absolute h-[calc(100vh-4rem)] w-full 
             md:w-[400px] md:border-l border-gray-200
-            bottom-0 right-0 bg-white">
+            bottom-0 right-0 bg-white" properties>
     <div class="w-full h-full relative">
-        <div class="p-3 text-center text-3xl">
+        <div class="p-3 text-center text-3xl" properties-name>
             Exercice Name
         </div>
-        <span class="material-icons-outlined absolute left-3 top-3" style="font-size: 36px;">
+        <span class="material-icons-outlined cursor-pointer absolute left-3 top-3 text-gray-400 transition-all hover:text-gray-500" style="font-size: 36px;" properties-close>
             close
         </span>
 
-        {% include 'utils/select/select.html' with label="Plan" default="---" choices=properties.schedulers %}
+        <div properties-choice>
+            {% include 'utils/select/select.html' with label="Plan" default="---" choices=properties.schedulers %}
+        </div>
+
+        <div class="flex px-6">
+            <button class="flex-1 p-2 px-4 flex rounded-lg border border-green-300 text-green-600 hover:bg-green-300 hover:text-black transition-all duration-500">
+                <div class="flex-1"></div>
+
+                Ajouter à l'entrainement
+                <span class="material-icons-outlined" style="font-size: 24px;">add</span>
+
+                <div class="flex-1"></div>
+            </button>
+        </div>
     </div>
 </div>

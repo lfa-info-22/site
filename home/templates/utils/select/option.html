@@ -2,7 +2,7 @@
 <a href="{{ choice.url }}" class="cursor-pointer">
 {% endif %}
 
-<li class="group text-gray-900 select-none relative py-2 pl-3 pr-9 hover:bg-indigo-600 hover:text-white" id="listbox-option-0" {% if choice.type == "text" %}role="option"{% endif %}>
+<li class="group text-gray-900 select-none relative py-2 pl-3 pr-9 hover:bg-indigo-600 hover:text-white" id="listbox-option-0" {% if choice.type == "text" %}role="option"{% endif %} value="{{ choice.value }}">
   <div class="flex items-center">
     <span class="font-normal ml-3 block truncate">
       {{ choice.text }}
@@ -18,7 +18,7 @@
 
   {% if choice.icon == "create" %}
   <div>
-    <p class="material-icons-outlined text-green-400 absolute inset-y-0 right-0 h-min m-auto mr-2">
+    <p class="material-icons-outlined text-green-400 absolute inset-y-0 right-0 h-min m-auto pr-4">
       add
     </p>
   </div>
