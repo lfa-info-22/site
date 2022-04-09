@@ -11,14 +11,14 @@
     <div class="flex">
         <div class="ml-4 opacity-100 md:opacity-0 group-hover:opacity-100 transition-all duration-300">
             <div class="h-[48px] relative center-h flex flex-col">
-                <div class="material-icons-outlined cursor-pointer text-red-300"     action="delete">clear</div>
-                <div class="material-icons-outlined cursor-pointer text-emerald-300" action="clone" >file_copy</div>
+                <a class="material-icons-outlined cursor-pointer text-red-300"  href="/api/v1/train/delete/scheduler/{{ scheduler.id }}/exercice/{{ exercice.id }}">clear</a>
+                <a class="material-icons-outlined cursor-pointer text-emerald-300" href="/api/v1/train/copy/scheduler/{{ scheduler.id }}/exercice/{{ exercice.id }}">file_copy</a>
             </div>
         </div>
         <div class="mr-4 opacity-100 md:opacity-0 group-hover:opacity-100 transition-all duration-300">
             <div class="h-[48px] relative center-h flex flex-col">
-                <div class="material-icons-outlined cursor-pointer text-gray-500 group-first:text-gray-200 group-first:cursor-default" action="swap" direction="-">expand_less</div>
-                <div class="material-icons-outlined cursor-pointer text-gray-500 group-last:text-gray-200  group-last:cursor-default"  action="swap" direction="+">expand_more</div>
+                <a class="material-icons-outlined cursor-pointer text-gray-500 group-first:text-gray-200 group-first:cursor-default" href="/api/v1/train/swap/scheduler/{{ scheduler.id }}/exercice/{{ exercice.id }}/-1?no_throw=True">expand_less</a>
+                <a class="material-icons-outlined cursor-pointer text-gray-500 group-last:text-gray-200  group-last:cursor-default "  href="/api/v1/train/swap/scheduler/{{ scheduler.id }}/exercice/{{ exercice.id }}/1?no_throw=True">expand_more</a>
             </div>
         </div>
     </div>
@@ -28,7 +28,7 @@
         <div>
             <label for="minutes-{{ exercice.id }}" class="block text-sm font-medium text-gray-700">Minutes</label>
             <div class="mt-1 relative rounded-md shadow-sm">
-                <input min="0" max="59" type="number" name="minutes-{{ exercice.id }}" id="minutes-{{ exercice.id }}" class="focus:ring-indigo-500 focus:border-indigo-500 block w-[80px] lg:w-[120px] pl-3 pr-2 sm:text-sm border-gray-300 rounded-md" placeholder="0" value="{{ exercice.seconds }}">
+                <input min="0" max="59" type="number" name="minutes-{{ exercice.id }}" id="minutes-{{ exercice.id }}" class="focus:ring-indigo-500 focus:border-indigo-500 block w-[80px] lg:w-[120px] pl-3 pr-2 sm:text-sm border-gray-300 rounded-md" placeholder="0" value="{{ exercice.minutes }}">
             </div>
         </div>
 

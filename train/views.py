@@ -169,3 +169,138 @@ class DuplicateTrainingPlan(ApiView):
             })
         
         return redirect(next.replace("<id>", str(self.new_object.id)))
+
+@api
+class DuplicateTimedExercice(ApiView):
+    VERSION = 1
+    APPLICATION = "train"
+    ROUTE = "copy/scheduler/<int:s_id>/exercice/<int:e_id>"
+
+    def permission(self, request, *args, **kwargs):
+        self.object = get_object_or_404(TrainingPlan, id=kwargs['s_id'])
+        if self.object.user != request.user: raise Http404()
+
+        self.exercices = self.object.timed_exercices.all()
+        self.e_id = 0
+        while self.e_id < len(self.exercices) and self.exercices[self.e_id].id != kwargs['e_id']:
+            self.e_id += 1
+        
+        if self.e_id == self.exercices.count():
+            raise Http404()
+
+        self.last_ex = self.exercices[self.exercices.count() - 1]
+
+        return super().permission(request, *args, **kwargs)
+
+    def get_call(self, request, *args, **kwargs):
+        json_resp = False
+        if 'json_resp' in request.GET: json_resp = request.GET['json_resp'] in ["True", True, "true"]
+
+        next = '/train/schedule/<id>'
+        if 'next' in request.GET: next = request.GET['next']
+
+        self.new_object = TimedExercice.objects.create(
+            exercice = self.last_ex.exercice,
+            minutes = self.last_ex.minutes,
+            seconds = self.last_ex.seconds,
+        )
+        self.object.timed_exercices.add(self.new_object)
+
+        for idx in range(self.exercices.count() - 1, self.e_id, -1):
+            self.exercices[idx].exercice = self.exercices[idx - 1].exercice
+            self.exercices[idx].minutes = self.exercices[idx - 1].minutes
+            self.exercices[idx].seconds = self.exercices[idx - 1].seconds
+
+            self.exercices[idx].save()
+
+        if json_resp:
+            return JsonResponse({
+                "status": 200,
+                "data": self.new_object.id,
+            })
+        
+        return redirect(next.replace("<id>", str(self.object.id)))
+
+@api
+class DeleteTimedExercice(ApiView):
+    VERSION = 1
+    APPLICATION = "train"
+    ROUTE = "delete/scheduler/<int:s_id>/exercice/<int:e_id>"
+
+    def permission(self, request, *args, **kwargs):
+        self.object = get_object_or_404(TrainingPlan, id=kwargs['s_id'])
+        if self.object.user != request.user: raise Http404()
+
+        return super().permission(request, *args, **kwargs)
+
+    def get_call(self, request, *args, **kwargs):
+        json_resp = False
+        if 'json_resp' in request.GET: json_resp = request.GET['json_resp'] in ["True", True, "true"]
+
+        next = '/train/schedule/<id>'
+        if 'next' in request.GET: next = request.GET['next']
+
+        self.object.timed_exercices.filter(id=kwargs['e_id']).delete()
+
+        if json_resp:
+            return JsonResponse({
+                "status": 200,
+                "data": True,
+            })
+        
+        return redirect(next.replace("<id>", str(self.object.id)))
+
+@api
+class SwapTimedExercice(ApiView):
+    VERSION = 1
+    APPLICATION = "train"
+    ROUTE = "swap/scheduler/<int:s_id>/exercice/<int:e_id>/<str:direction>"
+
+    def permission(self, request, *args, **kwargs):
+        no_throw = request.GET['no_throw'] in ['True', True, 'true'] if 'no_throw' in request.GET else False
+
+        self.object = get_object_or_404(TrainingPlan, id=kwargs['s_id'])
+        if self.object.user != request.user: raise Http404()
+
+        self.exercices = self.object.timed_exercices.all()
+        self.e_id = 0
+        while self.e_id < len(self.exercices) and self.exercices[self.e_id].id != kwargs['e_id']:
+            self.e_id += 1
+        self.second_e_id = int(kwargs['direction']) + self.e_id
+
+        if not (0 <= self.e_id < len(self.exercices)): 
+            if no_throw: return self.get_return(request)
+            raise Http404()
+        if not (0 <= self.second_e_id < len(self.exercices)):
+            if no_throw: return self.get_return(request)
+            raise Http404()
+
+        return super().permission(request, *args, **kwargs)
+    
+    def get_return(self, request):
+        json_resp = False
+        if 'json_resp' in request.GET: json_resp = request.GET['json_resp'] in ["True", True, "true"]
+
+        next = '/train/schedule/<id>'
+        if 'next' in request.GET: next = request.GET['next']
+
+        if json_resp:
+            return JsonResponse({
+                "status": 200,
+                "data": True,
+            })
+        
+        return redirect(next.replace("<id>", str(self.object.id)))
+
+    def get_call(self, request, *args, **kwargs):
+        self.ex0 = self.exercices[self.e_id]
+        self.ex1 = self.exercices[self.second_e_id]
+
+        self.ex0.exercice, self.ex1.exercice = self.ex1.exercice, self.ex0.exercice
+        self.ex0.minutes, self.ex1.minutes = self.ex1.minutes, self.ex0.minutes
+        self.ex0.seconds, self.ex1.seconds = self.ex1.seconds, self.ex0.seconds
+
+        self.ex0.save()
+        self.ex1.save()
+
+        return self.get_return(request)
