@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
             request_queue = []
             request_idx = 0
             processing_query = false
-            console.log("Finished processing")
+            
             return ;
         }
         processing_query = true;

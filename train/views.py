@@ -24,7 +24,7 @@ class TrainIndexView(BaseView):
                 'exercices': Exercice.objects.all()
             }
         ]
-        print(ctx['categories'])
+        
         ctx['properties'] = {
             'schedulers': schedulers
         }
@@ -342,5 +342,41 @@ class ModifyTimedExercice(ApiView):
         self.exercice.minutes = int(request.GET['minutes']) if 'minutes' in request.GET else self.exercice.minutes
         self.exercice.seconds = min(59, max(0, int(request.GET['seconds']))) if 'seconds' in request.GET else self.exercice.seconds
         self.exercice.save()
+
+        return self.get_return(request)
+
+@api
+class CreateTimedExercice(ApiView):
+    VERSION = 1
+    APPLICATION = "train"
+    ROUTE = "create/scheduler/<int:s_id>/exercice/<int:e_id>"
+
+    def permission(self, request, *args, **kwargs):
+        self.object = get_object_or_404(TrainingPlan, id=kwargs['s_id'])
+        if self.object.user != request.user: raise Http404()
+        
+        self.exercice = get_object_or_404(Exercice, id=kwargs['e_id'])
+
+        return super().permission(request, *args, **kwargs)
+
+    def get_return(self, request):
+        json_resp = False
+        if 'json_resp' in request.GET: json_resp = request.GET['json_resp'] in ["True", True, "true"]
+
+        next = '/train/schedule/<id>'
+        if 'next' in request.GET: next = request.GET['next']
+
+        if json_resp:
+            return JsonResponse({
+                "status": 200,
+                "data": True,
+            })
+        
+        return redirect(next.replace("<id>", str(self.object.id)))
+
+    def get_call(self, request, *args, **kwargs):
+        self.object.timed_exercices.add(
+            TimedExercice.objects.create(exercice=self.exercice, minutes=1, seconds=0)
+        )
 
         return self.get_return(request)
