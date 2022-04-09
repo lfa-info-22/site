@@ -1,4 +1,4 @@
-<div class="absolute h-[calc(100vh-4rem)] w-full 
+<div class="hidden absolute h-[calc(100vh-4rem)] w-full 
             md:w-[400px] md:border-l border-gray-200
             bottom-0 right-0 bg-white" properties>
     <div class="w-full h-full relative">
@@ -13,7 +13,7 @@
             {% include 'utils/select/select.html' with label="Plan" default="---" choices=properties.schedulers %}
         </div>
 
-        <div class="flex px-6">
+        <div class="flex px-6" properties-add>
             <button class="flex-1 p-2 px-4 flex rounded-lg border border-green-300 text-green-600 hover:bg-green-300 hover:text-black transition-all duration-500">
                 <div class="flex-1"></div>
 

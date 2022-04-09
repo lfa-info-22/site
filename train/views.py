@@ -5,7 +5,7 @@ from account.models import User
 from lfainfo22.views import BaseView, ItemView
 from api.urls import api
 from api.views import ApiView
-from train.models import TimedExercice, TrainingPlan
+from train.models import Exercice, TimedExercice, TrainingPlan
 
 class TrainIndexView(BaseView):
     TEMPLATE_NAME = 'train/list/exercice_list.html'
@@ -18,9 +18,13 @@ class TrainIndexView(BaseView):
         ] if request.user.is_authenticated else []
         schedulers.append({"type":"link", "text":"Nouveau plan", "url": "/train/schedule", "icon": "create"})
 
-        ctx['exercices'] = [
-            { 'text':'Text', 'icon': 'home' } for i in range(20)
+        ctx['categories'] = [
+            {
+                'name': 'Maths',
+                'exercices': Exercice.objects.all()
+            }
         ]
+        print(ctx['categories'])
         ctx['properties'] = {
             'schedulers': schedulers
         }
