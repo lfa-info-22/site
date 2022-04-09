@@ -11,7 +11,7 @@
  */
 
 
- document.addEventListener('DOMSubtreeModified', function(ev){
+const SELECT_API = function(ev){
     
     let select_areas = document.querySelectorAll('div[type=select]')
 
@@ -80,4 +80,7 @@
         }
     }
 
-});
+}
+
+ document.addEventListener('DOMSubtreeModified', SELECT_API);
+ document.addEventListener('DOMContentLoaded', SELECT_API);
