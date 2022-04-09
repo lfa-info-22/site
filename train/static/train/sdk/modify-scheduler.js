@@ -1,7 +1,6 @@
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    // TODO add request queue
     let request_queue = []
     let request_idx = 0
     let processing_query = false
