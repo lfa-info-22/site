@@ -17,16 +17,18 @@ EXERCICE_PLAYER.register ( 'eq-droites', function generator ( html ) {
     let b = 0;
     let c = 0;
     
-    while (a == 0 && b == 0) {
-        a = Math.floor(Math.random() * 7) % 7 - 3
-        b = Math.floor(Math.random() * 7) % 7 - 3
-        c = Math.floor(Math.random() * 7) % 7 - 3
+    while (true) {
+        while (a == 0 && b == 0) {
+            a = Math.floor(Math.random() * 7) % 7 - 3
+            b = Math.floor(Math.random() * 7) % 7 - 3
+            c = Math.floor(Math.random() * 7) % 7 - 3
+        }
+
+        if (a != 0 && b != 0) break
+        if (Math.random() < (1 / 9)) break
     }
 
     let divider = pgcd(pgcd(a, b), c)
-    a /= divider
-    b /= divider
-    c /= divider
 
     return { a, b, c, html }
 
@@ -36,14 +38,14 @@ EXERCICE_PLAYER.register ( 'eq-droites', function generator ( html ) {
     let canvas = new GeometryCanvas(600, 600, EXERCICE_PLAYER.get_exercice_container().querySelector('#canvas-container'))
     
     canvas.drawAxis(-5, -5, 5, 5)
-    canvas.drawLine(exercice.a, exercice.b, exercice.c)
+    canvas.drawLine(exercice.a, exercice.b, -exercice.c)
 }, function show_solution (exercice) {
     EXERCICE_PLAYER.get_exercice_container().innerHTML = (exercice.html.split("<solhidden>")).join("").replace("<%a%>", exercice.a).replace("<%b%>", exercice.b).replace("<%c%>", exercice.c)
 
     let canvas = new GeometryCanvas(600, 600, EXERCICE_PLAYER.get_exercice_container().querySelector('#canvas-container'))
 
     canvas.drawAxis(-5, -5, 5, 5)
-    canvas.drawLine(exercice.a, exercice.b, exercice.c)
+    canvas.drawLine(exercice.a, exercice.b, -exercice.c)
 
     let { a, b, c } = exercice
 
@@ -54,7 +56,7 @@ EXERCICE_PLAYER.register ( 'eq-droites', function generator ( html ) {
 
     // ax + by = c
     // x = -b => y = c / b + a
-    let rx = -b
+    let rx = b
     let ry = c / b - a
 
     canvas.drawSegment(lx, ly, rx, ly)

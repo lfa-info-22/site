@@ -6,6 +6,7 @@ class GeometryCanvas {
         container.appendChild(this.canvas)
         this.canvas.setAttribute('width', width)
         this.canvas.setAttribute('height', height)
+        this.canvas.style.transform = "scaleY(-1)"
 
         this.width = width
         this.height = height
@@ -21,8 +22,8 @@ class GeometryCanvas {
         this.sizeX = (endX - startX + 2)
         this.sizeY = (endY - startY + 2)
 
-        this.stepX =   stepX
-        this.stepY = - stepY
+        this.stepX = stepX
+        this.stepY = stepY
 
         let posX = stepX
         for (let x = startX; x <= endX; x ++) {
@@ -53,7 +54,7 @@ class GeometryCanvas {
 
     drawLine (a, b, c, color="#aa0000") {
         let centerX = this.axisX
-        let centerY = this.axisY + c / b * this.stepY
+        let centerY = this.axisY - c / b * this.stepY
 
         // Normal vectors (-b, a) and (b, -a)
         let left = this.width * -b + centerX
@@ -63,7 +64,7 @@ class GeometryCanvas {
         let top = this.height * -a + centerY
 
         if (b == 0) {
-            left = centerX + c / a * this.stepX;
+            left = centerX - c / a * this.stepX;
             right = left;
             bottom = 0
             top = this.height;
@@ -84,8 +85,6 @@ class GeometryCanvas {
 
         this.context.strokeStyle = color
         this.context.beginPath()
-        console.log(x0, y0)
-        console.log(x1, y1)
         this.context.moveTo(x0, y0)
         this.context.lineTo(x1, y1)
         this.context.stroke()
