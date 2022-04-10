@@ -1,0 +1,16 @@
+[
+    {
+        "name": "Test",
+        "slug": "test",
+        "folder": "ex-test",
+        "category": "Test category",
+
+        "icon": "home",
+
+        "view": "default",
+        "template": "train/exercices/ex-test/index.html",
+
+        "script": "default",
+        "scriptstatic": "train/exercices/ex-test/main.js"
+    }
+]
