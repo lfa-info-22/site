@@ -41,6 +41,11 @@
                 {% include 'train/schedulers/item/exercice.html' with exercice=timed_exercice %}
             {% endfor %}
         </div>
+
+        <div class="flex mt-3">
+            <div class="flex-1"></div>
+            <a href="/train/exercice/player/{{ scheduler.id }}" class="p-2 px-4 border-2 border-blue-200 rounded-md hover:bg-blue-200 transition-all duration-300" >S'entraîner</a>
+        </div>
     {% endif %}
 
 </div>
