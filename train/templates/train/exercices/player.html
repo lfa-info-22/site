@@ -1,0 +1,26 @@
+{% extends 'train/base.html' %}
+
+{% block extrahead %}
+<script src="/static/train/sdk/player/ex-player.js"></script>
+<script src="/static/train/sdk/player/geometry-canvas.js"></script>
+{% endblock %}
+
+{% block content %}
+<script> 
+    const METADATA = {% autoescape off %}{{ metadata }}.map( (el) => el.fields );{% endautoescape %}
+</script>
+
+<div class="absolute rounded-br-md border-r border-b border-gray-200 text-gray-500 p-3 bg-white flex z-10">
+    <span class="material-icons-outlined mr-1" style="font-size: 32px;">
+        timer
+    </span>
+    <div id="chrono" class="text-2xl"></div>
+</div>
+
+<div class="absolute material-icons-outlined text-gray-400 cursor-pointer hidden z-10 left-0 center-h" style="font-size: 32px;" id="prev-solution"> chevron_left</div>
+<div class="absolute material-icons-outlined text-gray-400 cursor-pointer hidden z-10 right-0 center-h" style="font-size: 32px;" id="next-solution"> chevron_right</div>
+
+<div id="exercice-container">
+
+</div>
+{% endblock %}

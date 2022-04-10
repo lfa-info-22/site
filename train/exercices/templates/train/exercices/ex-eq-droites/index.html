@@ -1,0 +1,31 @@
+<div class="text-center p-4 mb-4">
+    <div class="text-3xl flex">
+        <div class="flex-1"></div>
+        Equation de droites
+        <div class="text-gray-400 pl-4" id="remaining-number"></div>
+        <div class="flex-1"></div>
+    </div>
+    <div class="text-xl">Trouver une équation de la droite (d) sur le graphique ci-dessous</div>
+</div>
+
+<div class="w-fit relative center-w p-4 flex flex-wrap max-w-screen">
+    <div id="canvas-container" class="absolute center-w sm:left-0 sm:translate-x-0 sm:relative"></div>
+    <div class="sm:hidden h-[600px] w-full"></div>
+
+    <div class="<solhidden> p-4 flex-1 min-w-[300px] lg:max-w-[300px]">
+        <div class="p-3 px-6 flex bg-sky-200 text-sky-700 rounded-md">
+            <div class="material-icons-outlined">info</div>
+            <div class="ml-4">On cherche une équation de la droite (d) de la forme ax + by = c</div>
+        </div>
+
+        <div class="p-3 mb-2">On sait que (-b, a) est un vecteur directeur de la droite (d), et a et b sont des coefficients entiers. On peut donc lire -b et a sur le graphique avec le vecteur surligné.</div>
+        <div class="p-3 mb-2">On peut alors lire l'ordonné à x = 0, et on sait que y = c / b car x = 0. On en déduit alors c.</div>
+
+        <div class="p-3 mb-2">Pour le cas particulier des droites verticales, on peut lire directement x = c sur le graphique avec c une fraction et ensuite on peut trouver des coefficients entiers pour ax = b.</div>
+
+        <div class="p-3 px-6 flex bg-emerald-200 text-emerald-700 rounded-md">
+            <div class="material-icons-outlined">check_circle</div>
+            <div class="ml-4">Ici, l'équation de droite est <%a%>x + <%b%>y = <%c%></div>
+        </div>
+    </div>
+</div>

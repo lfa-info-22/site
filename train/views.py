@@ -6,6 +6,7 @@ from lfainfo22.views import BaseView, ItemView
 from api.urls import api
 from api.views import ApiView
 from train.models import Exercice, TimedExercice, TrainingPlan
+from django.core import serializers
 
 class TrainIndexView(BaseView):
     TEMPLATE_NAME = 'train/list/exercice_list.html'
@@ -42,6 +43,22 @@ class TrainSchedulerItemView(ItemView):
     ]
     ITEM_MODEL   = TrainingPlan
     ITEM_CONTEXT = 'scheduler'
+
+class TrainExercicePlayerView(ItemView):
+    TEMPLATE_NAME = 'train/exercices/player.html'
+
+    FILTER_ARGUMENTS = [
+        ('URL', 'id', 'id')
+    ]
+    ITEM_MODEL   = TrainingPlan
+    ITEM_CONTEXT = 'scheduler'
+
+    def get_context_data(self, request, *args, **kwargs):
+        ctx = super().get_context_data(request, *args, **kwargs)
+        
+        ctx['metadata'] = serializers.serialize('json', self._itemview_item.timed_exercices.all())
+
+        return ctx
 
 #
 # API

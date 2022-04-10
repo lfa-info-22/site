@@ -47,6 +47,7 @@ INSTALLED_APPS = [
 
     'articles',
     'train',
+    'train.exercices',
 ]
 
 INSTALLED_APIS = [
@@ -142,6 +143,7 @@ TAILWIND_APP_NAME = 'lfainfo22.theme'
 AUTH_USER_MODEL = 'account.User'
 
 ARTICLES_CONF = []
+EXERCICES_CONF = []
 
 try:
     import json
@@ -153,4 +155,16 @@ try:
     
 except Exception as e:
     print('Could not find articles.json')
+    print(e)
+
+try:
+    import json
+    import os
+
+    with open('./train/exercices/exercices.json', 'r', encoding='utf-8') as file:
+        text = file.read()
+        EXERCICES_CONF = json.loads(text)
+
+except Exception as e:
+    print('Could not find exercices.json')
     print(e)

@@ -1,0 +1,16 @@
+[
+    {
+        "name": "Equation de droites",
+        "slug": "eq-droites",
+        "folder": "ex-eq-droites",
+        "category": "Géométrie analytique",
+
+        "icon": "home",
+
+        "view": "default",
+        "template": "train/exercices/ex-eq-droites/index.html",
+
+        "script": "default",
+        "scriptstatic": "train/exercices/ex-eq-droites/main.js"
+    }
+]
