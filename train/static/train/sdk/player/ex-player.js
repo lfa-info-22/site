@@ -54,7 +54,7 @@ const EXERCICE_PLAYER = {
             EXERCICE_PLAYER.start_queue.splice(0, 1)
 
             let exercice_id = exercice[0]
-            EXERCICE_PLAYER.timer = 60 * exercice[1] + exercice[2] - 60
+            EXERCICE_PLAYER.timer = 60 * exercice[1] + exercice[2]
 
             let generator = EXERCICE_PLAYER.GENERATOR_BY_ID[exercice_id]
             let generated = generator(EXERCICE_PLAYER.SHOWTEXT_BY_ID[exercice_id])

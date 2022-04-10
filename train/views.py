@@ -20,11 +20,19 @@ class TrainIndexView(BaseView):
         schedulers.append({"type":"link", "text":"Nouveau plan", "url": "/train/schedule", "icon": "create"})
 
         ctx['categories'] = [
-            {
-                'name': 'Maths',
-                'exercices': Exercice.objects.all()
-            }
+            
         ]
+
+        categories = {}
+        for exercice in Exercice.objects.all():
+            if not exercice.category in categories:
+                categories[exercice.category] = len(ctx['categories'])
+                ctx['categories'].append({
+                    "name": exercice.category,
+                    "exercices": []
+                })
+            
+            ctx['categories'][ categories[exercice.category] ]['exercices'].append(exercice)
         
         ctx['properties'] = {
             'schedulers': schedulers
