@@ -2,6 +2,7 @@
 
 {% block extrahead %}
 <script src="/static/train/sdk/player/ex-player.js"></script>
+<script src="/static/train/sdk/player/geometry-canvas.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -9,4 +10,7 @@
     const METADATA = {% autoescape off %}{{ metadata }}.map( (el) => el.fields );{% endautoescape %}
 </script>
 
+<div id="exercice-container">
+
+</div>
 {% endblock %}
