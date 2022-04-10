@@ -12,7 +12,7 @@ class Command(BaseCommand):
             settings.EXERCICES_CONF
         ))
         
-        already_builts = Exercice.objects.filter(name__in=names)
+        already_builts = Exercice.objects.all()
 
         for already_built in already_builts:
             if already_built.name in names:
