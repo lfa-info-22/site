@@ -26,5 +26,19 @@
 
         "script": "default",
         "scriptstatic": "train/exercices/ex-comp-mod-et-arg/main.js"
+    },
+    {
+        "name": "Chiffrement mono-alphabétique",
+        "slug": "alkindi-mono-alpha",
+        "folder": "ex-alkindi-mono-alpha",
+        "category": "Entraînement Alkindi",
+
+        "icon": "home",
+
+        "view": "MarkovView",
+        "template": "train/exercices/ex-alkindi-mono-alpha/index.html",
+
+        "script": "default",
+        "scriptstatic": "train/exercices/ex-alkindi-mono-alpha/main.js"
     }
 ]

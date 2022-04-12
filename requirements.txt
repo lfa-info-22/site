@@ -1,3 +1,5 @@
 # DJANGO
 django<3
 django-tailwind
+
+markovify

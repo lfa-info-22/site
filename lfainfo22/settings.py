@@ -168,3 +168,15 @@ try:
 except Exception as e:
     print('Could not find exercices.json')
     print(e)
+
+MARKOVIFY_MODEL = None
+
+try:
+    import markovify
+
+    with open('home/static/home/media/texte.txt') as f:
+        text=f.read()
+    MARKOVIFY_MODEL = markovify.Text(text)
+except Exception as e:
+    print('Could not find texte.txt')
+    print(e)
