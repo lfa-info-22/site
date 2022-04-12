@@ -12,5 +12,19 @@
 
         "script": "default",
         "scriptstatic": "train/exercices/ex-eq-droites/main.js"
+    },
+    {
+        "name": "Module et argument",
+        "slug": "comp-mod-et-arg",
+        "folder": "ex-comp-mod-et-arg",
+        "category": "Nombres complexes",
+
+        "icon": "home",
+
+        "view": "default",
+        "template": "train/exercices/ex-comp-mod-et-arg/index.html",
+
+        "script": "default",
+        "scriptstatic": "train/exercices/ex-comp-mod-et-arg/main.js"
     }
 ]

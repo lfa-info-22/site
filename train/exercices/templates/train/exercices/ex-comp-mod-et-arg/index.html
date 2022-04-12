@@ -1,0 +1,31 @@
+<div class="text-center p-4 mb-4">
+    <div class="text-3xl flex">
+        <div class="flex-1"></div>
+        Modules et arguments
+        <div class="text-gray-400 pl-4" id="remaining-number"></div>
+        <div class="flex-1"></div>
+    </div>
+    <div class="text-xl">Trouver le module et l'argument du point ci-dessous</div>
+</div>
+
+<div class="w-fit relative center-w p-4 flex flex-wrap max-w-screen">
+    <div id="canvas-container" class="absolute center-w sm:left-0 sm:translate-x-0 sm:relative"></div>
+    <div class="sm:hidden h-[600px] w-full"></div>
+
+    <div class="<solhidden> p-4 flex-1 min-w-[300px] lg:max-w-[300px]">
+        <div class="p-3 px-6 flex bg-sky-200 text-sky-700 rounded-md">
+            <div class="material-icons-outlined">info</div>
+            <div class="ml-4">On cherche un nombre de la forme z = r (cos a + isin a)</div>
+        </div>
+
+        <div class="p-3 mb-2">On peut d'abord reconnaître le cercle sur lequel se trouve le point qui nous donne le module</div>
+        <div class="p-3 mb-2">On peut ensuite retrouver des valeurs particulières pour l'argument, soit x est à la moitié du rayon (|x| = r / 2), et l'angle est un multiple de pi sur 3. Ensuite si |x| = |y|, alors l'angle est un multiple de pi sur 2 plus pi sur 4. </div>
+
+        <div class="p-3 mb-2">Enfin, soit il s'agit d'un multiple de pi sur 6, soit d'un multiple de pi sur 2 et le point est sur un axe.</div>
+
+        <div class="p-3 px-6 flex bg-emerald-200 text-emerald-700 rounded-md">
+            <div class="material-icons-outlined">check_circle</div>
+            <div class="ml-4">Ici, les valeurs sont r = <%mod%> et arg = <%idx%> pi / 6</div>
+        </div>
+    </div>
+</div>
