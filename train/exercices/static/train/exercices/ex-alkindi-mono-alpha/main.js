@@ -79,21 +79,20 @@ EXERCICE_PLAYER.register ( 'alkindi-mono-alpha', function generator ( html ) {
     })
 
     const permutations = get_permutations()
-    console.log(permutations)
 
     const container = EXERCICE_PLAYER.get_exercice_container()
 
     let html = '<div class="flex flex-wrap w-fit relative center-w">'
 
-    for(i=0;i<keys.length;i++) {
-        let object = frequencies[keys[i]]
+    for(i=0;i<sorted_frequencies.length;i++) {
+        let object = sorted_frequencies[i]
         html+=`<div class="w-8">
         <div class="h-[70px] relative w-8">
             <div class="absolute w-4 bg-black bottom-0" style="height:calc({{b}}px/2);max-height:60px;"></div>
         </div>
-        <p>`+keys[i]+`</p>
-        <p>`+object+`</p>
-        <input maxlength="1" class='w-6 p-0 m-0' id='freq`+i+`' name="`+keys[i]+`">
+        <p>`+object[1]+`</p>
+        <p>`+object[0]+`</p>
+        <input maxlength="1" class='w-6 p-0 m-0' id='freq`+i+`' name="`+object[1]+`">
         <p>`+french_frequencies[i]+`</p>
     </div>`
     }
