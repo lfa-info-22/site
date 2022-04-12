@@ -1,93 +1,157 @@
+/**
+ * Project Graphic Calculator
+ * 
+ * The goal is to create an inequality or equality project to view math curves
+ * 
+ * @author MrThimote
+ * @source https://github.com/MrThimote/js-graphic-calculator/
+ * @version https://github.com/MrThimote/js-graphic-calculator/commit/57e6214bed994e796973b4d1880c0c4640fe3fb8
+ */
 
+/**
+ * Canvas
+ */
+ class GeometryCanvas {
+    constructor (width, height, container=document.body) {
+        this.width  = width;
+        this.height = height;
 
-class GeometryCanvas {
-    constructor (width, height, container) {
-        this.canvas = document.createElement('canvas')
+        this.canvas  = document.createElement("canvas")
+        this.canvas.setAttribute("width",  width)
+        this.canvas.setAttribute("height", height)
+
+        this.context = this.canvas.getContext("2d")
         container.appendChild(this.canvas)
-        this.canvas.setAttribute('width', width)
-        this.canvas.setAttribute('height', height)
-        this.canvas.style.transform = "scaleY(-1)"
-
-        this.width = width
-        this.height = height
-        this.context = this.canvas.getContext('2d')
     }
 
-    drawAxis (startX, startY, endX, endY, highlightX=0, highlightY=0, color_context={}) {
-        let stroke = color_context.stroke ? color_context.stroke : "#ddd"
-        let axis_stroke = color_context.axis_stroke ? color_context.axis_stroke : "#aaa"
+    generateAxis(sX, eX, sY, eY, hX=0, hY=0, c0="#dddddd", c1="#888") {
+        this.start = [sX, sY];
+        this.end   = [eX, eY];
 
-        let stepX = this.width  / (endX - startX + 2)
-        let stepY = this.height / (endY - startY + 2)
-        this.sizeX = (endX - startX + 2)
-        this.sizeY = (endY - startY + 2)
+        this.length       = [eX - sX, eY - sY]
+        this.white_length = [this.length[0] + 2, this.length[1] + 2]
 
-        this.stepX = stepX
-        this.stepY = stepY
+        this.steps = [ this.width / this.white_length[0], this.height / this.white_length[1] ]
+        
+        let offX = this.steps[0]
+        for (let x = this.start[0]; x <= this.end[0]; x++) {
+            this.context.strokeStyle = x == hX ? c1 : c0;
+            if (x == hX) this.axisX = offX;
 
-        let posX = stepX
-        for (let x = startX; x <= endX; x ++) {
-            this.context.strokeStyle = x == highlightX ? axis_stroke : stroke
-            if (x == highlightX) this.axisX = posX
-            
             this.context.beginPath()
-            this.context.moveTo(posX, 0)
-            this.context.lineTo(posX, this.height)
+            this.context.moveTo(offX, 0)
+            this.context.lineTo(offX, this.height)
             this.context.stroke()
 
-            posX += stepX
+            offX += this.steps[0]
         }
 
-        let posY = stepY
-        for (let y = startY; y <= endY; y ++) {
-            this.context.strokeStyle = y == highlightY ? axis_stroke : stroke
-            if (y == highlightY) this.axisY = posY
-            
+        let offY = this.height - this.steps[1]
+        for (let y = this.start[1]; y <= this.end[1]; y++) {
+            this.context.strokeStyle = y == hY ? c1 : c0;
+            if (y == hY) this.axisY = offY;
+
             this.context.beginPath()
-            this.context.moveTo(0, posY)
-            this.context.lineTo(this.width, posY)
+            this.context.moveTo(0,          offY)
+            this.context.lineTo(this.width, offY)
             this.context.stroke()
 
-            posY += stepY
+            offY -= this.steps[1]
         }
     }
 
-    drawLine (a, b, c, color="#aa0000") {
-        let centerX = this.axisX
-        let centerY = this.axisY - c / b * this.stepY
-
-        // Normal vectors (-b, a) and (b, -a)
-        let left = this.width * -b + centerX
-        let right = this.width * b + centerX
-
-        let bottom = this.height * a + centerY
-        let top = this.height * -a + centerY
-
-        if (b == 0) {
-            left = centerX - c / a * this.stepX;
-            right = left;
-            bottom = 0
-            top = this.height;
-        }
-
-        this.context.strokeStyle = color
-        this.context.beginPath()
-        this.context.moveTo(left, bottom)
-        this.context.lineTo(right, top)
-        this.context.stroke()
+    mapX (x) {
+        return this.axisX + this.steps[0] * x
+    }
+    mapY (x) {
+        return this.axisY - this.steps[1] * x
     }
 
-    drawSegment(x0, y0, x1, y1, color="#00ee00") {
-        x0 = x0 * this.stepX + this.axisX
-        x1 = x1 * this.stepX + this.axisX
-        y0 = y0 * this.stepY + this.axisY
-        y1 = y1 * this.stepY + this.axisY
+    unmapX (x) {
+        return (x - this.axisX) / this.steps[0]
+    }
+    unmapY (x) {
+        return - (x - this.axisY) / this.steps[1]
+    }
 
+    setStroke (color) {
         this.context.strokeStyle = color
-        this.context.beginPath()
-        this.context.moveTo(x0, y0)
-        this.context.lineTo(x1, y1)
-        this.context.stroke()
+        this.context.fillStyle = color
+        this.context
+    }
+
+    getArrays (sx=undefined, ex=undefined) {
+        if (sx == undefined)
+            sx = [0, 0]
+        else
+            sx = [this.mapX(sx[0]), this.mapY(sx[1])]
+
+        if (ex == undefined)
+            ex = [this.width, this.height]
+        else
+            ex = [this.mapX(ex[0]), this.mapY(ex[1])]
+        
+        if (sx[0] > ex[0]) {
+            let c = ex[0]
+            ex[0] = sx[0]
+            sx[0] = c;
+        }
+        if (sx[1] > ex[1]) {
+            let c = ex[1]
+            ex[1] = sx[1]
+            sx[1] = c;
+        }
+
+        return { sx, ex }
+    }
+
+    drawEqual (f0, f1, sx=undefined, ex=undefined) {
+        ({ sx, ex } = this.getArrays(sx, ex))
+
+        let lastX = undefined
+        let lastY = undefined
+
+        for (let x = sx[0]; x < ex[0]; x ++) {
+            for (let y = sx[1]; y < ex[1]; y ++) {
+                let rx = this.unmapX(x)
+                let ry = this.unmapY(y)
+                let ex = this.unmapX(x + 1)
+                let ey = this.unmapY(y + 1)
+
+                let val = f0(rx, ry) - f1(rx, ry)
+                let next = f0(ex, ry) - f1(ex, ry)
+                let next2 = f0(rx, ey) - f1(rx, ey)
+                let next3 = f0(ex, ey) - f1(ex, ey)
+
+                let root_array = [0, val, next, next2, next3]
+                root_array = root_array.sort()
+
+                if (root_array.indexOf(0) != 0 && root_array.indexOf(0) != root_array.length - 1) {
+                    this.context.fillRect(x, y, 2, 2)
+                }
+            }
+        }
+    }
+
+    drawInEqual (f0, f1, sx=undefined, ex=undefined) {
+        ({ sx, ex } = this.getArrays(sx, ex))
+
+        let lastX = undefined
+        let lastY = undefined
+
+        for (let x = sx[0]; x < ex[0]; x ++) {
+            for (let y = sx[1]; y < ex[1]; y ++) {
+                let rx = this.unmapX(x)
+                let ry = this.unmapY(y)
+
+                let val = f0(rx, ry) - f1(rx, ry)
+                let is_root = val < 0
+
+                if (is_root) {
+                    this.context.fillRect(x, y, 1, 1)
+                }
+            }
+        }
     }
 }
 

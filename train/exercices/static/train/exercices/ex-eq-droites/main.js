@@ -37,15 +37,23 @@ EXERCICE_PLAYER.register ( 'eq-droites', function generator ( html ) {
     
     let canvas = new GeometryCanvas(600, 600, EXERCICE_PLAYER.get_exercice_container().querySelector('#canvas-container'))
     
-    canvas.drawAxis(-5, -5, 5, 5)
-    canvas.drawLine(exercice.a, exercice.b, -exercice.c)
+    canvas.generateAxis(-5, 5, -5, 5)
+    let line_func = (x, y) => { return exercice.a * x + exercice.b * y }
+    let null_func = (x, y) => exercice.c
+    canvas.setStroke("#aa3333")
+    canvas.drawEqual(line_func, null_func)
 }, function show_solution (exercice) {
     EXERCICE_PLAYER.get_exercice_container().innerHTML = (exercice.html.split("<solhidden>")).join("").replace("<%a%>", exercice.a).replace("<%b%>", exercice.b).replace("<%c%>", exercice.c)
 
     let canvas = new GeometryCanvas(600, 600, EXERCICE_PLAYER.get_exercice_container().querySelector('#canvas-container'))
 
-    canvas.drawAxis(-5, -5, 5, 5)
-    canvas.drawLine(exercice.a, exercice.b, -exercice.c)
+    canvas.generateAxis(-5, 5, -5, 5)
+
+    let line_func = (x, y) => { return exercice.a * x + exercice.b * y }
+    let null_func = (x, y) => exercice.c
+    
+    canvas.setStroke("#aa3333")
+    canvas.drawEqual(line_func, null_func)
 
     let { a, b, c } = exercice
 
@@ -59,6 +67,7 @@ EXERCICE_PLAYER.register ( 'eq-droites', function generator ( html ) {
     let rx = b
     let ry = c / b - a
 
-    canvas.drawSegment(lx, ly, rx, ly)
-    canvas.drawSegment(rx, ly, rx, ry)
+    canvas.setStroke("#33aa33")
+    canvas.drawEqual((x, y) => y, (x, y) => ly, sx=[lx, ly - 1], ex=[rx, ly + 1])
+    canvas.drawEqual((x, y) => x, (x, y) => rx, sx=[rx - 1, ly], ex=[rx + 1, ry])
 } )
