@@ -1163,6 +1163,14 @@ select {
   width: fit-content;
 }
 
+.w-\[calc\(120px\+4rem\)\] {
+  width: calc(120px + 4rem);
+}
+
+.w-\[calc\(80px\+4rem\)\] {
+  width: calc(80px + 4rem);
+}
+
 .min-w-\[300px\] {
   min-width: 300px;
 }
