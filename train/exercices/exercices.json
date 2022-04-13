@@ -39,6 +39,7 @@
         "template": "train/exercices/ex-alkindi-mono-alpha/index.html",
 
         "script": "default",
-        "scriptstatic": "train/exercices/ex-alkindi-mono-alpha/main.js"
+        "scriptstatic": "train/exercices/ex-alkindi-mono-alpha/main.js",
+        "timer_direction": 1
     }
 ]
