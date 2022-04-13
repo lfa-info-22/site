@@ -22,6 +22,7 @@ const EXERCICE_PLAYER = {
         fetch (`/train/exercice/data/${exercice_id}?metadata=`).then(body => {
             body.json().then ( json => {
                 EXERCICE_PLAYER.ID_BY_NAME[json.data.slug] = exercice_id
+                EXERCICE_PLAYER.EXE_DATA_BY_ID[exercice_id] = json.data
 
                 fetch(`/train/exercice/data/${exercice_id}`).then(body => {
                     body.text().then ( text => {
@@ -47,14 +48,20 @@ const EXERCICE_PLAYER = {
         EXERCICE_PLAYER.start_registration(metadata.exercice)
         EXERCICE_PLAYER.start_queue.push([metadata.exercice, metadata.minutes, metadata.seconds])
     },
+    'current_exercice': { timer_direction: 0 },
     'next_exercice': function () {
+        EXERCICE_PLAYER.current_exercice.timer = EXERCICE_PLAYER.timer
+
         EXERCICE_PLAYER.started = EXERCICE_PLAYER.start_queue.length != 0
         if (EXERCICE_PLAYER.started) {
             let exercice = EXERCICE_PLAYER.start_queue[0]
+            EXERCICE_PLAYER.current_exercice = exercice
             EXERCICE_PLAYER.start_queue.splice(0, 1)
 
             let exercice_id = exercice[0]
             EXERCICE_PLAYER.timer = 60 * exercice[1] + exercice[2]
+            if (EXERCICE_PLAYER.EXE_DATA_BY_ID[exercice_id].timer_direction == 1)
+                EXERCICE_PLAYER.timer = 0;
 
             let generator = EXERCICE_PLAYER.GENERATOR_BY_ID[exercice_id]
             let generated = generator(EXERCICE_PLAYER.SHOWTEXT_BY_ID[exercice_id])
@@ -97,7 +104,7 @@ const EXERCICE_PLAYER = {
     'timer': 0,
 
     'timer_interval': setInterval(() => {
-        EXERCICE_PLAYER.timer -= 1
+        EXERCICE_PLAYER.timer += EXERCICE_PLAYER.EXE_DATA_BY_ID[EXERCICE_PLAYER.current_exercice[0]].timer_direction
         if (EXERCICE_PLAYER.timer < 0) {
             EXERCICE_PLAYER.timer = 0
             
@@ -108,7 +115,7 @@ const EXERCICE_PLAYER = {
         let seconds = EXERCICE_PLAYER.timer % 60;
         let minutes = Math.round((EXERCICE_PLAYER.timer - seconds) / 60)
 
-        let text = (minutes > 10 ? minutes : '0' + minutes) + ':' + (seconds > 10 ? seconds : '0' + seconds)
+        let text = (minutes >= 10 ? minutes : '0' + minutes) + ':' + (seconds >= 10 ? seconds : '0' + seconds)
         
         document.getElementById('chrono').innerHTML = text
     }, 1000),
@@ -121,6 +128,8 @@ const EXERCICE_PLAYER = {
     'GENERATOR_BY_ID': {},
     'EXE_SHOWER_BY_ID': {},
     'SOL_SHOWER_BY_ID': {},
+
+    'EXE_DATA_BY_ID': {},
 }
 
 document.addEventListener('DOMContentLoaded', () => {

@@ -15,6 +15,11 @@ class Exercice(models.Model):
     script = models.CharField(max_length=50)
     scriptstatic = models.CharField(max_length=100, default="")
 
+    timer_direction = models.IntegerField(choices=(
+        (-1, 'TIMER'),
+        ( 1, 'TRAIN')
+    ), default=-1)
+
 class TimedExercice(models.Model):
     exercice = models.ForeignKey(Exercice, on_delete=models.CASCADE, related_name="timed_exercice_exercice")
 

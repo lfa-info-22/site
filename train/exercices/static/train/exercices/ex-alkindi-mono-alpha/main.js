@@ -39,6 +39,10 @@ function get_permutations () {
     return permutations
 }
 
+function encrypt ( text, permutations ) {
+    return Array.from(text).map( ( chr ) => permutations[chr] ).join("")
+}
+
 EXERCICE_PLAYER.register ( 'alkindi-mono-alpha', function generator ( html ) {
     const API_URL = "/api/v1/train/exercices/markov/default"
 
@@ -64,9 +68,12 @@ EXERCICE_PLAYER.register ( 'alkindi-mono-alpha', function generator ( html ) {
     await exercice.second_query;
 
     const text = exercice.text.data;
+
+    const permutations = get_permutations()
+    const encrypted = encrypt( text, permutations);
     
     const french_frequencies = ["E", "A", "S", "I", "N", "T", "R", "L", "U", "O", "D", "C", "P", "M", "V", "G", "F", "B", "Q", "H", "X", "J", "Y", "Z", "K", "W"]
-    const frequencies = get_frequencies(text)
+    const frequencies = get_frequencies(encrypted)
 
     let keys = Object.keys(frequencies)
     let sorted_frequencies = []
@@ -78,80 +85,54 @@ EXERCICE_PLAYER.register ( 'alkindi-mono-alpha', function generator ( html ) {
         return b[0] - a[0];
     })
 
-    const permutations = get_permutations()
-
     const container = EXERCICE_PLAYER.get_exercice_container()
-
-    let html = '<div class="flex flex-wrap w-fit relative center-w">'
+    //generation du html
+    let html = '<div class="flex flex-wrap w-fit relative center-w mt-16">'
 
     for(i=0;i<sorted_frequencies.length;i++) {
         let object = sorted_frequencies[i]
         html+=`<div class="w-8">
         <div class="h-[70px] relative w-8">
-            <div class="absolute w-4 bg-black bottom-0" style="height:calc({{b}}px/2);max-height:60px;"></div>
+            <div class="absolute w-4 bg-black bottom-0" style="height:`+object[0]/2+"px"+`;max-height:60px;"></div>
         </div>
         <p>`+object[1]+`</p>
         <p>`+object[0]+`</p>
-        <input maxlength="1" class='w-6 p-0 m-0' id='freq`+i+`' name="`+object[1]+`">
+        <input maxlength="1" class='w-6 p-0 m-0' id='freq`+i+`' name="`+object[1]+`" type='text'>
         <p>`+french_frequencies[i]+`</p>
     </div>`
     }
     html+="</div>"
-    container.innerHTML=html;
-        /**
-    {% with a=el.0 b=el.1 c=el.2 d=el.3 %}
-    <div class="w-8">
-        <div class="h-[70px] relative w-8">
-            <div class="absolute w-4 bg-black bottom-0" style="height:calc({{b}}px/2);max-height:60px;"></div>
-        </div>
-        <p>{{a}}</p>
-        <p>{{b}}</p>
-        <input 
-        maxlength="1"
-        onclick='var a="{{a}}";colorier(a);' 
-        class='w-6 p-0 m-0' 
-        id='freq{{c}}' 
-        oninput='javascript:this.value=this.value.toUpperCase();
-        var j="{{c}}";var longueur="26";
-        if(this.value.length==0 && Number(j)>0){
-            document.getElementById(String("freq"+(Number(j)-1))).focus()
-        } else if(this.value.length==0){
-            document.getElementById(String("freq"+(25))).focus()
-        }
-        if(this.value.length==1){
-            verifier(this.value,"freq"+j);
-            a=document.getElementById(String("freq"+(Number(j)+1)%26));
-            a.focus();
-            colorier(a.name)
-        };
-        var a="{{a}}";
-        f(a,this.value);' 
-        type='text'
-        onfocus='var a="{{a}}";colorier(a);'
-        onkeydown='javascript:this.select();
-        var i="{{c}}"
-        if(event.keyCode==37 || event.keyCode==39){
-            var el;
-        if(event.keyCode==37 && Number(i)>0){
-            el=document.getElementById(String("freq"+(Number(i)-1)))
-        } else if(event.keyCode==37){
-           el=document.getElementById(String("freq"+(25)))
-        }
-        if(event.keyCode==39 && Number(i)<25){
-           el=document.getElementById(String("freq"+(Number(i)+1)))
-        } else if(event.keyCode==39){
-           el=document.getElementById(String("freq"+(0)))
-        }
-        el.focus();
-    }' name="{{a}}">
-        <p>{{d}}</p>
+    html+=`<br>
+    <br>
+    <div class="flex flex-wrap w-fit relative center-w max-h-[45vh] overflow-y-auto max-w-[1000px]">`
+    for(let idx =0;idx<encrypted.length;idx++){
+        let chr = encrypted[idx]
+        html+=`
+        <div class="w-7">
+            <p class='opacity-50 text-center'>`+chr+`</p>
+            <input
+             name="`+chr+`" 
+             class='w-6 p-0 m-0' 
+             id='input`+idx+`' 
+             type='text'>
+        </div>`
+                    }
+                    html+=`
     </div>
-{% endwith %}
-    {% endfor %}
     
-
+    
+    <br>
+    <div class="center-w relative w-fit">
+    <input type="button" class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded" value="Passer l'exercice">
+    <input type="button" class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded" value="Valider">
+    <input type='button' class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded" value="Reinitialiser">
+    </div>
+    <br>
+    <p class="center-w relative w-fit" id="sol"></p>`
+    container.innerHTML=html;
+    //generation du javascript
     var indices=false;
-    var longueur=Number("{{longueur}}");
+    var longueur=encrypted.length;
     function f(letter,correction){
         for(var i=0;i<longueur;i++){
             id="input"+i;
@@ -174,7 +155,7 @@ EXERCICE_PLAYER.register ( 'alkindi-mono-alpha', function generator ( html ) {
             a.value=''
         }
     }
-    var so="{{sol}}";
+    var so=text;
     function sol(){
         indices=true;
         for(var i=0;i<longueur;i++){
@@ -236,15 +217,6 @@ EXERCICE_PLAYER.register ( 'alkindi-mono-alpha', function generator ( html ) {
             }
         }
     }
-
-
-
-
-
-
-
-
-    */
     
     
 }, async function show_solution ( exercice ) {

@@ -24,7 +24,7 @@
     </div>
 
     <!-- Time inputs -->
-    <div class="flex">
+    <div class="flex {% if exercice.exercice.timer_direction == 1 %} hidden {% endif %}">
         <div default="0" input ref="minutes" for="/api/v1/train/modify/scheduler/{{ scheduler.id }}/exercice/{{ exercice.id }}">
             <label for="minutes-{{ exercice.id }}" class="block text-sm font-medium text-gray-700">Minutes</label>
             <div class="mt-1 relative rounded-md shadow-sm">

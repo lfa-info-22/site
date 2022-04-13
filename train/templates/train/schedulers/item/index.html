@@ -36,7 +36,7 @@
     </div>
 
     {% if scheduler.timed_exercices.count != 0 %}
-        <div class="divide-y divide-gray-200">
+        <div class="divide-y divide-gray-200 mt-8">
             {% for timed_exercice in scheduler.timed_exercices.all %}
                 {% include 'train/schedulers/item/exercice.html' with exercice=timed_exercice %}
             {% endfor %}
