@@ -11,7 +11,28 @@
 {% block content %}
 <div class="w-screen max-w-screen md:w-[90%] lg:w-[80%] p-5
             relative center-w">
-    <div class="font-medium text-xl md:text-2xl lg:text-4xl px-10">Plans de révisions</div>
+    <div class="font-medium text-xl md:text-2xl lg:text-4xl px-10 flex">
+        <div><div class="relative h-min center-h">Plans de révisions</div></div>
+        <div class="flex-1"></div>
+        <form class="flex-1 flex" method="GET" action="/api/v1/train/create/scheduler">
+            <input type="hidden" value="{{ create_next }}" name="next">
+            
+            <div class="flex-1">
+                <div class="ml-4 relative h-min center-h" default="0" input ref="seconds" for="/api/v1/train/modify/scheduler/{{ scheduler.id }}/exercice/{{ exercice.id }}">
+                    <label for="seconds-{{ exercice.id }}" class="block text-sm font-medium text-gray-700">Nom</label>
+                    <div class="mt-1 relative rounded-md shadow-sm w-full">
+                        <input min="0" max="59" type="text" name="name" id="name" class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-3 pr-2 sm:text-sm border-gray-300 rounded-md" placeholder="Nom">
+                    </div>
+                </div>
+            </div>
+
+            <button class="m-4 p-4 text-base flex rounded-md border-green-400 hover:border-green-600 border pb-[4px] pt-[6px] hover:bg-green-600 text-green-600 hover:text-white transition-all duration-200">
+                <div><div class="relative h-min center-h material-icons-outlined">add</div></div>
+                <div class="w-2"></div>
+                <div><div class="relative h-min center-h">Créer</div></div>
+            </button>
+        </form>
+    </div>
 
     <!-- HIDDEN -->
     <div id="scheduler-template" class="group hidden">

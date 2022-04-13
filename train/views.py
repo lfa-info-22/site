@@ -18,7 +18,7 @@ class TrainIndexView(BaseView):
             {"type":"text", "text":plan.name, "value": plan.id} for plan in TrainingPlan.objects.filter(user=request.user).order_by("-id")
         ] if request.user.is_authenticated else []
         print(TrainingPlan.objects.all())
-        schedulers.append({"type":"link", "text":"Nouveau plan", "url": "/train/schedule", "icon": "create"})
+        schedulers.append({"type":"link", "text":"Nouveau plan", "url": "/train/schedule?next=/train", "icon": "create"})
 
         ctx['categories'] = [
             
@@ -43,6 +43,15 @@ class TrainIndexView(BaseView):
 
 class TrainSchedulerListView(BaseView):
     TEMPLATE_NAME = 'train/schedulers/list/index.html'
+
+    def get_context_data(self, request, *args, **kwargs):
+        ctx = super().get_context_data(request, *args, **kwargs)
+
+        ctx['create_next'] = "/train/schedule"
+        if 'next' in request.GET:
+            ctx['create_next'] = request.GET['next']
+
+        return ctx
 
 class TrainSchedulerItemView(ItemView):
     TEMPLATE_NAME = 'train/schedulers/item/index.html'
@@ -159,6 +168,35 @@ class DeleteTrainingPlan(ApiView):
                 "data": True,
             })
         
+        return redirect(next)
+
+@api
+class CreateTrainingPlan(ApiView):
+    VERSION = 1
+    APPLICATION = "train"
+    ROUTE = "create/scheduler"
+
+    NEEDS_AUTHENTICATION = True
+
+    def get_call(self, request, *args, **kwargs):
+        if not 'name' in request.GET:
+            raise Http404()
+        
+        plan = TrainingPlan.objects.create(user=request.user, name=request.GET['name'])
+
+        json_resp = False
+        if 'json_resp' in request.GET: json_resp = request.GET['json_resp'] in ["True", True, "true"]
+
+        next = '/train/schedule/<id>'
+        if 'next' in request.GET: next = request.GET['next']
+        next = str(plan.id).join(next.split('<id>'))
+
+        if json_resp:
+            return JsonResponse({
+                "data": plan.id,
+                "status": 200
+            })
+
         return redirect(next)
 
 @api
