@@ -25,6 +25,7 @@ class TimedExercice(models.Model):
 
     minutes = models.IntegerField()
     seconds = models.IntegerField()
+    count = models.IntegerField()
 
 class TrainingPlan(models.Model):
     name = models.CharField(max_length=50)

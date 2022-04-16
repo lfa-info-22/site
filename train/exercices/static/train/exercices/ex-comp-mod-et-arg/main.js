@@ -35,6 +35,7 @@ EXERCICE_PLAYER.register ( 'comp-mod-et-arg', function generator ( html ) {
     canvas.setStroke("#1111ff")
     canvas.drawInEqual(point_func, null_func)
 }, function show_solution (exercice) {
+    EXERCICE_PLAYER.timer=0;
     EXERCICE_PLAYER.get_exercice_container().innerHTML = (exercice.html.split("<solhidden>")).join("").replace("<%mod%>", exercice.mod).replace("<%idx%>", exercice.idx - 5)
 
     let canvas = new GeometryCanvas(600, 600, EXERCICE_PLAYER.get_exercice_container().querySelector('#canvas-container'))

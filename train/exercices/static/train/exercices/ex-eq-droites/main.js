@@ -44,7 +44,7 @@ EXERCICE_PLAYER.register ( 'eq-droites', function generator ( html ) {
     canvas.drawEqual(line_func, null_func)
 }, function show_solution (exercice) {
     EXERCICE_PLAYER.get_exercice_container().innerHTML = (exercice.html.split("<solhidden>")).join("").replace("<%a%>", exercice.a).replace("<%b%>", exercice.b).replace("<%c%>", exercice.c)
-
+    EXERCICE_PLAYER.timer=0;
     let canvas = new GeometryCanvas(600, 600, EXERCICE_PLAYER.get_exercice_container().querySelector('#canvas-container'))
 
     canvas.generateAxis(-5, 5, -5, 5)
