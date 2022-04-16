@@ -63,7 +63,7 @@ EXERCICE_PLAYER.register('alkindi-mono-alpha', function generator(html) {
     response.query = query
 
     return response
-}, function show_exercice(exercice) {
+},async function show_exercice(exercice) {
     await exercice.query;
     await exercice.second_query;
 
