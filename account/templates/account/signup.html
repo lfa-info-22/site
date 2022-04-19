@@ -1,19 +1,23 @@
-<!DOCTYPE html>
+{% extends 'base/base.html' %}
 
-<html>
-	<head>
-		<title>Inscription - Club info</title>
-		<link rel="icon" href="favicon.ico">
-		<link rel="stylesheet" type="text/css" href="STATIC/CSS/login.css"/>
-	</head>
+{% block head %}{% endblock %}
+{% block navbar %}{% endblock %}
+{% block footer %}{% endblock %}
 
-	<body>
-		<form>
-			<h2><b>Inscription</b></h2>
-			<input type="text" name="username" placeholder="username">
-			<input type="password" name="password" placeholder="password">
-			<button>S'inscrire</button>
-			<p>Déjà inscrit ? <a href="/account/login/">Se connecter</a></p>
-		</form>
-	</body>
-</html>
+{% block content %}
+<div class="bg-cover bg-no-repeat w-screen h-screen" style="background-image: url(/static/account/media/login.jpg);">
+	<form action="/api/v1/account/create/" method="POST" class="z-1 bg-white opacity-[97%] max-w-[600px] rounded-[10px] text-center shadow-lg relative center-h center-w px-[45px] pt-[45px] pb-[60px]">
+		{% csrf_token %}
+		
+		<h2 class="text-4xl">Inscription -- TODO</h2>
+		<input class="focus:ring-0 active:ring-0 focus:bg-login.input.active mt-5 w-full bg-login.input.defaut text-black rounded-[15px] border-0 p-[15px]" type="text" name="user" placeholder="Nom d'utilisateur">
+		<input class="focus:ring-0 active:ring-0 focus:bg-login.input.active mt-5 w-full bg-login.input.defaut text-black rounded-[15px] border-0 p-[15px]" type="text" name="mail" placeholder="Adresse E-Mail">
+		<input class="focus:ring-0 active:ring-0 focus:bg-login.input.active mt-5 w-full bg-login.input.defaut text-black rounded-[15px] border-0 p-[15px]" type="password" name="password" placeholder="Mot de passe">
+		<input class="focus:ring-0 active:ring-0 focus:bg-login.input.active mt-5 w-full bg-login.input.defaut text-black rounded-[15px] border-0 p-[15px]" type="password" name="password2" placeholder="Mot de passe (vérification)">
+		<button class="text-white mt-5 p-[15px] w-full outline-0 rounded-[20px] bg-login.button.default hover:bg-login.button.active active:bg-login.button.active focus:bg-login.button.active">S'inscrire</button>
+		<p class="mt-4">Vous avez déjà un compte ? <a href="/account/login/" class="text-login.link.default hover:text-login.link.active focus:text-login.link.active active:text-login.link.active font-bold">Connexion</a></p>
+	</form>
+</div>
+
+
+{% endblock %}

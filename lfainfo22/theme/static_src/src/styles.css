@@ -67,7 +67,7 @@
     }
 
     .title {
-        @apply font-medium text-2xl py-8 hover:bg-blue-700
+        @apply font-medium text-2xl py-8
     }
 
     @keyframes wait-animation {

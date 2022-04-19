@@ -42,7 +42,16 @@ module.exports = {
         // '../../**/*.py'
     ],
     theme: {
-        extend: {},
+        extend: {
+            colors: {
+            "login.input.defaut": "#f1f1f1",
+            "login.button.default": "#ae72cc",
+            "login.input.active": "#e3d3f9",
+            "login.button.active": "#7a2d9c",
+            "login.link.default": "#9742bd",
+            "login.link.active": "#ae72cc",
+            },
+        },    
     },
     plugins: [
         /**
