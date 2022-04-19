@@ -137,6 +137,7 @@ class GetTimedExercices(ApiView):
                 'exercice': self.obj.exercice.name,
                 'minutes': self.obj.minutes,
                 'seconds': self.obj.seconds,
+                'count': self.obj.count,
             },
             'status': 200
         })
@@ -271,6 +272,7 @@ class DuplicateTimedExercice(ApiView):
             exercice = self.last_ex.exercice,
             minutes = self.last_ex.minutes,
             seconds = self.last_ex.seconds,
+            count = self.last_ex.count,
         )
         self.object.timed_exercices.add(self.new_object)
 
@@ -278,6 +280,7 @@ class DuplicateTimedExercice(ApiView):
             self.exercices[idx].exercice = self.exercices[idx - 1].exercice
             self.exercices[idx].minutes = self.exercices[idx - 1].minutes
             self.exercices[idx].seconds = self.exercices[idx - 1].seconds
+            self.exercices[idx].count = self.exercices[idx - 1].count
 
             self.exercices[idx].save()
 
@@ -367,6 +370,7 @@ class SwapTimedExercice(ApiView):
         self.ex0.exercice, self.ex1.exercice = self.ex1.exercice, self.ex0.exercice
         self.ex0.minutes, self.ex1.minutes = self.ex1.minutes, self.ex0.minutes
         self.ex0.seconds, self.ex1.seconds = self.ex1.seconds, self.ex0.seconds
+        self.ex0.count, self.ex1.count = self.ex1.count, self.ex0.count
 
         self.ex0.save()
         self.ex1.save()
@@ -405,6 +409,7 @@ class ModifyTimedExercice(ApiView):
     def get_call(self, request, *args, **kwargs):
         self.exercice.minutes = int(request.GET['minutes']) if 'minutes' in request.GET else self.exercice.minutes
         self.exercice.seconds = min(59, max(0, int(request.GET['seconds']))) if 'seconds' in request.GET else self.exercice.seconds
+        self.exercice.count = int(request.GET['repetitions']) if 'repetitions' in request.GET else self.exercice.count
         self.exercice.save()
 
         return self.get_return(request)
@@ -440,7 +445,7 @@ class CreateTimedExercice(ApiView):
 
     def get_call(self, request, *args, **kwargs):
         self.object.timed_exercices.add(
-            TimedExercice.objects.create(exercice=self.exercice, minutes=1, seconds=0)
+            TimedExercice.objects.create(exercice=self.exercice, minutes=1, seconds=0, count=1)
         )
 
         return self.get_return(request)

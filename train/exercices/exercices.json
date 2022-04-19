@@ -41,5 +41,19 @@
         "script": "default",
         "scriptstatic": "train/exercices/ex-alkindi-mono-alpha/main.js",
         "timer_direction": 1
+    },
+    {
+        "name": "Calcul mental",
+        "slug": "calcul-mental",
+        "folder": "ex-calcul-mental",
+        "category":"Gymnastique calculatoire",
+
+        "icon": "home",
+        
+        "view":  "default",
+        "template": "train/exercices/ex-calcul-mental/index.html",
+
+        "script": "default",
+        "scriptstatic": "train/exercices/ex-calcul-mental/main.js"
     }
 ]
