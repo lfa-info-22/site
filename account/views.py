@@ -7,12 +7,22 @@ from django.http         import JsonResponse
 from api.views           import ApiView
 from api.urls            import api
 
+from django.shortcuts import render
+from lfainfo22.views  import BaseView
+from django.conf      import settings
+
+class LoginView(BaseView):
+    TEMPLATE_NAME = 'account/login.html'
+
+class CreateAccountView(BaseView):
+    TEMPLATE_NAME = "account/signup.html"
+
 '''
 Account API Views
 '''
 
 @api
-class LoginView(ApiView):
+class ApiLoginView(ApiView):
     VERSION     = 1
     APPLICATION = 'account'
     ROUTE       = 'login/'
@@ -70,7 +80,7 @@ class LoginView(ApiView):
         return redirect( redirector )
 
 @api
-class LogoutView(ApiView):
+class ApiLogoutView(ApiView):
     VERSION     = 1
     APPLICATION = "account"
     ROUTE       = "logout/"

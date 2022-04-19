@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<title>Connexion - Club info</title>
+		<link rel="icon" href="favicon.ico">
+		<link rel="stylesheet" type="text/css" href="/CSS/login.css"/>
+	</head>
+
+	<body id="login">
+		<form action="/api/v1/account/login/" method="POST">
+			<h2><b>Connexion</b></h2>
+			<input type="text" name="username" placeholder="Nom d'utilisateur">
+			<input type="password" name="password" placeholder="Mot de passe">
+			<button>Connexion</button>
+			<p>Pas de compte ? <a href="/account/create/">Créer un compte</a></p>
+		</form>
+	</body>
+</html>

@@ -66,6 +66,10 @@
         transform: translate(100%, 100%);
     }
 
+    .title {
+        @apply font-medium text-2xl py-8 hover:bg-blue-700
+    }
+
     @keyframes wait-animation {
         0% {
             right: 100%;
