@@ -1,0 +1,311 @@
+{% extends 'base/base.html' %}
+
+{% block head %}
+{% include 'base/head.html' with head_url="/static/home/media/image/home_background.jpg" title="Outils de cryptographie" subtitle="Accès à des dizaines d'outils tous plus utiles les uns que les autres en mathématiques et cryptographie" %}
+{% endblock %}
+{% block extrahead %}
+<script src="../../static/articles/outils/codage.js"></script>
+<script src="../../static/articles/outils/nombres.js"></script>
+{% endblock %}
+
+{% block content %}
+{% load codeblock %}
+
+<div class="p-5 divide-transparent max-w-[600px] lg:max-w-[800px] relative center-w">
+    <div class="text-xl px-1">
+        De nos jours, la cryptographie n'est pas faite comme lors du concours Alkindi, mais à l'aide d'ordinateurs.
+        Ainsi, même si cela constitue un excellent exercice de s'entraîner à déchiffrer à la main, un programme informatique va pouvoir résoudre cela bien plus vite.
+        Le but de cet article est ainsi de vous montrer comment créer des programmes vous permettant de déchiffrer automatiquement des codes, et de vous fournir une interface vous permettant de déchiffrer vous-même sans avoir à le faire à la main.
+    </div>
+    <div class="text-xl px-1 mt-8">
+        Utilisation des outils disponibles en cryptographie : 
+    </div>
+        <div id="main" class="flex mt-8">
+
+            <div id="code" class="flex-1">
+                <div>
+                    <textarea class="m-0 p-0" type="text" name="texte_a_coder" id="texte_a_coder" placeholder="Texte à coder" autofocus onkeyup="coder()"></textarea>
+                </div>
+
+                
+
+                <div id="options" class="">
+                    <input type="radio" id="cesar" name="methode" value="cesar" onclick="update_car()">
+                    <label for="cesar">César</label><br>
+                    <input type="radio" id="decesar" name="methode" value="decesar" onclick="update_car()">
+                    <label for="decesar">Décoder César</label><br>
+                    <input type="radio" id="vigenere" name="methode" value="vigenere" onclick="update_car()">
+                    <label for="vigenere">Vigenère</label><br>
+                    <input type="radio" id="devigenere" name="methode" value="devigenere" onclick="update_car()">
+                    <label for="devigenere">Décoder Vigenère</label><br>
+                    <input type="radio" id="enigma" name="methode" value="enigma" onclick="update_car()">
+                    <label for="enigma">Enigma</label><br>
+                    <input type="radio" id="analyse" name="methode" value="analyse" onclick="update_car()">
+                    <label for="analyse">Analyse</label>
+                </div>
+
+                <div id="caracteristiques" class="">
+                    <label for="mot" class="m-2">Mot avec lequel coder :</label>
+                    <input type="test" id="mot" name="methode" class="m-0 p-0" value="">
+                </div>
+
+                <div id="bouton-automatique">
+                    <button class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold break-words hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded" id="automatique" >Automatique</button>
+                </div>
+
+            </div>
+
+            <div id="result" class="flex-1">
+                <img id="copy" src="../../static/articles/outils/copy.png" alt="copy icon" style="width:25px;height:25px;" onclick="copyMeOnClipboard()" >
+            </div>
+                
+            </div>
+            <div class="text-xl px-1 mt-8">
+                Utilisation des outils disponibles en mathématiques : 
+            </div>
+            <div id="main2" class="flex mt-8">
+
+                <div id="code2" class="flex-1">
+             
+    
+                    <div id="options2" class="espace-haut-bas">
+                        <input type="radio" id="estPrems" name="methode" value="estPrems" onclick="update_car2()">
+                        <label for="estPrems">Tester si un nombre est premier   </label><br>
+                        <input type="radio" id="diviseurs" name="methode" value="diviseurs" onclick="update_car2()">
+                        <label for="diviseurs">Lister les diviseurs d'un nombre</label><br>
+                        <input type="radio" id="nbspremsjusquan" name="methode" value="nbspremsjusquan" onclick="update_car2()">
+                        <label for="nbspremsjusquan">Lister les nombres premier jusqu'au nombre</label><br>
+                        <input type="radio" id="autreBase" name="methode" value="autreBase" onclick="update_car2()">
+                        <label for="autreBase">Convertir vers une autre base</label><br>
+                        <input type="radio" id="farey_approximation" name="methode" value="farey_approximation" onclick="update_car2()">
+                        <label for="farey_approximation">Approximer un réel avec une fraction (Farey approximation)</label><br>
+                        <input type="radio" id="pgcd" name="methode" value="pgcd" onclick="update_car2()">
+                        <label for="pgcd">Calculer le pgcd de deux nombres</label>
+                    </div>
+    
+                    <div id="caracteristiques2" class="espace-haut-bas">
+                        <label for="nb" class="joli-texte">Nombre :</label><input type="text" id="nb" name="nb" placeholder="47">
+                     </div>
+    
+                    <div id="bouton-automatique2">
+                        <button id="automatique2" >Automatique</button>
+                    </div>
+    
+                    <div>
+                    </div>
+                </div>
+    
+                <div id="result2" class="flex-1">
+                    <img id="copy2" src="../../static/articles/outils/copy.png" alt="copy icon" style="width:25px;height:25px;" onclick="copyMeOnClipboard()" >
+                </div>
+                    
+                </div>
+                <div class="text-xl px-1 mt-8">
+                   Dans un premier temps, nous allons nous intéresser aux outils cryptographiques, et à la manière de les coder. Pour cela, nous allons commencer par le chiffrement le plus simple qui existe, c'est à dire le chiffrement César.
+                </div>
+                <div class="text-xl px-1 mt-8">
+                    Avant d'aller plus loin, il serait pretinent de créér dans un premier temps des outils qui peuvent nous servir pour tous les chiffrement, comme par exemple un outil pour formater les textes, un outil pour supprimer les caractères spéciaux, ou encore pour retourner des frequences d'un texte, ou la lettre la plus fréquente de ce dernier.
+                </div>
+                    {% codeblock python %}
+import math
+import unidecode
+        
+ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+# ici, on récupère les librairies et on déclare toutes les variables globales nécessaires au reste du code
+
+# Met toutes les lettres du texte en majuscules et enlève les accents et les
+# espaces et la ponctuation
+def removeAll(texte : str, to_remove: str):
+    for suppr in to_remove:
+        texte=texte.replace(suppr,"")
+    return texte
+
+def Format(texte :str, remove=" ,;:!?.()[]{}-+=*\n"):
+    return removeAll(unidecode.unidecode(texte).upper(),remove)
+
+# Retourne la lettre la plus fréquente du texte
+def plus_frequente(texte: str):
+    dictionnaire={texte.count(i):i for i in ALPHABET}
+    return dictionnaire[max(dictionnaire)]
+# Retorune un dictionnaire contenant les frequences des lettres 
+def frequences(texte: str):
+    return {i:texte.count(i) for i in ALPHABET if i in texte}
+
+# trouver un élément dans une Liste
+def Index(element,liste):
+    for i in liste:
+        if i==element:
+            break
+    return i
+{% endcodeblock %}
+<div class="text-xl px-1 mt-8">
+    Une fois ces outils établis, on peut commencer à créer les fonctions simples de cryptographie telles que César, ou encore Vigenère.
+</div>
+{% codeblock python %}
+def crypt_c(texte :str, decalage :str):
+    n=ord(decalage.upper())-65
+    texte = Format(texte)
+    texte_crypte = ""
+    
+    for lettre in texte:
+        # Si c'est pas une lettre, on ignore
+        if not lettre in ALPHABET:
+            texte_crypte += lettre
+        else:
+            texte_crypte += chr((ord(lettre)+n-65) % 26 + 65)
+    return texte_crypte
+
+# Une fonction qui crypte un texte avec le code Vigenère et le mot
+def crypt_v(texte :str, mot :str):
+    texte = Format(texte)
+    texte_crypte = ""
+    
+    for i in range(len(texte)):
+        if not texte[i] in ALPHABET:
+            texte_crypte += texte[i]
+        else:
+            texte_crypte += chr((ord(texte[i].upper()) + ord(mot[i%len(mot)].upper()) - 65 - 65) % 26 + 65)
+    
+    return texte_crypte
+
+{% endcodeblock %}
+<div class="text-xl px-1 mt-8">
+    Ainsi, une fois ceci effectué, il est possible de faire des fonctions permettant de déchiffrer ces messages cryptés en connaissant la clef ou le décalage. En effet, il suffit juste d'appliquer le décalage dans l'autre sens :
+</div>
+{% codeblock python %}
+# Une fonction qui decrypte un texte avec le code de César en décalant les
+# lettres de l'alphabet de n
+def decrypt_c(texte :str, decalage :str):
+    n=ord(decalage.upper())-65
+    texte = Format(texte)
+    texte_decrypte = ""
+    
+    for lettre in texte:
+        # Si c'est pas une lettre, on ignore
+        if not lettre in ALPHABET:
+            texte_decrypte += lettre
+        else:
+            texte_decrypte += chr((ord(lettre)-n-65) % 26 + 65)
+    return texte_decrypte
+
+# Une fonction qui crypte un texte avec le code Vigenère et le mot
+def decrypt_v(texte :str, mot :str):
+    texte = Format(texte)
+    texte_decrypte = ""
+    
+    for i in range(len(texte)):
+        if not texte[i] in ALPHABET:
+            texte_decrypte += texte[i]
+        else:
+            texte_decrypte += chr((ord(texte[i].upper()) - ord(mot[i%len(mot)].upper())) % 26 + 65)
+    
+    return texte_decrypte
+{% endcodeblock %}
+<div class="text-xl px-1 mt-8">
+    Cependant, dans la plupart des cas, la clef n'est malheuresement pas connue de la personne qui reçoit le message, et il faut donc déchiffrer ceci à la main. Ainsi, il faut automatiser les méthodes de déchiffrement à l'aide, notamment, de l'analyse des fréquences. Ainsi, il est possible également de créér des programmes permettant le décryptage de messages chiffrés en Vigenère ou encore avec le code César.
+</div>
+{% codeblock python %}
+# Décode automatiquement un code césar
+def decodage_automatique_c(texte :str):
+    return decrypt_c(texte, (plus_frequente(Format(texte))-65-4)%26)
+
+# Une fonciton qui décrypte automatiquement un message codé avec vigenère
+def decodage_automatique_v(texte :str, TAILLE_MAX = 20):
+   texte2 = texte
+   texte = garderLettres(texte)
+
+   mots_possibles = []
+   for a in range(26):
+      mots_possibles.append("")
+
+   freq_e = [0]
+   for a in range(TAILLE_MAX-1):
+      freq_e.append(100)
+
+   longueur = len(texte)
+
+   for i in range(TAILLE_MAX):
+      for j in range(i):
+         count = []
+         for a in range(26):
+            count.append(0)
+
+         a = 0
+         while i*a+j < longueur:
+             count[ord(texte[i*a+j]) - ord('A')] += 1
+             a += 1
+
+         tot = 0
+         count_m = max(count)
+         count_m_pos = Index(count_m,count)
+
+         for a in range(26):
+            tot += count[a]
+         
+         freq_m = count_m / tot * 100
+
+         if freq_m < freq_e[i]:
+            freq_e[i] = freq_m
+
+         mots_possibles[i] += chr((count_m_pos - 4 + 26) % 26 + ord('A'))
+
+   return mots_possibles[Index(max(freq_e),freq_e)]
+{% endcodeblock %}
+<div class="text-xl px-1 mt-8">
+    Une fois ceci fait, nous allons voir les différents outils mathématiques qui concernent notamment les nombres premiers, et les diverses factorisations en facteurs permettant de retrouver le pgcd ou encore le ppcm de deux nombres.
+</div>
+{% codeblock python True:text-sky-400 False:text-sky-400 %}
+# Une fonction qui retourne si un nombre est premier ou non
+def isprime(nb):
+    if nb <= 3:
+        return nb > 1
+    if nb % 2 == 0 or nb % 3 == 0:
+        return False
+
+    sqrt_nb = math.ceil(math.sqrt(nb))
+    for i in range(5, sqrt_nb, 6):
+        if nb % i == 0 or nb % (i +2) == 0:
+            return False
+    
+    return True
+def primeFacts(nb):
+    factprems = []
+    i = 2
+    while nb > 1:
+        c=0
+        while nb % i == 0:
+            nb = nb // i
+            c+=1
+        factprems.append({i:c})
+        i += 1
+    return factprems
+
+# Retourne les nombres premiers jusqu'à n
+def NbsPremsjusquaN(n):
+    if n <= 0:
+        return 0
+    if n == 1:
+        return [2]
+    nbsPrems = [2,3]
+
+    for i in range(5,n,6):
+        for j in nbsPrems:
+            if i%j==0:
+                break
+        else:
+            nbsPrems.append(i)
+        for j in nbsPrems:
+            if (i+2)%j==0:
+                break
+        else:
+            nbsPrems.append(i+2)
+    return nbsPrems
+{% endcodeblock %}
+<div class="text-xl px-1 mt-8">
+   En conclusion, nous avons vu comment programmer différents outils en python pour la cryptographie et les mathématiques. Si vosu voulez en savoir plus, ou préférezretrouver ces codes dans un autre langage, je vous invite à les retrouver sur <a class="text-sky-500" href="https://github.com/Edre2/">le github</a> dans le dossier <a class="text-sky-500" href="https://github.com/Edre2/outils">outils</a> ou encore sur le site web <a class="text-sky-500" href="https://edre2.github.io">Edre2.github.io</a> où vous pouvez retrouver de nombreuses autres fonctionnalités.
+</div>
+    <div class="text-xl text-gray-400 italic text-right pt-8">Erik Desurmont, élève au Lycée Franco-Allemand de Buc</div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends 'base/base.html' %}
+
+{% block head %}
+{% include 'base/head.html' with head_url="/static/home/media/image/home_background.jpg" title="Prédateurs-proies" subtitle="Prédire à l'aide de différents outils mathématiques l'évolution des populations" %}
+{% endblock %}
+
+{% block content %}
+{% load codeblock %}
+
+<div class="p-5 divide-transparent max-w-[600px] lg:max-w-[800px] relative center-w">
+    <div class="text-xl px-1">
+        Au XIXème siècle, des scientifiques se sont intéressés à l’évolution des populations de lièvres et de lynx dans
+        la baie d’Hudson. Les lièvres étant les proies des lynx.
+    </div>
+    <img class="relative center-w mt-8 w-96" src="../../static/articles/predproies/img1.png">
+    <img class="relative center-w mt-8 w-96" src="../../static/articles/predproies/img2.png">
+    <img class="relative center-w mt-8 w-96" src="../../static/articles/predproies/img3.png">
+    <div class="text-xl px-1 mt-8">
+        Pour ces deux population on a les équations suivantes: <br>
+        x’ = 1,05x - 0,001 xy et y’ = 0,97y - 0,0002 xy
+    </div>
+    <div class="text-xl px-1 mt-8">
+        On peut à partir de ces équations déterminer un point d’équilibre. Deux populations
+        de départ pour lesquelles les populations de lynx et de lièvres resteront constantes.
+        Pour cela, il faut résoudre x = x’ et y = y'
+    </div>
+    <div class="text-xl px-1 mt-8">
+        On trouve x = 150 et y = 50
+    </div>
+    <div class="text-xl px-1 mt-8">
+        Prédire l’évolution des populations, savoir à l’avance si une espèce est en
+danger d’extinction, être capable de connaître le nombre d’individus nécessaire à la
+survie d’une espèce, ce sont des préoccupations intemporelles. Platon et Aristote se
+demandaient déjà quelle serait la population optimale pour une cité. Aujourd’hui
+encore, on cherche à trouver le nombre maximal de poissons que l’on peut pêcher
+pour que la population reste constante d’une année sur l’autre.
+    </div>
+    <div class="text-xl px-1 mt-8">
+        Les mathématiciens Alfred James Lotka et Vito Volterra se sont eux aussi
+posé cette question. Respectivement en 1925 et 1926, ils proposent un modèle
+prédateur-proie.
+    </div>
+    <img class="relative center-w mt-8" src="../../static/articles/predproies/img4.png">
+    <div class="text-xl px-1 mt-8">
+        Pour leur modèle, les deux mathématiciens partent d’hypothèses de départ.
+Tout d’abord, en l’absence de prédateurs, ils partent du principe qu’une population
+croît indéfiniment. Ainsi, en l’absence de proie, le nombre de prédateurs décroît
+indéfiniment. En outre, l’interaction entre prédateurs et proies implique une
+diminution du nombre de proies et à une augmentation du nombre de prédateurs.
+    </div>
+    <div class="text-xl px-1 mt-8">
+        Prenons x(t) le nombre de proies à l’instant t, et y(t) le nombre de prédateurs
+        à l’instant t:
+    </div>
+    <div class="text-xl px-1 mt-8">
+        D’après le modèle Lotka-Volterra, on a:
+    </div>
+    <div class="text-xl px-1 mt-8">
+        x’(t)= ax-cxy et y’(t)= -by + dxy
+    </div>
+    <div class="text-xl px-1 mt-8">
+        Avec :
+        <ul class="list-disc">
+            <li>a le taux d'accroissement de la population des proie en l’absence de
+                prédateurs</li>
+            <li>b le taux de diminution de la population de prédateurs en absence de proies</li>
+            <li>c correspond à l’efficacité avec laquelle les prédateurs chassent les proies</li>
+            <li>d correspond à l’efficacité avec laquelle la consommation de proies permet
+                d’augmenter la population de prédateurs</li>
+                <li>xy correspond aux nombres de rencontres possibles entre prédateurs et
+                    proies</li>
+        </ul>
+    </div>
+    <div class="text-xl px-1 mt-8">
+        A partir de ces équations on peut déterminer, comme vu précédemment, un point
+d’équilibre. C'est-à-dire, des populations initiales de proies et de prédateurs qui
+restent constantes au cours du temps. Cela revient à poser:
+    </div>
+    <div class="text-xl px-1 mt-8">
+        x=ax - cxy et y= -by + dxy
+    </div>
+    <div class="text-xl text-gray-400 italic text-right pt-8">Samuel Rimlinger, élève au Lycée Franco-Allemand de Buc
+    </div>
+</div>
+
+
+{% endblock %}

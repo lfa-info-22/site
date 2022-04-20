@@ -1231,6 +1231,10 @@ select {
   width: auto;
 }
 
+.w-96 {
+  width: 24rem;
+}
+
 .min-w-\[300px\] {
   min-width: 300px;
 }
@@ -1276,6 +1280,10 @@ select {
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
+}
+
+.list-disc {
+  list-style-type: disc;
 }
 
 .grid-cols-2 {
@@ -1936,6 +1944,16 @@ select {
 .text-emerald-700 {
   --tw-text-opacity: 1;
   color: rgb(4 120 87 / var(--tw-text-opacity));
+}
+
+.text-violet-300 {
+  --tw-text-opacity: 1;
+  color: rgb(196 181 253 / var(--tw-text-opacity));
+}
+
+.text-sky-400 {
+  --tw-text-opacity: 1;
+  color: rgb(56 189 248 / var(--tw-text-opacity));
 }
 
 .underline {
