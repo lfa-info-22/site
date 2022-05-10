@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'articles',
     'train',
     'train.exercices',
+
+    'channels',
 ]
 
 INSTALLED_APIS = [
@@ -84,7 +86,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'lfainfo22.wsgi.application'
-
+ASGI_APPLICATION = "lfainfo22.asgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
