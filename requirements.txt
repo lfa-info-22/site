@@ -1,5 +1,7 @@
 # DJANGO
 django<3
 django-tailwind
+django-enumfields==2.1.1
+channels
 
 markovify
