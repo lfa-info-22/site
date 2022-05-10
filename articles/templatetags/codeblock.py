@@ -23,6 +23,27 @@ PSC_CONF = {
     'comments': 'text-emerald-200 text-xs lg:text-sm',
     'string': 'text-emerald-300'
 }
+PYTHON_CONF = {
+    'keywords' :[
+        ( 'while', 'text-violet-400' ),
+        ( 'int', 'text-sky-300' ),
+        ( 'for', 'text-violet-400' ),
+        ( 'in', 'text-violet-400' ),
+        ( 'return', 'text-violet-400' ),
+        ( 'if', 'text-violet-400' ),
+        ( 'elif', 'text-violet-400' ),
+        ( 'else', 'text-violet-400' ),
+        ( 'def', 'text-sky-500' ),
+        ( 'str', 'text-sky-300' ),
+        ( 'max', 'text-sky-300' ),
+        ( 'len', 'text-sky-300' ),
+        ( 'chr', 'text-sky-300' ),
+        ( 'ord', 'text-sky-300' ),
+        ('import', 'text-violet-400')
+    ],
+    'comments': 'text-emerald-200 text-xs lg:text-sm',
+    'string': 'text-emerald-300'
+}
 
 class CodeBlockNode(template.Node):
     def __init__(self, nodelist, lang, spe_names):
@@ -53,6 +74,7 @@ class CodeBlockNode(template.Node):
         return TEMPLATE
     def get_lang_name(self, lang):
         if lang == "psc": return "Pseudo-Code"
+        elif lang == "python": return "Python"
         return "Inconnu"
     
     def create_line(self, line, idx):
@@ -89,6 +111,38 @@ class CodeBlockNode(template.Node):
             
             if i < len(line) and i + 1 < len(line) and line[i:i+2] == "//":
                 conf_comment = PSC_CONF['comments']
+                lines[lidx] = f"<span class=\"{conf_comment}\">{line}</span>"
+            lidx += 1
+
+        return lines
+    def render_python(self,string):
+        string_indices = []
+        for i in range(len(string)):
+            if string[i] == "\"":
+                string_indices.append(i)
+        
+        if len(string_indices) % 2 == 1:
+            string_indices.pop()
+        
+        for i in range(len(string_indices) - 1, -1, -2):
+            innerString = string[string_indices[i - 1]:string_indices[i] + 1]
+            string = string[:string_indices[i - 1]] + f"<span class=\"text-green-600\">{innerString}</span>" + string[string_indices[i] + 1:]
+
+        for keyword in PYTHON_CONF['keywords']:
+            string = f"<span class=\"{keyword[1]}\">{keyword[0]}</span>".join(string.split(keyword[0]))
+        for spe_name in self.spe_names:
+            keyword = " ".join(spe_name.split("__")).split(":")
+            string = f"<span class=\"{keyword[1]}\">{keyword[0]}</span>".join(string.split(keyword[0]))
+
+        lines = string.split('\n')
+        lidx = 0
+        for line in lines:
+            i = 0
+            while i < len(line) and (line[i] == ' ' or line[i] == '\t'):
+                i += 1
+            
+            if i < len(line) and i + 1 < len(line) and line[i:i+1] == "#":
+                conf_comment = PYTHON_CONF['comments']
                 lines[lidx] = f"<span class=\"{conf_comment}\">{line}</span>"
             lidx += 1
 

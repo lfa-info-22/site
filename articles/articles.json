@@ -48,5 +48,25 @@
         "full_route": "/posts/",
         "image": "/static/home/media/image/vigenere_post.jpg",
         "writing": true
+    },
+    {
+        "name": "Outils de cryptographie",
+        "description": "Accès à des dizaines d'outils tous plus utiles les uns que les autres en mathématiques et cryptographie",
+        "template": "articles/outils.html",
+        "view": "ArticleView",
+        "route": "outils/",
+        "full_route": "/articles/outils/",
+        "image": "/static/home/media/image/crypto_post.jpg",
+        "writing": false
+    },
+    {
+        "name": "Prédateurs-proies",
+        "description": "Prédire à l'aide de différents outils mathématiques l'évolution des populations",
+        "template": "articles/predproies.html",
+        "view": "ArticleView",
+        "route": "predproies/",
+        "full_route": "/articles/predproies/",
+        "image": "/static/home/media/image/crypto_post.jpg",
+        "writing": false
     }
 ]

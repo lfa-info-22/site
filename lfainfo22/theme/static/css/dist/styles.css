@@ -1329,6 +1329,10 @@ input.admin.searchbar:focus ~ .admin.query .action {
   width: auto;
 }
 
+.w-96 {
+  width: 24rem;
+}
+
 .min-w-\[300px\] {
   min-width: 300px;
 }
@@ -1388,6 +1392,10 @@ input.admin.searchbar:focus ~ .admin.query .action {
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
+}
+
+.list-disc {
+  list-style-type: disc;
 }
 
 .grid-cols-2 {
@@ -2126,6 +2134,16 @@ input.admin.searchbar:focus ~ .admin.query .action {
 .text-emerald-700 {
   --tw-text-opacity: 1;
   color: rgb(4 120 87 / var(--tw-text-opacity));
+}
+
+.text-violet-300 {
+  --tw-text-opacity: 1;
+  color: rgb(196 181 253 / var(--tw-text-opacity));
+}
+
+.text-sky-400 {
+  --tw-text-opacity: 1;
+  color: rgb(56 189 248 / var(--tw-text-opacity));
 }
 
 .underline {
