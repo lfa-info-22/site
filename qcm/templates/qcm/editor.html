@@ -25,19 +25,19 @@
 
             <div class="admin query">
                 <div class="action flex">
-                    <div class="flex-1"><div class="relative h-min top-[50%] translate-y-[-50%]">Nom de la campagne</div></div>
+                    <div class="flex-1"><div class="relative h-min top-[50%] translate-y-[-50%]"></div></div>
                 </div>
                 <div class="action flex">
-                    <div class="flex-1"><div class="relative h-min top-[50%] translate-y-[-50%]">Nom de la campagne</div></div>
+                    <div class="flex-1"><div class="relative h-min top-[50%] translate-y-[-50%]"></div></div>
                 </div>
                 <div class="action flex">
-                    <div class="flex-1"><div class="relative h-min top-[50%] translate-y-[-50%]">Nom de la campagne</div></div>
+                    <div class="flex-1"><div class="relative h-min top-[50%] translate-y-[-50%]">An error occured, please retry later</div></div>
                 </div>
                 <div class="action flex">
-                    <div class="flex-1"><div class="relative h-min top-[50%] translate-y-[-50%]">Nom de la campagne</div></div>
+                    <div class="flex-1"><div class="relative h-min top-[50%] translate-y-[-50%]"></div></div>
                 </div>
                 <div class="action flex">
-                    <div class="flex-1"><div class="relative h-min top-[50%] translate-y-[-50%]">Nom de la campagne</div></div>
+                    <div class="flex-1"><div class="relative h-min top-[50%] translate-y-[-50%]"></div></div>
                 </div>
             </div>
         </div>
@@ -57,10 +57,10 @@
         {% for qcm in qcms %}
         <div class="w-[450px] flex-shrink-0 rounded-md bg-gray-300 h-min p-3 pt-4 flex flex-col gap-4 max-h-[calc(100vh-64px-32px)] overflow-y-auto relative">
             <div class="flex relative" id="chevron-parent">
-                <input class="bg-transparent text-xl flex-1 pr-8 pl-2" value="{{ qcm.name }}">
+                <input qcm-name qcm-id="{{ qcm.id }}" autocomplete="off" class="bg-transparent text-xl flex-1 pr-8 pl-2" value="{{ qcm.name }}">
 
                 <div class="pt-[6px] px-2">
-                    <div class="w-[14px] h-[14px] rounded-full {{ qcm.get_status_orb_color }}" title="{{ qcm.get_status_name }}">
+                    <div class="w-[14px] h-[14px] rounded-full {{ qcm.get_status_orb_color }} transition-colors" privacy title="{{ qcm.get_status_name }}">
 
                     </div>
                 </div>
@@ -70,9 +70,8 @@
                 </span>
 
                 <div toggle-{{ qcm.id }} class="absolute hidden bottom-0 right-0 translate-y-[100%] z-30 rounded-md bg-gray-200 border border-gray-300 divide-y divide-gray-300">
-                    <div class="p-3 flex flex-col gap-1">
-                        <div>Set active</div>
-                        <div>Set private</div>
+                    <div class="py-1 flex flex-col">
+                        <div class="cursor-pointer hover:bg-gray-300 px-3 py-2" toggle-privacy qcm-id="{{ qcm.id }}">Toggle privacy</div>
                     </div>
                 </div>
             </div>
@@ -108,5 +107,47 @@
         </div>
         {% endfor %}
     </div>
+
+
+
+    <script>
+        editor_ws = new WebSocket("ws://" + document.location.hostname + ":" + document.location.port + "/qcm/editor")
+        
+        let is_editor_open = false
+        let editor_to_send = []
+        editor_ws.onopen = (ev) => {
+            for (let idx = 0; idx < editor_to_send.length; idx ++)
+                editor_ws.send(editor_to_send[idx])
+
+            is_editor_open = true
+        }
+
+        function send (message) {
+            if (is_editor_open) {
+                editor_ws.send(message)
+                return;
+            }
+
+            editor_to_send.push(message)
+        }
+
+        document.querySelectorAll("input[qcm-name]").forEach((input) => {
+            input.addEventListener("input", (event) => {
+                send( `SET_QCM_NAME: ${input.getAttribute("qcm-id")}: ${input.value}` )
+            })
+        })
+
+        document.querySelectorAll("[toggle-privacy]").forEach((button) => {
+            button.onclick = (ev) => {
+                send( `TOGGLE_PRIVACY: ${button.getAttribute("qcm-id")}` )
+
+                let parent = button.parentNode.parentNode.parentNode;
+                let privacy_container = parent.querySelector("[privacy]")
+
+                privacy_container.classList.toggle("bg-green-500")
+                privacy_container.classList.toggle("bg-indigo-500")
+            }
+        })
+    </script>
 </body>
 </html>
