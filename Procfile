@@ -1,1 +1,1 @@
-web: make setuph && make migrate && python manage.py runserver $PORT
+web: make setuph && make migrate && python manage.py runserver 0.0.0.0:$PORT
