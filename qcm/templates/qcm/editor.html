@@ -1,0 +1,112 @@
+{% load tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editeur de sondages</title>
+
+    {% tailwind_css %}
+    <script src="/static/home/js/utils/toggler.js"></script>
+    <script src="/static/home/js/utils/select.js"></script>
+    <script src="/static/home/js/utils/template-renderer.js"></script>
+</head>
+<body class="w-screen h-screen bg-cover"
+    style="background-image: url('/static/account/media/login.jpg')">
+    <nav class="h-16 bg-gray-100 bg-opacity-70 flex gap-5">
+        <div></div>
+
+        <a href="/" class="material-icons-outlined p-[12px] pt-[16px]" style="font-size: 32px;">home</a>
+        <div class="material-icons-outlined p-[12px] pt-[16px]" style="font-size: 32px;">upload</div>
+
+        <div class="flex-1 relative hidden lg:block">
+            <input class="admin searchbar" placeholder="Search / Action">
+
+            <div class="admin query">
+                <div class="action flex">
+                    <div class="flex-1"><div class="relative h-min top-[50%] translate-y-[-50%]">Nom de la campagne</div></div>
+                </div>
+                <div class="action flex">
+                    <div class="flex-1"><div class="relative h-min top-[50%] translate-y-[-50%]">Nom de la campagne</div></div>
+                </div>
+                <div class="action flex">
+                    <div class="flex-1"><div class="relative h-min top-[50%] translate-y-[-50%]">Nom de la campagne</div></div>
+                </div>
+                <div class="action flex">
+                    <div class="flex-1"><div class="relative h-min top-[50%] translate-y-[-50%]">Nom de la campagne</div></div>
+                </div>
+                <div class="action flex">
+                    <div class="flex-1"><div class="relative h-min top-[50%] translate-y-[-50%]">Nom de la campagne</div></div>
+                </div>
+            </div>
+        </div>
+        <div class="flex-1"></div>
+
+        <div></div>
+    </nav>
+    
+    <div class="hidden bg-green-500"></div>
+    <div class="hidden bg-indigo-500"></div>
+    <div class="hidden bg-red-500"></div>
+
+    <div class="hidden bg-green-400"></div>
+    <div class="hidden bg-indigo-400"></div>
+
+    <div class="z-10 flex-1 h-[calc(100vh-64px)] max-h-[calc(100vh-64px)] p-4 overflow-x-auto flex gap-5 admin-scrollbar">
+        {% for qcm in qcms %}
+        <div class="w-[450px] flex-shrink-0 rounded-md bg-gray-300 h-min p-3 pt-4 flex flex-col gap-4 max-h-[calc(100vh-64px-32px)] overflow-y-auto relative">
+            <div class="flex relative" id="chevron-parent">
+                <input class="bg-transparent text-xl flex-1 pr-8 pl-2" value="{{ qcm.name }}">
+
+                <div class="pt-[6px] px-2">
+                    <div class="w-[14px] h-[14px] rounded-full {{ qcm.get_status_orb_color }}" title="{{ qcm.get_status_name }}">
+
+                    </div>
+                </div>
+
+                <span class="material-icons-outlined cursor-pointer select-none" style="font-size: 28px;" toggle for="[toggle-{{ qcm.id }}]">
+                    more_horiz
+                </span>
+
+                <div toggle-{{ qcm.id }} class="absolute hidden bottom-0 right-0 translate-y-[100%] z-30 rounded-md bg-gray-200 border border-gray-300 divide-y divide-gray-300">
+                    <div class="p-3 flex flex-col gap-1">
+                        <div>Set active</div>
+                        <div>Set private</div>
+                    </div>
+                </div>
+            </div>
+
+            {% for question in qcm.questions.all %}
+            <div class="bg-gray-200 rounded-md p-2 px-4 cursor-pointer relative">
+                <div class="flex text-lg">
+                    <div class="flex-1">{{ question.question }}</div>
+                    <div class="pt-[6px] pr-5">
+                        <div class="absolute top-[50%] translate-y-[-50%] w-[14px] h-[14px] rounded-full {{ series.get_status_orb_color }}" title="{{ series.get_status_name }}">
+    
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-gray-400 flex gap-3 select-none">
+                    <div class="flex gap-1" title="Multiple choice questions">
+                        <span class="material-icons-outlined">
+                            list
+                        </span>
+                        <p>{{ question.answers.count }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+            <div class="p-2 cursor-pointer rounded-md">
+                <div class="w-fit mx-auto flex">
+                    <div class="material-icons-outlined">add</div>
+                    <div class="">Add question</div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

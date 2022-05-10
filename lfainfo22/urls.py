@@ -19,6 +19,7 @@ from django.urls import path
 import api.urls
 import account.urls
 import home.urls
+import qcm.urls
 import train.urls
 import articles.urls
 
@@ -28,5 +29,6 @@ urlpatterns = [
     path('api/', api.urls.urlpatterns),
     path('train/', train.urls.urlpatterns),
     path('articles/', articles.urls.urlpatterns),
-    path('', home.urls.urlpatterns)
+    path('', home.urls.urlpatterns),
+    path('qcm/', qcm.urls.urlpatterns),
 ]
