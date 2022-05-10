@@ -1,1 +1,1 @@
-web: make setuph && make migrate && make run
+web: make setuph && make migrate && make runh
