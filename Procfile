@@ -1,0 +1,1 @@
+worker: make setup && make migrate && make run
