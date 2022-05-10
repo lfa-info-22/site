@@ -1021,17 +1021,16 @@ input.admin.searchbar:focus ~ .admin.query .action {
   z-index: 10;
 }
 
-<<<<<<< HEAD
+.z-30 {
+  z-index: 30;
+}
+
 .m-0 {
   margin: 0px;
 }
 
 .m-2 {
   margin: 0.5rem;
-=======
-.z-30 {
-  z-index: 30;
->>>>>>> b8778d6c7520548b95e166ca74e28c235a9debe2
 }
 
 .m-4 {
@@ -1677,18 +1676,11 @@ input.admin.searchbar:focus ~ .admin.query .action {
   background-color: rgb(209 213 219 / var(--tw-bg-opacity));
 }
 
-<<<<<<< HEAD
-=======
-.bg-transparent {
-  background-color: transparent;
-}
-
 .bg-black {
   --tw-bg-opacity: 1;
   background-color: rgb(0 0 0 / var(--tw-bg-opacity));
 }
 
->>>>>>> b8778d6c7520548b95e166ca74e28c235a9debe2
 .bg-red-200 {
   --tw-bg-opacity: 1;
   background-color: rgb(254 202 202 / var(--tw-bg-opacity));
@@ -1752,17 +1744,10 @@ input.admin.searchbar:focus ~ .admin.query .action {
   padding: 1rem;
 }
 
-<<<<<<< HEAD
-=======
 .p-6 {
   padding: 1.5rem;
 }
 
-.p-0 {
-  padding: 0px;
-}
-
->>>>>>> b8778d6c7520548b95e166ca74e28c235a9debe2
 .px-\[45px\] {
   padding-left: 45px;
   padding-right: 45px;
