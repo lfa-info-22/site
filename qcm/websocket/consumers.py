@@ -3,6 +3,7 @@ from lfainfo22.websocket.consumers import WSConsumer
 
 from django.contrib.sessions.models import Session
 from django.contrib.auth.models import User
+from django.template.loader import render_to_string
 
 from qcm.models import *
 
@@ -41,6 +42,31 @@ class WSEditorConsumer(WSConsumer):
 
                 item.status = QCMStatus.ACTIVE if item.status == QCMStatus.PRIVATE else QCMStatus.PRIVATE
                 item.save()
+
+        if message_type == "CREATE_QUESTION":
+            idx = message_data
+
+            item = QCM.objects.filter(id=idx)
+            if len(item) == 1:
+                item = item[0]
+
+                new_question = item.questions.create(question="Question")
+
+                text = f"ADD_QUESTION_HTML: {idx}: " + render_to_string("qcm/editor/question.html", { "question": new_question, }, None)
+                self.send(text)
+        
+        if message_type == "OPEN_QEDITOR":
+            qcm_idx, question_idx = message_data.split(": ", 1)
+
+            item = QCM.objects.filter(id=qcm_idx)
+            if len(item) == 1:
+                item = item[0]
+
+                qitem = item.questions.filter(id=question_idx)
+                if len(qitem) == 1:
+                    qitem = qitem[0]
+
+                    self.send("APPLY_QEDITOR: " + render_to_string("qcm/editor/question_editor.html"))
 
         return super().receive(text_data, bytes_data)
 
