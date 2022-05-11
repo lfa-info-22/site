@@ -18,7 +18,8 @@
         <div></div>
 
         <a href="/" class="material-icons-outlined p-[12px] pt-[16px]" style="font-size: 32px;">home</a>
-        <div class="material-icons-outlined p-[12px] pt-[16px]" style="font-size: 32px;">upload</div>
+        <label for="latex-upload" class="cursor-pointer material-icons-outlined p-[12px] pt-[16px]" style="font-size: 32px;">upload</label>
+        <input type="file" class="hidden" id="latex-upload">
 
         <div class="flex-1 relative hidden lg:block">
             <input class="admin searchbar" placeholder="Search / Action">
@@ -203,6 +204,12 @@
                     send(`CREATE_ANSWER: ${parent.getAttribute("qcm-id")}: ${parent.getAttribute("question-id")}`)
                 }
             }) 
+
+            document.querySelectorAll("#latex-upload").forEach((input) => {
+                input.addEventListener("input", (ev) => {
+                    console.log(ev)
+                })
+            })
         }
 
         create_events()

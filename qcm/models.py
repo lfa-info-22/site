@@ -43,3 +43,7 @@ class QCM (models.Model):
         elif self.status == QCMStatus.PRIVATE:
             return "Private"
         return ""
+
+
+def build_qcm_from_latex_element(qcm_element, latex_element):
+    pass

@@ -1,6 +1,7 @@
 
 
 from qcm.latex.elem import LatexElement, LatexParameter
+from qcm.latex.lexer import LATEX_OPERATORS
 
 
 class LatexParser:
@@ -29,24 +30,34 @@ class LatexParser:
 
         return LatexElement("root", childs)
     
-    def _build(self, until="}"):
+    def _build(self, until=""):
         childs = []
 
         while self.advanced:
             if self.token.name in until: 
                 return childs
 
-            if self.token.is_text():
-                childs.append(self.token.value)
+            if self.token.is_text() or self.token.name != "\\":
+                childs.append(self.token.value if self.token.is_text() else self.token.name)
             elif self.token.name == "\\":
                 self.advance()
 
+                if self.token.value == None:
+                    childs.append("\\")
+                    continue
                 name = self.token.value.split(" ")[0]
                 self.advance()
                 subchilds = []
                 last_length = -1
 
-                while last_length != len(subchilds):
+                can_have_modifiers = not name in [
+                    "pi",
+                    "theta",
+                    "left",
+                    "right"
+                ]
+
+                while last_length != len(subchilds) and can_have_modifiers:
                     last_length = len(subchilds)
 
                     while self.token and self.token.name == "[":
@@ -63,6 +74,7 @@ class LatexParser:
                         if self.token and self.token.name != "}": raise Exception()
                         self.advance()
                 
+                self.idx -= 1
                 childs.append(LatexElement(name, subchilds))
             
             if self.token and self.token.name in until: return childs

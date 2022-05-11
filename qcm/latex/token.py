@@ -32,3 +32,6 @@ class LatexToken:
         
         self.name = "NAME" if can_be_name else "TEXT"
         return self
+    
+    def __str__(self):
+        return self.name + ":" + str(self.value)
