@@ -1,6 +1,6 @@
 <div qcm-id="{{ qcm.id }}" question-id="{{ question.id }}" question-parent class="bg-gray-200 rounded-md p-2 px-4 cursor-pointer relative">
     <div class="flex text-lg">
-        <div class="flex-1">{{ question.question }}</div>
+        <div class="flex-1" question-name-container qcm-id="{{ qcm.id }}" question-id="{{ question.id }}">{{ question.question }}</div>
         <div class="pt-[6px] pr-5">
             <div class="absolute top-[50%] translate-y-[-50%] w-[14px] h-[14px] rounded-full {{ series.get_status_orb_color }}" title="{{ series.get_status_name }}">
 
@@ -13,7 +13,7 @@
             <span class="material-icons-outlined">
                 list
             </span>
-            <p>{{ question.answers.count }}</p>
+            <p answer-count question-id="{{ question.id }}">{{ question.answers.count }}</p>
         </div>
     </div>
 </div>

@@ -97,6 +97,15 @@
                 document.querySelector("[q-editor]").innerHTML = message
                 create_events()
             }
+            if (type == "CHANGE_ANSWER_COUNT") {
+                let _message = message.split(": ", 2)
+                let question_id = _message[0]
+                let answer_count = _message[1]
+
+                document.querySelectorAll(`[answer-count][question-id="${question_id}"]`).forEach((el) => {
+                    el.innerText = answer_count
+                })
+            }
         }
 
         function send (message) {
@@ -106,6 +115,14 @@
             }
 
             editor_to_send.push(message)
+        }
+
+        function get_parent_with_attrib (child, attrib) {
+            let parent = child;
+            while (!parent.hasAttribute(attrib))
+                parent = parent.parentNode;
+            
+            return parent;
         }
 
         function create_events () {
@@ -143,6 +160,49 @@
                     document.querySelector("[q-editor]").innerHTML = ""
                 }
             })
+
+            document.querySelectorAll("input[question-name]").forEach(input => {
+                input.addEventListener("input", (ev) => {
+                    let parent = get_parent_with_attrib(input, "question-data")
+                    send( `MODIFY_QNAME: ${parent.getAttribute("qcm-id")}: ${parent.getAttribute("question-id")}: ${input.value}` )
+
+                    document.querySelectorAll(`[question-name-container][qcm-id="${parent.getAttribute("qcm-id")}"][question-id="${parent.getAttribute("question-id")}"]`).forEach((el) => {
+                        el.innerText = input.value;
+                    })
+                })
+            })
+
+            document.querySelectorAll("input[answer-response]").forEach(input => {
+                input.addEventListener("input", (ev) => {
+                    let parent = get_parent_with_attrib(input, "answer-parent")
+                    let qparent = get_parent_with_attrib(input, "question-data")
+                    send( `MODIFY_ARESP: ${qparent.getAttribute("qcm-id")}: ${qparent.getAttribute("question-id")}: ${parent.getAttribute("answer-id")}: ${input.value}` )
+
+                    document.querySelectorAll(`[question-name-container][qcm-id="${parent.getAttribute("qcm-id")}"][question-id="${parent.getAttribute("question-id")}"]`).forEach((el) => {
+                        el.innerText = input.value;
+                    })
+                })
+            })
+
+            document.querySelectorAll("input[answer-correct]").forEach(input => {
+                input.addEventListener("input", (ev) => {
+                    let parent = get_parent_with_attrib(input, "answer-parent")
+                    let qparent = get_parent_with_attrib(input, "question-data")
+                    send( `TOGGLE_ACORR: ${qparent.getAttribute("qcm-id")}: ${qparent.getAttribute("question-id")}: ${parent.getAttribute("answer-id")}` )
+
+                    document.querySelectorAll(`[question-name-container][qcm-id="${parent.getAttribute("qcm-id")}"][question-id="${parent.getAttribute("question-id")}"]`).forEach((el) => {
+                        el.innerText = input.value;
+                    })
+                })
+            })
+
+            document.querySelectorAll("[create-answer]").forEach((btn) => {
+                btn.onclick = (ev) => {
+                    let parent = get_parent_with_attrib(btn, "question-data")
+
+                    send(`CREATE_ANSWER: ${parent.getAttribute("qcm-id")}: ${parent.getAttribute("question-id")}`)
+                }
+            }) 
         }
 
         create_events()

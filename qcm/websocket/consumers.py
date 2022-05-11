@@ -66,8 +66,74 @@ class WSEditorConsumer(WSConsumer):
                 if len(qitem) == 1:
                     qitem = qitem[0]
 
-                    self.send("APPLY_QEDITOR: " + render_to_string("qcm/editor/question_editor.html"))
+                    self.send("APPLY_QEDITOR: " + render_to_string("qcm/editor/question_editor.html", { "qcm": item, "question": qitem, }))
 
+        if message_type == "MODIFY_QNAME":
+            qcm_idx, question_idx, question_name = message_data.split(": ", 2)
+
+            item = QCM.objects.filter(id=qcm_idx)
+            if len(item) == 1:
+                item = item[0]
+
+                qitem = item.questions.filter(id=question_idx)
+                if len(qitem) == 1:
+                    qitem = qitem[0]
+
+                    qitem.question = question_name
+                    qitem.save()
+        
+        if message_type == "CREATE_ANSWER":
+            qcm_idx, question_idx = message_data.split(": ", 1)
+
+            item = QCM.objects.filter(id=qcm_idx)
+            if len(item) == 1:
+                item = item[0]
+
+                qitem = item.questions.filter(id=question_idx)
+                if len(qitem) == 1:
+                    qitem = qitem[0]
+
+                    qitem.answers.create(response="Answer", correct=False)
+
+                    self.send("APPLY_QEDITOR: " + render_to_string("qcm/editor/question_editor.html", { "qcm": item, "question": qitem, }))
+                    self.send(f"CHANGE_ANSWER_COUNT: {question_idx}: " + str(qitem.answers.count()))
+
+        if message_type == "MODIFY_ARESP":
+            qcm_idx, question_idx, answer_idx, answer_response = message_data.split(": ", 3)
+
+            item = QCM.objects.filter(id=qcm_idx)
+            if len(item) == 1:
+                item = item[0]
+
+                qitem = item.questions.filter(id=question_idx)
+                if len(qitem) == 1:
+                    qitem = qitem[0]
+
+                    aitem = qitem.answers.filter(id=answer_idx)
+                    if len(aitem) == 1:
+                        aitem = aitem[0]
+                        
+                        aitem.response = answer_response
+                        aitem.save()
+
+        if message_type == "TOGGLE_ACORR":
+            qcm_idx, question_idx, answer_idx = message_data.split(": ", 2)
+
+            item = QCM.objects.filter(id=qcm_idx)
+            if len(item) == 1:
+                item = item[0]
+
+                qitem = item.questions.filter(id=question_idx)
+                if len(qitem) == 1:
+                    qitem = qitem[0]
+
+                    aitem = qitem.answers.filter(id=answer_idx)
+                    if len(aitem) == 1:
+                        aitem = aitem[0]
+                        
+                        aitem.correct = not aitem.correct
+                        aitem.save()
+        
         return super().receive(text_data, bytes_data)
 
     def connect(self):

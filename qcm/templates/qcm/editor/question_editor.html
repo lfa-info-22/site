@@ -1,7 +1,36 @@
 
 
-<div qcm-id="{{ qcm.id }}" question-id="{{ question.id }}" class="top-0 left-0 absolute bg-black bg-opacity-10 w-screen h-screen" leave-editor>
+<div class="top-0 left-0 absolute bg-black bg-opacity-10 w-screen h-screen" leave-editor>
     
 </div>
 
-<div class="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] rounded-md w-[600px] h-[400px] bg-gray-300"></div>
+<div class="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] max-h-screen overflow-y-auto">
+    <div question-data qcm-id="{{ qcm.id }}" question-id="{{ question.id }}" class="rounded-md w-[600px] bg-gray-300 p-8">
+        <div class="flex">
+            <input question-name value="{{ question.question }}" autocomplete="off" class="text-3xl bg-transparent flex-1">
+            <div>
+                <div class="cursor-pointer material-icons-outlined relative top-[50%] translate-y-[-50%]" leave-editor>
+                    close
+                </div>
+            </div>
+        </div>
+
+        {% for answer in question.answers.all %}
+        <div class="flex mt-4" answer-parent answer-id="{{ answer.id }}">
+            <div class="mr-4">
+                <div class="relative top-[50%] translate-y-[-50%]">
+                    <input answer-correct class="rounded-full bg-gray-200 border-0" type="checkbox" autocomplete="off" {% if answer.correct %}checked{% endif %}>
+                </div>
+            </div>
+            <input answer-response value="{{ answer.response }}" autocomplete="off" class="text-xl flex-1 bg-transparent">
+        </div>
+        {% endfor %}
+
+        <div class="p-2 cursor-pointer rounded-md" create-answer>
+            <div class="w-fit mx-auto flex">
+                <div class="material-icons-outlined">add</div>
+                <div class="">Add answer</div>
+            </div>
+        </div>
+    </div>
+</div>
