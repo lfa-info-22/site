@@ -4,6 +4,8 @@ import random
 import enum
 import enumfields
 
+from qcm.latex import evaluate_latex
+
 class QCMStatus(enum.Enum):
     ACTIVE = 0
     PRIVATE = 1
@@ -46,4 +48,28 @@ class QCM (models.Model):
 
 
 def build_qcm_from_latex_element(qcm_element, latex_element):
-    pass
+    if qcm_element == None:
+        qcm_element = QCM.objects.create(name="QCM", status=QCMStatus.PRIVATE)
+    qcm_element.questions.clear()
+
+    for question_start in latex_element.query("{question}"):
+        if question_start.name != "begin":
+            continue
+
+        bareme_element = question_start.parent.parent.query("bareme")[0]
+        question_element = question_start.parent.elements[
+            question_start.parent.elements.index(bareme_element) + 1
+        ]
+        qcm_question = qcm_element.questions.create(question=question_element)
+        
+        right_answers = question_start.parent.parent.query("bonne")
+        false_answers = question_start.parent.parent.query("mauvaise")
+
+        answers = right_answers + false_answers
+        random.shuffle(answers)
+
+        for answer in answers:
+            qcm_question.answers.create(
+                response=answer.parameters[0].elements[0],
+                correct=answer.name == "bonne"
+            )
