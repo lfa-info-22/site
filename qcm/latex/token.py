@@ -1,13 +1,25 @@
 
+import enum
+
+class TokenType(enum.Enum):
+    TEXT                  = 0
+    BACKSLASHED_NAME      = 1
+    LEFT_SQUARED_BRACKET  = 2
+    RIGHT_SQUARED_BRACKET = 3
+    LEFT_CURLY_BRACKET    = 4
+    RIGHT_CURLY_BRACKET   = 5
+    WHITETEXT             = 6
 
 class LatexToken:
-    def __init__(self, name, value=None):
-        self.name = name
+    def __init__(self, type:TokenType, value=None):
+        self.type = type
         self.value = value
         self.source = ""
     
     def is_text(self):
-        return self.name == "TEXT" or self.name == "NAME"
+        return self.type == TokenType.TEXT or self.type == TokenType.WHITETEXT
+    def is_white_text(self):
+        return self.type == TokenType.WHITETEXT
     def is_operator(self):
         return not self.is_text()
 
@@ -20,18 +32,9 @@ class LatexToken:
         self.source = string
 
         return self
-    def validate_name(self):
-        can_be_name = self.name == "NAME"
-        if not can_be_name:
-            return self
-
-        for chr in self.value:
-            if chr.isspace():
-                can_be_name = False
-                break
-        
-        self.name = "NAME" if can_be_name else "TEXT"
+    def validate_whitespace(self):
+        self.type = TokenType.WHITETEXT if self.is_text() and self.value.isspace() else self.type
         return self
     
     def __str__(self):
-        return self.name + ":" + str(self.value)
+        return str(self.type) + ":" + str(self.value)
