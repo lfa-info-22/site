@@ -1,5 +1,6 @@
 
-from qcm.latex.token import LatexToken
+from qcm.latex.token import LatexToken, TokenType
+import string
 
 LATEX_OPERATORS = set([
     "\\",
@@ -8,6 +9,13 @@ LATEX_OPERATORS = set([
     "[",
     "]",
 ])
+
+BINDINGS = {
+    "{": TokenType.LEFT_CURLY_BRACKET,
+    "}": TokenType.RIGHT_CURLY_BRACKET,
+    "[": TokenType.LEFT_SQUARED_BRACKET,
+    "]": TokenType.RIGHT_SQUARED_BRACKET,
+}
 
 class LatexLexer:
     def __init__(self, string):
@@ -33,31 +41,73 @@ class LatexLexer:
         self.tokens = []
         cur = 0
 
-        while self.chr:
-            if self.chr in LATEX_OPERATORS:
-                if self.chr == "\\" and self.next() in LATEX_OPERATORS:
-                    self.advance(2)
-                    continue
+        while self.advanced:
+            if self.chr == "$":
+                self.advance()
+
+                while self.advanced and self.chr != "$":
+                    self.advance()
                 
+                if not self.advanced:
+                    raise Exception("Expected a $ to close a $ expression")
+                self.advance()
+
+                continue
+
+            if self.chr == "\\" and self.next() in LATEX_OPERATORS:
+                self.advance(2)
+            elif self.chr == "\\":
                 if cur != self.idx:
-                    if not self.string[cur:self.idx].isspace():
-                        self.tokens.append ( LatexToken ( "NAME", self.string[cur:self.idx])
+                    self.tokens.append(
+                        LatexToken(TokenType.TEXT, self.string[cur:self.idx])
                             .set_pos(cur, self.idx - cur)
                             .set_source(self.string)
-                            .validate_name() )
+                            .validate_whitespace()
+                    )
 
-                self.tokens.append(LatexToken( self.chr )
-                        .set_pos( self.idx, 1 )
-                        .set_source(self.string))
-                cur = self.idx + 1
+                self.advance()
 
-            self.advance()
+                if not self.chr in string.ascii_letters:
+                    self.advance()
+                    continue
+
+                name_start = self.idx
+                while self.chr in string.ascii_letters:
+                    self.advance()
+                
+                self.tokens.append(
+                    LatexToken(TokenType.BACKSLASHED_NAME, self.string[name_start:self.idx])
+                        .set_pos(name_start, self.idx - name_start)
+                        .set_source(self.string)
+                )
+
+                cur = self.idx
+            elif self.chr in LATEX_OPERATORS:
+                if cur != self.idx:
+                    self.tokens.append(
+                        LatexToken(TokenType.TEXT, self.string[cur:self.idx])
+                            .set_pos(cur, self.idx - cur)
+                            .set_source(self.string)
+                            .validate_whitespace()
+                    )
+                
+                self.tokens.append(
+                    LatexToken(BINDINGS[self.chr])
+                        .set_pos(self.idx, 1)
+                        .set_source(self.string)
+                )
+                self.advance()
+
+                cur = self.idx
+            else:
+                self.advance()
         
-        if cur != len(self.string):
-            if not self.string[cur:].isspace():
-                self.tokens.append ( LatexToken ( "NAME", self.string[cur:len(self.string)])
-                    .set_pos(cur, len(self.string) - cur)
+        if cur != self.idx:
+            self.tokens.append(
+                LatexToken(TokenType.TEXT, self.string[cur:self.idx])
+                    .set_pos(cur, self.idx - cur)
                     .set_source(self.string)
-                    .validate_name() )
-        
+                    .validate_whitespace()
+            )
+
         return self.tokens

@@ -12,32 +12,33 @@
     <script src="/static/home/js/utils/select.js"></script>
     <script src="/static/home/js/utils/template-renderer.js"></script>
 </head>
-<body class="w-screen h-screen bg-cover"
+<body class="w-screen h-screen bg-cover overflow-y-hidden"
     style="background-image: url('/static/account/media/login.jpg')">
     <nav class="h-16 bg-gray-100 bg-opacity-70 flex gap-5">
         <div></div>
 
         <a href="/" class="material-icons-outlined p-[12px] pt-[16px]" style="font-size: 32px;">home</a>
-        <div class="material-icons-outlined p-[12px] pt-[16px]" style="font-size: 32px;">upload</div>
+        <label for="latex-upload" class="cursor-pointer material-icons-outlined p-[12px] pt-[16px]" style="font-size: 32px;">upload</label>
+        <input type="file" class="hidden" id="latex-upload">
 
         <div class="flex-1 relative hidden lg:block">
             <input class="admin searchbar" placeholder="Search / Action">
 
             <div class="admin query">
                 <div class="action flex">
-                    <div class="flex-1"><div class="relative h-min top-[50%] translate-y-[-50%]">Nom de la campagne</div></div>
+                    <div class="flex-1"><div class="relative h-min top-[50%] translate-y-[-50%]"></div></div>
                 </div>
                 <div class="action flex">
-                    <div class="flex-1"><div class="relative h-min top-[50%] translate-y-[-50%]">Nom de la campagne</div></div>
+                    <div class="flex-1"><div class="relative h-min top-[50%] translate-y-[-50%]"></div></div>
                 </div>
                 <div class="action flex">
-                    <div class="flex-1"><div class="relative h-min top-[50%] translate-y-[-50%]">Nom de la campagne</div></div>
+                    <div class="flex-1"><div class="relative h-min top-[50%] translate-y-[-50%]">An error occured, please retry later</div></div>
                 </div>
                 <div class="action flex">
-                    <div class="flex-1"><div class="relative h-min top-[50%] translate-y-[-50%]">Nom de la campagne</div></div>
+                    <div class="flex-1"><div class="relative h-min top-[50%] translate-y-[-50%]"></div></div>
                 </div>
                 <div class="action flex">
-                    <div class="flex-1"><div class="relative h-min top-[50%] translate-y-[-50%]">Nom de la campagne</div></div>
+                    <div class="flex-1"><div class="relative h-min top-[50%] translate-y-[-50%]"></div></div>
                 </div>
             </div>
         </div>
@@ -55,58 +56,163 @@
 
     <div class="z-10 flex-1 h-[calc(100vh-64px)] max-h-[calc(100vh-64px)] p-4 overflow-x-auto flex gap-5 admin-scrollbar">
         {% for qcm in qcms %}
-        <div class="w-[450px] flex-shrink-0 rounded-md bg-gray-300 h-min p-3 pt-4 flex flex-col gap-4 max-h-[calc(100vh-64px-32px)] overflow-y-auto relative">
-            <div class="flex relative" id="chevron-parent">
-                <input class="bg-transparent text-xl flex-1 pr-8 pl-2" value="{{ qcm.name }}">
-
-                <div class="pt-[6px] px-2">
-                    <div class="w-[14px] h-[14px] rounded-full {{ qcm.get_status_orb_color }}" title="{{ qcm.get_status_name }}">
-
-                    </div>
-                </div>
-
-                <span class="material-icons-outlined cursor-pointer select-none" style="font-size: 28px;" toggle for="[toggle-{{ qcm.id }}]">
-                    more_horiz
-                </span>
-
-                <div toggle-{{ qcm.id }} class="absolute hidden bottom-0 right-0 translate-y-[100%] z-30 rounded-md bg-gray-200 border border-gray-300 divide-y divide-gray-300">
-                    <div class="p-3 flex flex-col gap-1">
-                        <div>Set active</div>
-                        <div>Set private</div>
-                    </div>
-                </div>
-            </div>
-
-            {% for question in qcm.questions.all %}
-            <div class="bg-gray-200 rounded-md p-2 px-4 cursor-pointer relative">
-                <div class="flex text-lg">
-                    <div class="flex-1">{{ question.question }}</div>
-                    <div class="pt-[6px] pr-5">
-                        <div class="absolute top-[50%] translate-y-[-50%] w-[14px] h-[14px] rounded-full {{ series.get_status_orb_color }}" title="{{ series.get_status_name }}">
-    
-                        </div>
-                    </div>
-                </div>
-
-                <div class="text-gray-400 flex gap-3 select-none">
-                    <div class="flex gap-1" title="Multiple choice questions">
-                        <span class="material-icons-outlined">
-                            list
-                        </span>
-                        <p>{{ question.answers.count }}</p>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-
-            <div class="p-2 cursor-pointer rounded-md">
-                <div class="w-fit mx-auto flex">
-                    <div class="material-icons-outlined">add</div>
-                    <div class="">Add question</div>
-                </div>
-            </div>
-        </div>
+        {% include 'qcm/editor/qcm.html' with qcm=qcm %}
         {% endfor %}
     </div>
+
+    <div q-editor></div>
+
+    <script>
+        editor_ws = new WebSocket("ws://" + document.location.hostname + ":" + document.location.port + "/qcm/editor")
+        
+        let is_editor_open = false
+        let editor_to_send = []
+        editor_ws.onopen = (ev) => {
+            for (let idx = 0; idx < editor_to_send.length; idx ++)
+                editor_ws.send(editor_to_send[idx])
+
+            is_editor_open = true
+        }
+
+        editor_ws.onmessage = (ev) => {
+            let data = ev.data
+            let _data = data.split(": ")
+            let type = _data[0]
+            _data.splice(0, 1)
+            let message = _data.join(": ")
+
+            if (type == "ADD_QUESTION_HTML") {
+                let _message = message.split(": ", 2)
+                let qcm_id = _message[0]
+                let question_html = _message[1]
+
+                const el = document.createElement("div")
+                el.innerHTML = question_html
+
+                const container = document.querySelector(`[qcm-parent][qcm-id="${qcm_id}"]`)
+                container.insertBefore(el.firstChild, container.querySelector("[create-question]"))
+
+                create_events()
+            }
+            if (type == "APPLY_QEDITOR") {
+                document.querySelector("[q-editor]").innerHTML = message
+                create_events()
+            }
+            if (type == "CHANGE_ANSWER_COUNT") {
+                let _message = message.split(": ", 2)
+                let question_id = _message[0]
+                let answer_count = _message[1]
+
+                document.querySelectorAll(`[answer-count][question-id="${question_id}"]`).forEach((el) => {
+                    el.innerText = answer_count
+                })
+            }
+        }
+
+        function send (message) {
+            if (is_editor_open) {
+                editor_ws.send(message)
+                return;
+            }
+
+            editor_to_send.push(message)
+        }
+
+        function get_parent_with_attrib (child, attrib) {
+            let parent = child;
+            while (!parent.hasAttribute(attrib))
+                parent = parent.parentNode;
+            
+            return parent;
+        }
+
+        function create_events () {
+            document.querySelectorAll("input[qcm-name]").forEach((input) => {
+                input.addEventListener("input", (event) => {
+                    send( `SET_QCM_NAME: ${input.getAttribute("qcm-id")}: ${input.value}` )
+                })
+            })
+
+            document.querySelectorAll("[toggle-privacy]").forEach((button) => {
+                button.onclick = (ev) => {
+                    send( `TOGGLE_PRIVACY: ${button.getAttribute("qcm-id")}` )
+
+                    let parent = button.parentNode.parentNode.parentNode;
+                    let privacy_container = parent.querySelector("[privacy]")
+
+                    privacy_container.classList.toggle("bg-green-500")
+                    privacy_container.classList.toggle("bg-indigo-500")
+                }
+            })
+
+            document.querySelectorAll("[create-question]").forEach(btn => {
+                btn.onclick = (ev) => {
+                    send( `CREATE_QUESTION: ${btn.getAttribute("qcm-id")}` )
+                }
+            })
+
+            document.querySelectorAll("[question-parent]").forEach(btn => {
+                btn.onclick = (ev) => {
+                    send( `OPEN_QEDITOR: ${btn.getAttribute("qcm-id")}: ${btn.getAttribute("question-id")}` )
+                }
+            })
+            document.querySelectorAll("[leave-editor]").forEach(btn => {
+                btn.onclick = (ev) => {
+                    document.querySelector("[q-editor]").innerHTML = ""
+                }
+            })
+
+            document.querySelectorAll("input[question-name]").forEach(input => {
+                input.addEventListener("input", (ev) => {
+                    let parent = get_parent_with_attrib(input, "question-data")
+                    send( `MODIFY_QNAME: ${parent.getAttribute("qcm-id")}: ${parent.getAttribute("question-id")}: ${input.value}` )
+
+                    document.querySelectorAll(`[question-name-container][qcm-id="${parent.getAttribute("qcm-id")}"][question-id="${parent.getAttribute("question-id")}"]`).forEach((el) => {
+                        el.innerText = input.value;
+                    })
+                })
+            })
+
+            document.querySelectorAll("input[answer-response]").forEach(input => {
+                input.addEventListener("input", (ev) => {
+                    let parent = get_parent_with_attrib(input, "answer-parent")
+                    let qparent = get_parent_with_attrib(input, "question-data")
+                    send( `MODIFY_ARESP: ${qparent.getAttribute("qcm-id")}: ${qparent.getAttribute("question-id")}: ${parent.getAttribute("answer-id")}: ${input.value}` )
+
+                    document.querySelectorAll(`[question-name-container][qcm-id="${parent.getAttribute("qcm-id")}"][question-id="${parent.getAttribute("question-id")}"]`).forEach((el) => {
+                        el.innerText = input.value;
+                    })
+                })
+            })
+
+            document.querySelectorAll("input[answer-correct]").forEach(input => {
+                input.addEventListener("input", (ev) => {
+                    let parent = get_parent_with_attrib(input, "answer-parent")
+                    let qparent = get_parent_with_attrib(input, "question-data")
+                    send( `TOGGLE_ACORR: ${qparent.getAttribute("qcm-id")}: ${qparent.getAttribute("question-id")}: ${parent.getAttribute("answer-id")}` )
+
+                    document.querySelectorAll(`[question-name-container][qcm-id="${parent.getAttribute("qcm-id")}"][question-id="${parent.getAttribute("question-id")}"]`).forEach((el) => {
+                        el.innerText = input.value;
+                    })
+                })
+            })
+
+            document.querySelectorAll("[create-answer]").forEach((btn) => {
+                btn.onclick = (ev) => {
+                    let parent = get_parent_with_attrib(btn, "question-data")
+
+                    send(`CREATE_ANSWER: ${parent.getAttribute("qcm-id")}: ${parent.getAttribute("question-id")}`)
+                }
+            }) 
+
+            document.querySelectorAll("#latex-upload").forEach((input) => {
+                input.addEventListener("input", (ev) => {
+                    console.log(ev)
+                })
+            })
+        }
+
+        create_events()
+    </script>
 </body>
 </html>

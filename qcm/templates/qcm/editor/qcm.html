@@ -1,0 +1,32 @@
+<div qcm-parent qcm-id="{{ qcm.id }}" class="w-[450px] flex-shrink-0 rounded-md bg-gray-300 h-min p-3 pt-4 flex flex-col gap-4 max-h-[calc(100vh-64px-32px)] overflow-y-auto relative">
+    <div class="flex relative" id="chevron-parent">
+        <input qcm-name qcm-id="{{ qcm.id }}" autocomplete="off" class="bg-transparent text-xl flex-1 pr-8 pl-2" value="{{ qcm.name }}">
+
+        <div class="pt-[6px] px-2">
+            <div class="w-[14px] h-[14px] rounded-full {{ qcm.get_status_orb_color }} transition-colors" privacy title="{{ qcm.get_status_name }}">
+
+            </div>
+        </div>
+
+        <span class="material-icons-outlined cursor-pointer select-none" style="font-size: 28px;" toggle for="[toggle-{{ qcm.id }}]">
+            more_horiz
+        </span>
+
+        <div toggle-{{ qcm.id }} class="absolute hidden bottom-0 right-0 translate-y-[100%] z-30 rounded-md bg-gray-200 border border-gray-300 divide-y divide-gray-300">
+            <div class="py-1 flex flex-col">
+                <div class="cursor-pointer hover:bg-gray-300 px-3 py-2" toggle-privacy qcm-id="{{ qcm.id }}">Toggle privacy</div>
+            </div>
+        </div>
+    </div>
+
+    {% for question in qcm.questions.all %}
+    {% include 'qcm/editor/question.html' %}
+    {% endfor %}
+
+    <div class="p-2 cursor-pointer rounded-md" create-question qcm-id="{{ qcm.id }}">
+        <div class="w-fit mx-auto flex">
+            <div class="material-icons-outlined">add</div>
+            <div class="">Add question</div>
+        </div>
+    </div>
+</div>

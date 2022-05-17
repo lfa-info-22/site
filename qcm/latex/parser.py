@@ -1,6 +1,8 @@
 
 
 from qcm.latex.elem import LatexElement, LatexParameter
+from qcm.latex.lexer import LATEX_OPERATORS
+from qcm.latex.token import TokenType
 
 
 class LatexParser:
@@ -17,6 +19,9 @@ class LatexParser:
         self.token = self.tokens[self.idx] if self.advanced else False
 
         return self.advanced
+    def advance_white_space(self):
+        while self.advanced and self.token.type == TokenType.WHITETEXT:
+            self.advance()
     def next (self, off=1):
         valid = 0 <= self.idx + off < len(self.tokens)
 
@@ -29,43 +34,47 @@ class LatexParser:
 
         return LatexElement("root", childs)
     
-    def _build(self, until="}"):
+    def _build(self, until=[]):
         childs = []
 
         while self.advanced:
-            if self.token.name in until: 
+            if self.token.type in until: 
                 return childs
 
             if self.token.is_text():
-                childs.append(self.token.value)
-            elif self.token.name == "\\":
+                childs.append(self.token.value if self.token.is_text() else self.token.name)
+            elif self.token.type == TokenType.BACKSLASHED_NAME:
+                token = self.token
                 self.advance()
 
-                name = self.token.value.split(" ")[0]
-                self.advance()
-                subchilds = []
                 last_length = -1
+                subchilds = []
 
                 while last_length != len(subchilds):
                     last_length = len(subchilds)
 
-                    while self.token and self.token.name == "[":
-                        self.advance()
-                        subchilds.append(LatexParameter("SQUARED", self._build("]")))
+                    self.advance_white_space()
 
-                        if self.token and self.token.name != "]": raise Exception()
+                    while self.token and self.token.type == TokenType.LEFT_SQUARED_BRACKET:
+                        self.advance()
+                        subchilds.append(LatexParameter("SQUARED", self._build([TokenType.RIGHT_SQUARED_BRACKET])))
+
+                        if self.token and self.token.type != TokenType.RIGHT_SQUARED_BRACKET: raise Exception()
                         self.advance()
 
-                    while self.token and self.token.name == "{":
-                        self.advance()
-                        subchilds.append(LatexParameter("CURLY", self._build("}")))
+                    self.advance_white_space()
 
-                        if self.token and self.token.name != "}": raise Exception()
+                    while self.token and self.token.type == TokenType.LEFT_CURLY_BRACKET:
+                        self.advance()
+                        subchilds.append(LatexParameter("CURLY", self._build([TokenType.RIGHT_CURLY_BRACKET])))
+
+                        if self.token and self.token.type != TokenType.RIGHT_CURLY_BRACKET: raise Exception()
                         self.advance()
                 
-                childs.append(LatexElement(name, subchilds))
+                self.idx -= 1
+                childs.append(LatexElement(token.value, subchilds))
             
-            if self.token and self.token.name in until: return childs
+            if self.token and self.token.type in until: return childs
             self.advance()
         
         return childs
