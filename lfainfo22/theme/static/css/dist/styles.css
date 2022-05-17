@@ -1155,6 +1155,10 @@ input.admin.searchbar:focus ~ .admin.query .action {
   aspect-ratio: 1;
 }
 
+.aspect-1 {
+  aspect-ratio: 1;
+}
+
 .h-screen {
   height: 100vh;
 }
