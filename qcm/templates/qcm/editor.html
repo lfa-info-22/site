@@ -81,6 +81,9 @@
             _data.splice(0, 1)
             let message = _data.join(": ")
 
+            if (type == "REFRESH") {
+                document.location.reload()
+            }
             if (type == "ADD_QUESTION_HTML") {
                 let _message = message.split(": ", 2)
                 let qcm_id = _message[0]
@@ -207,7 +210,18 @@
 
             document.querySelectorAll("#latex-upload").forEach((input) => {
                 input.addEventListener("input", (ev) => {
-                    console.log(ev)
+                    var file = input.files[0];
+
+                    if (file) {
+                        var reader = new FileReader();
+                        reader.readAsText(file, "UTF-8");
+                        reader.onload = function (evt) {
+                            send("IMPORT_QCM: " + evt.target.result);
+                        }
+                        reader.onerror = function (evt) {
+                            console.log("error reading file");
+                        }
+                    }
                 })
             })
         }

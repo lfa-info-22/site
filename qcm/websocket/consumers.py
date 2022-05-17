@@ -134,6 +134,10 @@ class WSEditorConsumer(WSConsumer):
                         aitem.correct = not aitem.correct
                         aitem.save()
         
+        if message_type == "IMPORT_QCM":
+            build_qcm_from_latex_element(None, evaluate_latex(message_data))
+            self.send("REFRESH: /qcm/editor")
+
         return super().receive(text_data, bytes_data)
 
     def connect(self):

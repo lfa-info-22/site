@@ -960,10 +960,6 @@ input.admin.searchbar:focus ~ .admin.query .action {
   pointer-events: none;
 }
 
-.visible {
-  visibility: visible;
-}
-
 .static {
   position: static;
 }
@@ -1499,6 +1495,10 @@ input.admin.searchbar:focus ~ .admin.query .action {
 
 .overflow-x-hidden {
   overflow-x: hidden;
+}
+
+.overflow-y-hidden {
+  overflow-y: hidden;
 }
 
 .truncate {
