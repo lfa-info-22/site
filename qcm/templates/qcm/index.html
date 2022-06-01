@@ -11,9 +11,28 @@
     </div>
 </div>
 
-<div>
+<div class="px-8 flex flex-col gap-8">
     {% for qcm in qcm_array %}
-    
+    <div class="rounded-lg h-32 border border-gray-200 relative center-w w-full max-w-[800px]">
+        <div class="h-16 text-center text-2xl border-b border-gray-200 bg-gray-50">
+            <div class="h-fit relative center-h">{{ qcm.name }}</div>
+        </div>
+
+        <div class="h-16 py-4">
+            <div class="relative center-w w-fit flex h-8
+                        border border-gray-200 divide-x divide-gray-200 rounded-lg">
+                {% for data in qcm.enumerate_questions %}
+                {% with question=data.1 index=data.0 %}
+                <div href="/qcm/{{ qcm.id }}/question/{{ question.id }}" class="w-[33px] cursor-pointer">
+                    <div class="h-fit w-fit relative center-h center-w select-none">
+                        {{ index }}
+                    </div>
+                </div>
+                {% endwith %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
     {% endfor %}
 </div>
 {% endblock %}

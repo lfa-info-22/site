@@ -33,7 +33,9 @@ class QCM (models.Model):
         data = list(self.questions.all())
         random.shuffle(data)
         return data
-    
+    def enumerate_questions(self):
+        return enumerate(self.questions.all(), 1)
+
     def get_status_orb_color(self):
         if self.status == QCMStatus.ACTIVE:
             return "bg-green-500"

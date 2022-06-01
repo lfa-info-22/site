@@ -14,10 +14,10 @@ class QCMHomeView(BaseView):
 
         page = min(page_count - 1, max(0, int(request.GET['page']) if 'page' in request.GET else 0))
 
-        ctx['qcm_arr'] = QCM.objects.all()[
-            page * self.PAGINATION 
+        ctx['qcm_array'] = QCM.objects.all()[
+             page      * self.PAGINATION 
              : 
-            page * (self.PAGINATION + 1)
+            (page + 1) * (self.PAGINATION)
         ]
 
         ## sort index, warp (False if no link), text
