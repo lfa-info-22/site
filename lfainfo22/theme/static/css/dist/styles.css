@@ -1291,6 +1291,10 @@ input.admin.searchbar:focus ~ .admin.query .action {
   width: fit-content;
 }
 
+.w-\[33px\] {
+  width: 33px;
+}
+
 .w-min {
   width: -webkit-min-content;
   width: -moz-min-content;
@@ -1343,14 +1347,6 @@ input.admin.searchbar:focus ~ .admin.query .action {
 
 .w-auto {
   width: auto;
-}
-
-.w-\[34px\] {
-  width: 34px;
-}
-
-.w-\[33px\] {
-  width: 33px;
 }
 
 .min-w-\[300px\] {

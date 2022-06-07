@@ -1,6 +1,11 @@
-from django.shortcuts import render
+from datetime import datetime
+from django.http import JsonResponse
+from django.shortcuts import render, redirect, get_object_or_404
 from lfainfo22.views  import BaseView
-from qcm.models       import QCM, QCMQuestion, QCMAnswer
+from qcm.models       import QCM, QCMQuestion, QCMAnswer, QCMUserResponse
+from api.views        import ApiView
+from api.urls         import api
+import django.utils.timezone as timezone
 import math
 
 class QCMHomeView(BaseView):
@@ -47,7 +52,34 @@ class QCMHomeView(BaseView):
 
         return ctx
 
-# Create your views here.
+@api
+class QCMAnswerView(ApiView):
+    VERSION = 1
+    APPLICATION = "qcm"
+    ROUTE = "answer/set/<int:qcm_id>/<int:question_id>"
+
+    NEEDS_AUTHENTICATION = True
+    
+    def permission(self, request, *args, **kwargs):
+        obj = super().permission(request, *args, **kwargs)
+        if obj != None: return obj
+
+        self.qcm      = get_object_or_404(QCM, id=kwargs['qcm_id'])
+        self.question = get_object_or_404(self.qcm.questions, id=kwargs['question_id'])
+
+    def get_call(self, request, *args, **kwargs):
+        answer, created = QCMUserResponse.objects.get_or_create(user=request.user, question=self.question)
+        delta_time = timezone.now() - answer.last_try
+
+        if int(str(delta_time).split(":")[1]) < 3 and answer.try_count >= 3:
+            return JsonResponse({  })
+        
+        answer.try_count += 1
+        answer.last_try = timezone.now()
+        answer.save()
+
+        return redirect()
+
 class EditorView(BaseView):
     NEEDS_STAFF = True
 

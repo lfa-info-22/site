@@ -1,8 +1,10 @@
+from datetime import datetime
 from django.db import models
 
 import random
 import enum
 import enumfields
+import django.utils.timezone as timezone
 
 from qcm.latex import evaluate_latex
 from account.models import User
@@ -83,5 +85,5 @@ class QCMUserResponse(models.Model):
 
     user      = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    try_count = models.IntegerField()
-    last_try  = models.DateTimeField()
+    try_count = models.IntegerField(default=0)
+    last_try  = models.DateTimeField(default=timezone.now())
