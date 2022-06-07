@@ -5,6 +5,7 @@ import enum
 import enumfields
 
 from qcm.latex import evaluate_latex
+from account.models import User
 
 class QCMStatus(enum.Enum):
     ACTIVE = 0
@@ -73,3 +74,12 @@ def build_qcm_from_latex_element(qcm_element, latex_element):
                 response=answer.parameters[0].elements[0],
                 correct=answer.name == "bonne"
             )
+
+class QCMUserResponse(models.Model):
+    question  = models.ForeignKey("QCMQuestion", on_delete=models.CASCADE)
+    answers   = models.ManyToManyField("QCMAnswer")
+
+    user      = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    try_count = models.IntegerField()
+    last_try  = models.DateTimeField()

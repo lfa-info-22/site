@@ -1,0 +1,19 @@
+{% extends 'qcm/base.html' %}
+
+{% block content %}
+<div class="px-8 py-8">
+    <div class="relative center-w w-fit max-w-[800px] flex border border-gray-200 rounded-lg divide-x divide-gray-200">
+        {% for page in pages %}
+        <div class="w-8 h-8 text-center transition-colors {% if page.4 %} text-blue-600 hover:text-white bg-blue-100 cursor-pointer hover:bg-blue-400  {% elif page.3 %} cursor-pointer text-blue-400 hover:text-white hover:bg-blue-400 {% else %} text-gray-400 {% endif %}">
+            <div {% if page.3 %}href="/qcm/?page={{ page.1 }}"{% endif %} class="h-min relative center-h">{{ page.2 }}</div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div>
+    {% for qcm in qcm_array %}
+    
+    {% endfor %}
+</div>
+{% endblock %}

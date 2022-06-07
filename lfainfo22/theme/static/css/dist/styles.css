@@ -1155,10 +1155,6 @@ input.admin.searchbar:focus ~ .admin.query .action {
   aspect-ratio: 1;
 }
 
-.aspect-1 {
-  aspect-ratio: 1;
-}
-
 .h-screen {
   height: 100vh;
 }
@@ -1377,6 +1373,10 @@ input.admin.searchbar:focus ~ .admin.query .action {
   max-width: 1000px;
 }
 
+.max-w-\[800px\] {
+  max-width: 800px;
+}
+
 .flex-1 {
   flex: 1 1 0%;
 }
@@ -1443,12 +1443,12 @@ input.admin.searchbar:focus ~ .admin.query .action {
   justify-content: center;
 }
 
-.gap-5 {
-  gap: 1.25rem;
-}
-
 .gap-4 {
   gap: 1rem;
+}
+
+.gap-5 {
+  gap: 1.25rem;
 }
 
 .gap-3 {
@@ -1469,6 +1469,12 @@ input.admin.searchbar:focus ~ .admin.query .action {
   --tw-divide-y-reverse: 0;
   border-top-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));
   border-bottom-width: calc(1px * var(--tw-divide-y-reverse));
+}
+
+.divide-x > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-x-reverse: 0;
+  border-right-width: calc(1px * var(--tw-divide-x-reverse));
+  border-left-width: calc(1px * calc(1 - var(--tw-divide-x-reverse)));
 }
 
 .divide-transparent > :not([hidden]) ~ :not([hidden]) {
@@ -1721,6 +1727,11 @@ input.admin.searchbar:focus ~ .admin.query .action {
   background-color: rgb(167 243 208 / var(--tw-bg-opacity));
 }
 
+.bg-blue-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(219 234 254 / var(--tw-bg-opacity));
+}
+
 .bg-opacity-70 {
   --tw-bg-opacity: 0.7;
 }
@@ -1864,6 +1875,16 @@ input.admin.searchbar:focus ~ .admin.query .action {
 .py-\[2\.5rem\] {
   padding-top: 2.5rem;
   padding-bottom: 2.5rem;
+}
+
+.px-8 {
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+.py-8 {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
 }
 
 .pt-\[45px\] {
@@ -2054,6 +2075,11 @@ input.admin.searchbar:focus ~ .admin.query .action {
   color: rgb(151 66 189 / var(--tw-text-opacity));
 }
 
+.text-gray-400 {
+  --tw-text-opacity: 1;
+  color: rgb(156 163 175 / var(--tw-text-opacity));
+}
+
 .text-orange-300 {
   --tw-text-opacity: 1;
   color: rgb(253 186 116 / var(--tw-text-opacity));
@@ -2062,11 +2088,6 @@ input.admin.searchbar:focus ~ .admin.query .action {
 .text-emerald-300 {
   --tw-text-opacity: 1;
   color: rgb(110 231 183 / var(--tw-text-opacity));
-}
-
-.text-gray-400 {
-  --tw-text-opacity: 1;
-  color: rgb(156 163 175 / var(--tw-text-opacity));
 }
 
 .text-blue-700 {
@@ -2177,6 +2198,11 @@ input.admin.searchbar:focus ~ .admin.query .action {
 .text-emerald-700 {
   --tw-text-opacity: 1;
   color: rgb(4 120 87 / var(--tw-text-opacity));
+}
+
+.text-blue-400 {
+  --tw-text-opacity: 1;
+  color: rgb(96 165 250 / var(--tw-text-opacity));
 }
 
 .underline {
@@ -2316,6 +2342,11 @@ input.admin.searchbar:focus ~ .admin.query .action {
   background-color: rgb(22 163 74 / var(--tw-bg-opacity));
 }
 
+.hover\:bg-blue-400:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(96 165 250 / var(--tw-bg-opacity));
+}
+
 .hover\:text-login\.link\.active:hover {
   --tw-text-opacity: 1;
   color: rgb(174 114 204 / var(--tw-text-opacity));
@@ -2326,14 +2357,14 @@ input.admin.searchbar:focus ~ .admin.query .action {
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
-.hover\:text-blue-700:hover {
-  --tw-text-opacity: 1;
-  color: rgb(29 78 216 / var(--tw-text-opacity));
-}
-
 .hover\:text-sky-700:hover {
   --tw-text-opacity: 1;
   color: rgb(3 105 161 / var(--tw-text-opacity));
+}
+
+.hover\:text-blue-700:hover {
+  --tw-text-opacity: 1;
+  color: rgb(29 78 216 / var(--tw-text-opacity));
 }
 
 .hover\:text-gray-500:hover {
@@ -2531,6 +2562,11 @@ input.admin.searchbar:focus ~ .admin.query .action {
 
   .md\:bg-transparent {
     background-color: transparent;
+  }
+
+  .md\:text-3xl {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
   }
 
   .md\:text-2xl {
