@@ -10,14 +10,14 @@
         "writing": false
     },
     {
-        "name": "Cryptographie",
-        "description": "Le chiffrage et l'analyse de fréquence",
-        "template": "",
-        "view": "None",
-        "route": "",
-        "full_route": "/posts/",
+        "name": "Le chiffrement de Diffie-Hellman",
+        "description": "Le premier chiffrement asymétrique par exponentielles et modulos",
+        "template": "articles/diffie.html",
+        "view": "ArticleView",
+        "route": "diffie/",
+        "full_route": "/articles/diffie/",
         "image": "/static/home/media/image/crypto_post.jpg",
-        "writing": true
+        "writing": false
     },
     {
         "name": "Gymnastique mathématique",
@@ -42,12 +42,12 @@
     {
         "name": "Vigenère",
         "description": "Découvrez le chiffrement de Vigenère",
-        "template": "",
-        "view": "None",
-        "route": "",
-        "full_route": "/posts/",
+        "template": "articles/vigenere.html",
+        "view": "ArticleView",
+        "route": "vigenere/",
+        "full_route": "/articles/vigenere/",
         "image": "/static/home/media/image/vigenere_post.jpg",
-        "writing": true
+        "writing": false
     },
     {
         "name": "Outils de cryptographie",
@@ -68,5 +68,15 @@
         "full_route": "/articles/predproies/",
         "image": "/static/home/media/image/crypto_post.jpg",
         "writing": false
+    },
+    {
+        "name" : "Article d'Adam",
+        "description" : "waaaaaaaw",
+        "template" : "articles/adam.html",
+        "view" : "ArticleView",
+        "route" : "adam/",
+        "full_route" : "/articles/adam",
+        "image" : "/static/home/media/image/entrainement_post.jpg",
+        "writing" : false
     }
 ]
