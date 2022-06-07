@@ -78,5 +78,15 @@
         "full_route" : "/articles/adam",
         "image" : "/static/home/media/image/entrainement_post.jpg",
         "writing" : false
+    },
+    {
+        "name" : "Matrices",
+        "description" : "Que sont les matrices, et quelles sont les applications ?",
+        "template" : "articles/matrice.html",
+        "view" : "ArticleView",
+        "route" : "matrice/",
+        "full_route" : "/articles/matrice/",
+        "image" : "/static/home/media/image/crypto_post.jpg",
+        "writing" : false
     }
 ]
