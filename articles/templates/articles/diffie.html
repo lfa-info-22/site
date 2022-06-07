@@ -2,15 +2,86 @@
 
 {% block head %}
 {% include 'base/head.html' with head_url="/static/home/media/image/home_background.jpg" title="Le chiffrement de Diffie-Hellman" subtitle="Le premier chiffrement asymétrique par exponentielles et modulos" %}
-{% endblock %}
+<script>
+    window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        }
+      };      
+  </script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js"></script>{% endblock %}
+
 
 {% block content %}
 {% load codeblock %}
 
 <div class="p-5 divide-transparent max-w-[600px] lg:max-w-[800px] relative center-w">
-    <div class="text-xl px-1">
-        Blablabla
+    <div class="text-xl px-1 mt-8">
+        Alice et Bob sont des agents infiltrés dans un bâtiment. Malheur ! Ils ont été repérés et doivent maintenant s'enfuir et se retrouver à l’un des 172 points d’évacuation, sans que l’on puisse les retrouver. Problème : William l’espion les écoute. Ils doivent donc trouver un moyen de se mettre d’accord sur un nombre sans que William ne le connaisse.
     </div>
+    <div class="text-xl px-1 mt-8">
+        À première vue, c’est un problème insoluble car William entend tout ce qu’ils disent. C’est pourtant rendu possible par le principe de Diffie-Hellman.
+    </div>
+    <div class="text-xl px-1 mt-8">
+        En 1976, les mathématiciens Whitfield Diffie et Martin Hellman publient une méthode d’échange de clés, c’est-à-dire des nombres qui  chiffrent un message.
+        <br>Par exemple : dans le code César, on chiffre un message en décalant les lettres d’un certain rang, donné par la clé. Si la clé est 3, le mot BONJOUR, le mot chiffré est ERQMRXU.
+        
+    </div>
+    <img src="../../static/articles/diffie/diffie.png" class="relative center-w">
+    <div class="text-xl px-1 mt-8">
+        L’objectif est de permettre à Alice et Bob, discutant en public, de se mettre d’accord sur une clé secrète qu’eux seuls connaissent et pas les personnes qui les écoutent.
+<br>
+        L’idée générale est la suivante : créer la clé grâce à une fonction mathématique de chiffrement facile à calculer mais difficilement réversible.
+        <br>
+        Une exponentielle est facile à calculer, un logarithme est difficile à calculer : c’est ce que l’on utilisera ici.
+        
+    </div>
+    <div class="text-xl md:text-3xl px-1 mt-8">
+        Qu’est-ce qu’une exponentielle et un logarithme ?
+    </div>
+    <div class="text-xl px-1 mt-8">
+        Lorsque l’on compte, on change de nombre. $1, 2, 3\ldots$ Avec une exponentielle, ce nombre reste le même. C’est une autre façon de compter : on garde la même base, et on lui applique un exposant que l’on fait varier. Si on prend 3 comme base, cela donne $3^1, 3^2, 3^3\ldots$ 
+        <br>On peut étudier les fonctions puissance : $n \to n^2, n\to n^3\ldots$ mais à l’inverse, on peut fixer le nombre $n$ et faire varier la puissance. Par exemple, pour $n=2$, aura $m \to 2^m$, que l’on appelle l’exponentielle de base 2.
+        <br>    Un logarithme est la fonction inverse d’une exponentielle. Pour un nombre, on donne une base, et le logarithme renvoie l’exposant qui, appliqué à cette base, donne le nombre.
+        <br>Par exemple :
+        <br>    On prend le nombre $81$. On cherche son logarithme base $3$ : la puissance à laquelle élever 3 pour obtenir 81. $81=3^4$, le logarithme en base 3 de 81 est 4.
+        
+    </div>
+    <div class="text-xl px-1 mt-8">
+        L’espace mémoire d’un ordinateur est limité, en calculant des puissances on risque vite de dépasser la capacité maximale de la machine. Une façon de le faire, c’est de revenir à zéro au bout d’un moment.
+
+        <br>Imaginons que le plus grand nombre possible soit 9 999. Alors, lorsque l’ordinateur fera 9998 + 3, il ne pourra pas donner le résultat. Il faudra qu’il reparte à zéro une fois la limite atteinte : pour additionner, l’ordinateur fera donc 9 999, 0, 1. On dit que l’ordinateur renvoie les résultats modulo 10 000, c’est à dire qu’il renvoie le reste de la division euclidienne du résultat par 10 000.
+      <br> Par exemple : 20 modulo 14 vaut 6, 65 modulo 7 vaut 2. C’est le reste de la division euclidienne.
+    </div>
+    <div class="text-xl md:text-3xl px-1 mt-8">
+        Quel est le rôle du calcul modulaire dans la cryptographie ? 
+    </div>
+    <div class="text-xl px-1 mt-8">
+        Dans la cryptographie, le modulo agit comme un mélangeur, une roue qui tourne et qui renvoie un résultat. Par exemple, $3^{30}$ vaut environ $10^{15}$ (car $3^2$ vaut environ $10$). Nous pouvons estimer le résultat. En revanche que vaut $3^{30}$ modulo 12? Nous ne pouvons le savoir qu’en le calculant.
+    </div>
+    <div class="text-xl md:text-3xl px-1 mt-8">
+       Comment calculer une exponentielle
+    </div>
+    <div class="text-xl px-1 mt-8">
+        Une exponentielle peut facilement se calculer à la main. Pour ce faire, prenons un exemple.
+
+        <br>Calculons $3^{30}$ mod $30$.
+        
+         <br>   On commence par décomposer l’exposant en base 2. On choisit la plus grande puissance de 2 comprise dans le plus nombre, jusqu’à se rapprocher petit à petit du nombre.
+        
+    </div>
+    <div class="text-xl px-1 mt-8">
+        Ici :<br>
+$$30-2^4=30-16=15$$
+$$15-2^3=7$$
+$$7-2^2=3$$
+$$3-2^1=1$$
+$$1-2^0=0$$
+
+    </div>
+    <div class="text-xl px-1 mt-8"></div>
+    <div class="text-xl px-1 mt-8"></div>
     <div class="text-xl text-gray-400 italic text-right pt-8">Maiten Jouan, élève au Lycée Franco-Allemand de Buc</div>
 </div>
 

@@ -2494,6 +2494,13 @@ input.admin.searchbar:focus ~ .admin.query .action {
   opacity: 1;
 }
 
+@media print {
+  .print\:text-sky-400 {
+    --tw-text-opacity: 1;
+    color: rgb(56 189 248 / var(--tw-text-opacity));
+  }
+}
+
 @media (min-width: 640px) {
   .phone-navbar.sm\:hidden {
     height: 0px;

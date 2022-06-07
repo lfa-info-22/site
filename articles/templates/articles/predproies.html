@@ -2,31 +2,72 @@
 
 {% block head %}
 {% include 'base/head.html' with head_url="/static/home/media/image/home_background.jpg" title="Prédateurs-proies" subtitle="Prédire à l'aide de différents outils mathématiques l'évolution des populations" %}
-{% endblock %}
+<script>
+    window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        }
+      };      
+  </script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js"></script>{% endblock %}
+
 
 {% block content %}
 {% load codeblock %}
 
 <div class="p-5 divide-transparent max-w-[600px] lg:max-w-[800px] relative center-w">
     <div class="text-xl px-1">
-        Au XIXème siècle, des scientifiques se sont intéressés à l’évolution des populations de lièvres et de lynx dans
-        la baie d’Hudson. Les lièvres étant les proies des lynx.
+        Au XIXème siècle, des scientifiques se sont intéressés à l’évolution des populations de lièvres et de lynx dans la baie d’Hudson. Cette analyse des populations a été commandée par une société canadienne collectant les fourrures récupérées par les trappeurs. Les lièvres étant les proies des lynx :
     </div>
     <img class="relative center-w" src="../../static/articles/predproies/img1.png">
     <div class="flex mt-8 gap-4"><div><img class="relative center-w w-96" src="../../static/articles/predproies/lievre.jpg"></div>
     <div><img class="relative center-w h-full aspect-auto" src="../../static/articles/predproies/lynx.webp"></div></div>
     <div class="text-xl px-1 mt-8">
-        Pour ces deux population on a les équations suivantes: <br>
-        x’ = 1,05x - 0,001 xy et y’ = 0,97y - 0,0002 xy
+        On observe que les populations de lièvres et de lynx dépendent l’une de l’autre. Effectivement, lorsque la population de proies (les lièvres), décroît, celle des prédateurs (les lynx), décroît elle aussi.
+   $$x_{n+1} = ax_n - cx_ny_n \text{ et } y_{n+1} = -by_n + dx_ny_n$$
     </div>
     <div class="text-xl px-1 mt-8">
-        On peut à partir de ces équations déterminer un point d’équilibre. Deux populations
-        de départ pour lesquelles les populations de lynx et de lièvres resteront constantes.
-        Pour cela, il faut résoudre x = x’ et y = y'
+        Pour ces deux population on a les équations suivantes :
+    $$x_{n+1} = 1,05x_n - 0,001 x_ny_n \text{ et } y_{n+1} = 0,97y_n + 0,0002 x_ny_n$$
     </div>
     <div class="text-xl px-1 mt-8">
-        On trouve x = 150 et y = 50
+        Avec :
+        <ul class="list-disc">
+            <li>$a$ le taux d'accroissement de la population des proie en l’absence de
+                prédateurs</li>
+            <li>$b$ le taux de diminution de la population de prédateurs en absence de proies</li>
+            <li>$c$ correspond à l’efficacité avec laquelle les prédateurs chassent les proies</li>
+            <li>$d$ correspond à l’efficacité avec laquelle la consommation de proies permet
+                d’augmenter la population de prédateurs</li>
+                <li>$xy$ correspond aux nombres de rencontres possibles entre prédateurs et
+                    proies</li>
+        </ul><br>
+        Les coefficients utilisés ici proviennent d’études menées sur le terrain. 
     </div>
+    <div class="text-xl px-1 mt-8">
+
+code pour trouver le point d’équilibre:
+
+        {% codeblock python True:text-sky-400 False:text-sky-400 from:text-violet-400 print:text-sky-400 %}
+from math import *
+x=0
+y=0
+#a,b,c et d étant des coefficients prévus à l'avance selon l’évolution des populations des espèces étudiées
+def evolution(a,b,c,d):
+    x=(1-c)/d
+    y=(1-a)/b
+    return x,y
+ 
+ evolution(1.05, -0.001, 0.97, 0.0002)
+ # exemple des lièvres et des lynx           
+{% endcodeblock %}
+    </div>
+    <div class="text-xl px-1 mt-8">
+        On peut à partir de ces équations déterminer un point d’équilibre. Deux populations de départ pour lesquelles les populations de lynx et de lièvres resteront constantes. Pour cela, il faut résoudre $x_n = x_{n+1}$ et $y_n = y_{n+1}$
+<br>
+On trouve $x = 150$ et $y = 50$
+</div>
     <div class="text-xl px-1 mt-8">
         Prédire l’évolution des populations, savoir à l’avance si une espèce est en danger d’extinction, être capable de connaître le nombre d’individus nécessaire à la survie d’une espèce, ce sont des préoccupations intemporelles. Platon (<i>Les Lois</i>) et Aristote (<i>Politique</i>) se demandaient déjà quelle serait la population optimale pour une cité. Aujourd’hui encore, on cherche à trouver le nombre maximal de poissons que l’on peut pêcher pour que la population reste constante d’une année sur l’autre.
     </div>
@@ -44,25 +85,25 @@ indéfiniment. En outre, l’interaction entre prédateurs et proies implique un
 diminution du nombre de proies et à une augmentation du nombre de prédateurs.
     </div>
     <div class="text-xl px-1 mt-8">
-        Prenons x(t) le nombre de proies à l’instant t, et y(t) le nombre de prédateurs
-        à l’instant t:
+        Prenons $x(t)$ le nombre de proies à l’instant $t$, et $y(t)$ le nombre de prédateurs
+        à l’instant $t$:
     </div>
     <div class="text-xl px-1 mt-8">
         D’après le modèle Lotka-Volterra, on a:
     </div>
     <div class="text-xl px-1 mt-8">
-        x’(t)= ax-cxy et y’(t)= -by + dxy
+        $x_{n+1} = ax_n - cx_ny_n$ et $y_{n+1} = -by_n + dx_ny_n$
     </div>
     <div class="text-xl px-1 mt-8">
         Avec :
         <ul class="list-disc">
-            <li>a le taux d'accroissement de la population des proie en l’absence de
+            <li>$a$ le taux d'accroissement de la population des proie en l’absence de
                 prédateurs</li>
-            <li>b le taux de diminution de la population de prédateurs en absence de proies</li>
-            <li>c correspond à l’efficacité avec laquelle les prédateurs chassent les proies</li>
-            <li>d correspond à l’efficacité avec laquelle la consommation de proies permet
+            <li>$b$ le taux de diminution de la population de prédateurs en absence de proies</li>
+            <li>$c$ correspond à l’efficacité avec laquelle les prédateurs chassent les proies</li>
+            <li>$d$ correspond à l’efficacité avec laquelle la consommation de proies permet
                 d’augmenter la population de prédateurs</li>
-                <li>xy correspond aux nombres de rencontres possibles entre prédateurs et
+                <li>$xy$ correspond aux nombres de rencontres possibles entre prédateurs et
                     proies</li>
         </ul>
     </div>
@@ -72,10 +113,23 @@ d’équilibre. C'est-à-dire, des populations initiales de proies et de prédat
 restent constantes au cours du temps. Cela revient à poser:
     </div>
     <div class="text-xl px-1 mt-8">
-        x=ax - cxy et y= -by + dxy
+        $x_n = ax_n - cx_ny_n$ et $y_n = -by_n + dx_ny_n$
+
     </div>
     <div class="text-xl px-1 mt-8">
         Ce modèle permet ainsi d’anticiper l’évolution des populations, et peut donc aider à éviter l’extinction des espèces.
+</div>
+<div class="text-xl px-1">
+    {% codeblock python True:text-sky-400 False:text-sky-400 from:text-violet-400 print:text-sky-400 %}
+from math import *
+#x et respectivement y étant les populations de proies et respectivement prédateurs
+#a,b,c et d étant des coefficients prévus à l'avance selon les espèces étudiées, et n le nombre de boucles
+def evolution(a,b,c,d,n,x,y):
+    for i in range (n)
+        x=a*x - b*x*y
+        y= c*y + d*x*y
+    return x,y
+{% endcodeblock %}
 </div>
 <div class="text-xl px-1 mt-8">
         En partie tiré de :<br>
