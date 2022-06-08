@@ -46,10 +46,10 @@ fonction lexer(string):
     id := 0
 
     tant que id est inférieur à la longueur de string
-        si le caractère à l'index id de string est égal à "+"
+        si le caractère à l\'index id de string est égal à "+"
             ajouter ["PLUS", ""] à tokens
             // (un token est représenté par un nom et une valeur pour éviter des incohérences)
-        si le caractère à l'index id de string est égal à "-"
+        si le caractère à l\'index id de string est égal à "-"
             ajouter ["MINUS", ""] à tokens
         ...
         ajouter 1 à id
@@ -67,12 +67,12 @@ fonction lexer(string):
 {% codeblock psc 1:text-sky-500 %}
 
     ...
-    si le caractère à l'index id de string est un chiffre alors
+    si le caractère à l\'index id de string est un chiffre alors
         nombre := ""
 
         tant que id est inférieur à la longueur de string 
-        et que le caractère à l'index id de string est un chiffre:
-            ajouter le caractère à l'index id de string à nombre
+        et que le caractère à l\'index id de string est un chiffre:
+            ajouter le caractère à l\'index id de string à nombre
             ajouter 1 à id
         
         retirer 1 à id
@@ -100,9 +100,9 @@ fonction parse_add (tokens)
     left := parse_mult(tokens)
 
     tant que le token 0 est un plus ou un moins
-        on retire l'opérateur de la liste de tokens
+        on retire l\'opérateur de la liste de tokens
         right := parse_mult(tokens)
-        on stocke l'application du calcul de left et right avec l'opérateur dans left
+        on stocke l\'application du calcul de left et right avec l\'opérateur dans left
     
     retourner left
 
@@ -111,10 +111,10 @@ fonction parse_mult (tokens)
     on retire le nombre de la liste de tokens
 
     tant que le token 0 est un fois ou un slash
-        on retire l'opérateur de la liste de tokens
+        on retire l\'opérateur de la liste de tokens
         on récupère le nombre stocké au premier indice dans right
         on retire le nombre de la liste de tokens
-        on stocke l'application du calcul de left et right avec l'opérateur dans left
+        on stocke l\'application du calcul de left et right avec l\'opérateur dans left
 
     retourner left
 

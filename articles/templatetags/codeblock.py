@@ -12,16 +12,22 @@ def codeblock(parser, token):
 
 PSC_CONF = {
     'keywords' :[
-        ( 'tant que', 'text-violet-400' ),
+        ( 'tant', 'text-violet-400' ),
+        ( 'que', 'text-violet-400' ),
         ( 'si', 'text-violet-400' ),
         ( 'ajouter', 'text-violet-400' ),
         ( 'fonction', 'text-sky-500' ),
         ( 'id', 'text-sky-300' ),
-        ( 'string', 'text-sky-300' ),
-        ( 'tokens', 'text-sky-300' ),
+        ( 'on', 'text-violet-400' ),
+        ( 'retire', 'text-violet-400' ),
+        ( 'stocke', 'text-violet-400' ),
+        ( 'récupère', 'text-violet-400' ),
     ],
     'comments': 'text-emerald-200 text-xs lg:text-sm',
-    'string': 'text-emerald-300'
+    'string': 'text-emerald-300',
+    'call': 'text-sky-300',
+    'var' : 'text-sky-200',
+    'number': 'text-emerald-100',
 }
 PYTHON_CONF = {
     'keywords' :[
@@ -34,15 +40,13 @@ PYTHON_CONF = {
         ( 'elif', 'text-violet-400' ),
         ( 'else', 'text-violet-400' ),
         ( 'def', 'text-sky-500' ),
-        ( 'str', 'text-sky-300' ),
-        ( 'max', 'text-sky-300' ),
-        ( 'len', 'text-sky-300' ),
-        ( 'chr', 'text-sky-300' ),
-        ( 'ord', 'text-sky-300' ),
         ('import', 'text-violet-400')
     ],
     'comments': 'text-emerald-200 text-xs lg:text-sm',
-    'string': 'text-emerald-300'
+    'string': 'text-emerald-300',
+    'call': 'text-sky-300',
+    'var' : 'text-sky-200',
+    'number': 'text-emerald-100',
 }
 
 class CodeBlockNode(template.Node):
@@ -53,14 +57,40 @@ class CodeBlockNode(template.Node):
     def render(self, context):
         output = self.nodelist.render(context)
 
-        lines = getattr(self, f"render_{self.lang}")(output)
-        while len(lines) > 0 and lines[0] == '':
-            lines = lines[1:]
-        while len(lines) > 0 and lines[-1] == '':
-            lines = lines[:len(lines) - 1]
+        tokens = ColorLexer(output).build()
+        color_tokens = []
 
-        for lidx in range(len(lines)):
-            lines[lidx] = self.create_line(lines[lidx], lidx + 1)
+        config = getattr(self, f"render_{self.lang}")()
+        
+        last_token = None
+        for idx in range(len(tokens) - 1, -1, -1):
+            name, text = tokens[idx]
+            
+            color = None
+            if name == "NAME":
+                color = config['var']
+                if last_token != None and last_token[0] == "TEXT" and last_token[1] == "(":
+                    color = config['call']
+                
+                for key, col in config['keywords']:
+                    if key == text:
+                        color = col
+            elif name == "NUMBER":
+                color = config['number']
+            elif name == "STRING":
+                color = config['string']
+            elif name == "COMMENTS":
+                color = config['comments']
+            
+            color_tokens.append((text, color))
+            if name != "TEXT" or (not text.isspace()):
+                last_token = tokens[idx]
+        color_tokens.reverse()
+        colored_text = [
+            f"<span class=\"{color}\">{text}</span>" if color
+            else text for text, color in color_tokens
+        ]
+        lines = list(map(self.create_line, enumerate("".join(colored_text).split("\n"))))
 
         LINES  = "".join(lines)
         LANG = self.get_lang_name(self.lang)
@@ -77,73 +107,84 @@ class CodeBlockNode(template.Node):
         elif lang == "python": return "Python"
         return "Inconnu"
     
-    def create_line(self, line, idx):
+    def create_line(self, tuple):
+        idx, line = tuple
         return f'''
         <div class="text-right w-8 px-2 text-gray-300">{idx}</div>
         <div class="w-[calc(100%-40px)] whitespace-pre pr-6">{line}</div>
     '''
     
-    def render_psc(self, string):
-        string_indices = []
-        for i in range(len(string)):
-            if string[i] == "\"":
-                string_indices.append(i)
+    def render_psc(self):
+        return PSC_CONF
+    def render_python(self):
+        return PYTHON_CONF
+
+import string
+
+class ColorLexer:
+    def __init__(self, string):
+        self.string = string
+        self.idx = -1
+        self.advance()
+    
+    def advance (self, off=1):
+        self.idx += off
+        self.advanced = 0 <= self.idx < len(self.string)
+        self.chr = self.string[self.idx] if self.advanced else False
+
+        return self.advanced
+    def next (self, off=1):
+        valid = 0 <= self.idx + off < len(self.string)
+
+        return self.string[self.idx + off] if valid else False
+
+    def build(self):
+        if hasattr(self, "tokens"): return self.tokens
+
+        self.tokens = []
+
+        self.advance()
+        while self.advanced:
+            if self.chr == '\\':
+                self.advance()
+                self.tokens.append(("TEXT", self.string[self.idx:self.idx + 1]))
+                self.advance()
+            elif (x := self.lex_special(string.digits))[0]:
+                self.tokens.append(("NUMBER", x[1]))
+            elif (x := self.lex_special(string.ascii_letters + '_éàèêâëïöüä' + string.digits))[0]:
+                self.tokens.append(("NAME", x[1]))
+            elif (self.chr == "/" and self.next() == "/") \
+              or (self.chr == "#" and self.next() == "#"):
+                start = self.idx
+                while self.advanced and self.chr != "\n":
+                    self.advance()
+
+                self.tokens.append(("COMMENTS", self.string[start:self.idx]))
+            elif self.chr == "\"" or self.chr == "\'" or self.chr == '`':
+                stop_chr = self.chr
+                start = self.idx
+                self.advance()
+                while self.advanced and self.chr != stop_chr:
+                    if self.chr == '\\': self.advance()
+                    self.advance()
+                
+                self.advance()
+                self.tokens.append(("STRING", self.string[start:self.idx]))
+            elif self.chr in string.whitespace:
+                start = self.idx
+                while self.advanced and self.chr in string.whitespace:
+                    self.advance()
+                self.tokens.append(("TEXT", self.string[start:self.idx]))
+            elif self.chr in "()[]{}:+-=*/^|&,.":
+                self.tokens.append(("TEXT", self.string[self.idx:self.idx + 1]))
+                self.advance()
+            else:
+                raise Exception("Unknown character " + self.chr)
+
+        return self.tokens
+    def lex_special(self, mstring):
+        start = self.idx
+        while self.advanced and self.chr in mstring:
+            self.advance()
         
-        if len(string_indices) % 2 == 1:
-            string_indices.pop()
-        
-        for i in range(len(string_indices) - 1, -1, -2):
-            innerString = string[string_indices[i - 1]:string_indices[i] + 1]
-            string = string[:string_indices[i - 1]] + f"<span class=\"text-green-600\">{innerString}</span>" + string[string_indices[i] + 1:]
-
-        for keyword in PSC_CONF['keywords']:
-            string = f"<span class=\"{keyword[1]}\">{keyword[0]}</span>".join(string.split(keyword[0]))
-        for spe_name in self.spe_names:
-            keyword = " ".join(spe_name.split("__")).split(":")
-            string = f"<span class=\"{keyword[1]}\">{keyword[0]}</span>".join(string.split(keyword[0]))
-
-        lines = string.split('\n')
-        lidx = 0
-        for line in lines:
-            i = 0
-            while i < len(line) and (line[i] == ' ' or line[i] == '\t'):
-                i += 1
-            
-            if i < len(line) and i + 1 < len(line) and line[i:i+2] == "//":
-                conf_comment = PSC_CONF['comments']
-                lines[lidx] = f"<span class=\"{conf_comment}\">{line}</span>"
-            lidx += 1
-
-        return lines
-    def render_python(self,string):
-        string_indices = []
-        for i in range(len(string)):
-            if string[i] == "\"":
-                string_indices.append(i)
-        
-        if len(string_indices) % 2 == 1:
-            string_indices.pop()
-        
-        for i in range(len(string_indices) - 1, -1, -2):
-            innerString = string[string_indices[i - 1]:string_indices[i] + 1]
-            string = string[:string_indices[i - 1]] + f"<span class=\"text-green-600\">{innerString}</span>" + string[string_indices[i] + 1:]
-
-        for keyword in PYTHON_CONF['keywords']:
-            string = f"<span class=\"{keyword[1]}\">{keyword[0]}</span>".join(string.split(keyword[0]))
-        for spe_name in self.spe_names:
-            keyword = " ".join(spe_name.split("__")).split(":")
-            string = f"<span class=\"{keyword[1]}\">{keyword[0]}</span>".join(string.split(keyword[0]))
-
-        lines = string.split('\n')
-        lidx = 0
-        for line in lines:
-            i = 0
-            while i < len(line) and (line[i] == ' ' or line[i] == '\t'):
-                i += 1
-            
-            if i < len(line) and i + 1 < len(line) and line[i:i+1] == "#":
-                conf_comment = PYTHON_CONF['comments']
-                lines[lidx] = f"<span class=\"{conf_comment}\">{line}</span>"
-            lidx += 1
-
-        return lines
+        return start - self.idx != 0, self.string[start:self.idx]
