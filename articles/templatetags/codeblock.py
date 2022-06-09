@@ -93,12 +93,18 @@ class CodeBlockNode(template.Node):
         ]
         lines = list(map(self.create_line, enumerate("".join(colored_text).split("\n"))))
 
-        LINES  = "".join(lines)
+        LINES     = "".join(map(lambda x: x[1], lines))
+        LINES_IDX = "".join(map(lambda x: x[0], lines))
         LANG = self.get_lang_name(self.lang)
         TEMPLATE = f'''
             <div class="text-sm font-light text-right text-gray-400">{LANG}</div>
-            <div class="flex flex-wrap bg-stone-800 text-gray-200 rounded-xl p-3 overflow-x-auto">
-                {LINES}
+            <div class="flex bg-stone-800 text-gray-200 rounded-xl p-3">
+                <div>
+                    {LINES_IDX}
+                </div>
+                <div class="flex-1 overflow-x-auto">
+                    {LINES}
+                </div>
             </div>
         '''
 
@@ -111,8 +117,8 @@ class CodeBlockNode(template.Node):
     def create_line(self, tuple):
         idx, line = tuple
         return f'''
-        <div class="text-right w-8 px-2 text-gray-300">{idx}</div>
-        <div class="w-[calc(100%-40px)] whitespace-pre pr-6">{line}</div>
+        <div class="text-right w-8 px-2 text-gray-300">{idx}</div>''', f'''
+        <div class="w-[calc(100%-40px)] whitespace-pre pr-6 h-[24px]">{line}</div>
     '''
     
     def render_psc(self):
