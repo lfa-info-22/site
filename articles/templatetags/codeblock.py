@@ -22,6 +22,7 @@ PSC_CONF = {
         ( 'retire', 'text-violet-400' ),
         ( 'stocke', 'text-violet-400' ),
         ( 'récupère', 'text-violet-400' ),
+        ( 'retourner', 'text-violet-400' )
     ],
     'comments': 'text-emerald-200 text-xs lg:text-sm',
     'string': 'text-emerald-300',

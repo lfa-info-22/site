@@ -8,123 +8,239 @@
 {% load codeblock %}
 
 <div class="p-5 divide-transparent max-w-[600px] lg:max-w-[800px] relative center-w">
-    <div class="text-xl px-1">
-        La théorie des langages est à la base de tous les langages de programmation.
-        Mais, comment fonctionne cette idée qui est aujourd'hui à la base de
-        tout ordinateur ? Nous allons le découvrir en développant ici un calculateur basique, et nous continuerons de
-        l'améliorer au fil de plusieurs articles.
-    </div>
+    <div class="text-3xl px-1 pt-8">Introduction</div>
 
     <div class="text-xl px-1 pt-8">
-        Tout d'abord, comment fonctionne un langage de programmation ? Il faut d'abord faire la différence
-        entre les langages interprétés comme python et les langages compilés qui génèrent un fichier
-        binaire. Mais derrière, le fonctionnement est assez semblable dans les deux cas. En effet, le principe
-        est toujours de transformer une chaîne de caractères en une liste d'instructions, qui peuvent ensuite
-        être stockées sous un fichier binaire ou éxecutées par un interpréteur.
+        Charlie cherche à créer son langage de programmation, il se demande alors
+        comment ceux-ci fonctionnent. Dans cet article, nous verrons comment Charlie
+        ou quiconque peut créer son propre calculateur, sans aucune librairie. Et
+        nous verrons ensuite comment l'améliorer pour ajouter des variables, des
+        listes, et tous les outils qu'un langage de programmation récent a.
     </div>
-
-    <div class="text-xl px-1 pt-8">
-        Le problème des chaînes de caractères, c'est qu'elles peuvent être de toutes formes,
-        on peut très bien imaginer un utilisateur qui met un millier d'espaces comme un qui n'en met pas un seul.
-        Les informaticiens ont donc prit la décision de diviser cette étape de transformation d'une chaîne de
-        caractères en deux étapes distinctes, l'étape effectuée par le "Lexer" et celle du "Parser".
-    </div>
-
-    <div class="text-xl px-1 pt-8">
-        Le principe du "Lexer" est ainsi de générer à partir d'une chaîne de caractères une liste de "Token".
-        Ceux-ci représentent alors des caractères spéciaux, des noms ou même des nombres. Ils permettent ainsi
-        de se débarasser des espaces en trop. Le principe d'un lexer est donc de parcourir la chaîne de caractère
-        et de répertorier les tokens intéressants. Un premier algorithme en pseudo code pour détecter les caractères spéciaux peut ainsi
-        ressembler à celui-ci :
-    </div>
-
-<div class="hidden text-orange-300"></div>
-<div class="hidden text-emerald-300"></div>
-{% codeblock psc lexer:text-orange-300 la__longueur__de:text-emerald-300 retourner:text-violet-400 %}
-fonction lexer(string):
-    tokens := []
-    id := 0
-
-    tant que id est inférieur à la longueur de string
-        si le caractère à l\'index id de string est égal à "+"
-            ajouter ["PLUS", ""] à tokens
-            // (un token est représenté par un nom et une valeur pour éviter des incohérences)
-        si le caractère à l\'index id de string est égal à "-"
-            ajouter ["MINUS", ""] à tokens
-        ...
-        ajouter 1 à id
     
-    retourner tokens
-
-{% endcodeblock %}
-
+    <div class="text-3xl px-1 pt-8">Le Lexer</div>
+    
     <div class="text-xl px-1 pt-8">
-        Ainsi, le lexer ci-dessus nous permet de trouver les caractères spéciaux, mais qu'en est-il des chaînes 
-        de caractères plus avancées comme les nombres ou les noms. Pour ceux-là, on continue d'ajouter des caractères 
-        tant que ceux-ci correspondent à la valeur du token. On ajoute ainsi le pseudo code suivant :
+        Alice et Bob participent ensemble à la création d'un outil informatique,
+        cependant, elle considère le code de Bob comme trop peu espacé et trop peu
+        commenté, malgré le fait que celui-ci fonctionne très bien. Même si le code de
+        Bob peut sembler illisible pour Alice, un ordinateur parvient très bien à comprendre
+        ce code. Comment les ordinateurs font-ils alors pour reconnaître des codes ayant le
+        même comportement, mais pourtant ayant tant de différences ?
     </div>
 
-{% codeblock psc 1:text-sky-500 %}
+    <div class="text-xl px-1 pt-8">
+        Dans les interpréteurs et les compilateurs, à la base de tous les languages de
+        programmation, on peut distinguer deux grandes étapes, qui permettent le
+        passage d'un code d'Alice ou de Bob qui peuvent être équivalents à des
+        instructions pour la machine. La première étape est effectuée par un outil qu'on
+        appelle "Lexer". Il permet de transformer deux codes équivalents, modulo les
+        espaces et les commentaires. Cela permet par exemple de comprendre de la
+        même manière les codes "x=1", "x = 1" et "x = 1 # stocker 1 dans x"
+    </div>
 
-    ...
-    si le caractère à l\'index id de string est un chiffre alors
-        nombre := ""
+    <div class="text-xl px-1 pt-8">
+        Pour éviter d'avoir à distinguer de tels codes, le lexer va transformer une
+        chaîne de caractères en une liste de ce qu'on appelle des "Tokens".
+    </div>
 
-        tant que id est inférieur à la longueur de string 
-        et que le caractère à l\'index id de string est un chiffre:
-            ajouter le caractère à l\'index id de string à nombre
+    <div class="text-lg mt-8 bg-sky-200 text-sky-700 p-4 flex gap-4 rounded-lg">
+        <div>
+            <span class="material-icons-outlined h-min relative center-h">info</span>
+        </div>
+        <div class="flex-1">
+            <div class="h-fit relative center-h">
+                Un token est un objet qui représente un type et une valeur.
+                Il peut par exemple s'agir d'un type "PLUS", représentant l'opérateur 
+                d'addition, ou s'agir d'un type "NOMBRE", en stockant dans la valeur
+                la valeur de ce nombre.
+            </div>
+        </div>
+    </div>
+
+    <div class="text-xl px-1 pt-8">
+        Dans la suite de cet article, on représentera un token par une notation entre
+        parenthèses avec son type, une virgule et enfin sa valeur. Par exemple l'opérateur
+        d'addition sera représenté par (PLUS, ) et le nombre 1 sera représenté par 
+        (NOMBRE, 1). En utilisant la définition d'un token et d'un lexer, quelle sera d'après
+        vous la liste que le lexer donnera si vous lui passez la chaîne "1 + 2" en argument ?
+    </div>
+
+    <div class="text-lg mt-8 bg-emerald-200 text-emerald-700 p-4 flex gap-4 rounded-lg">
+        <div>
+            <span class="material-icons-outlined h-min relative center-h">check_circle</span>
+        </div>
+        <div class="flex-1">
+            <div class="h-fit relative center-h">
+                Ici, le 1 sera représenté par le token (NOMBRE, 1). Les espaces sont
+                ignorés par le lexer. Le "+" sera ensuite représenté par (PLUS, ). Et
+                enfin, le 2 sera représenté par (NOMBRE, 2)
+            </div>
+        </div>
+    </div>
+
+    <div class="text-xl pt-8 px-1">
+        Ainsi, le lexer de cet article effectuera exactement les étapes que vous venez
+        de faire à la main. Il aura pour objectif de représenter les opérateurs par un
+        token avec le type de l'opérateur et de représenter des nombres par un token
+        (NOMBRE, valeur).
+    </div>
+
+    {% codeblock psc %}
+fonction lexer(string) :
+    tokens := [] // liste de tokens
+    id := 1 // identifiant du caractere
+
+    tant que id est inférieur à la longueur de string:
+        si le caractère à l\'index id de string est un operateur:
+            ajouter le token (OPERATEUR, ) à tokens
+
             ajouter 1 à id
-        
-        retirer 1 à id
-        ajouter ["NUMBER", nombre] à tokens
-    ...
+        si le caractere à l\'index id de string est un nombre:
+            nombre := ""
 
-{% endcodeblock psc %}
+            tant que le caractère à l\'index id de string est un nombre:
+                ajouter le caractère à la variable nombre
+                ajouter 1 à id
+            
+            ajouter le token (NOMBRE, nombre) à tokens
+    
+    retourner tokens{% endcodeblock %}
 
-    <div class="text-xl px-1 pt-8">
-        On peut faire de même pour les noms, chaînes de caractères et autres, mais cela n'est pas nécessaire dans le cadre
-        de cet article. Cela le sera cependant dans les suivants. On doit maintenant s'intéresser à la deuxième étape, le
-        Parser. Lorsque que l'on regarde les principes d'opérations et de priorité en mathématique, on voit que ce principe
-        peut être appliqué à notre liste de tokens. En effet, nous sommes d'abord intéressé par les calculs de multiplication
-        et de division, puis par ceux d'addition et de soustraction. D'un point de vu algorithmique, cela signifie que l'on
-        doit chercher les calculs par ordre de priorité. Cela peut-être fait de manière récursive en cherchant les calculs prioritaires
-        avant, soit dans des appels plus avancées de notre récursive. On peut donc définir le code suivant qui permet le calcul :
+    <div class="text-3xl px-1 pt-8">
+        Des Tokens au calculateur, le rôle du Parser
     </div>
 
-{% codeblock psc parse_add:text-orange-300 parse_expr:text-orange-300 parse_mult:text-orange-300 left:text-sky-300 right:text-sky-300 premier__indice:text-emerald-300 nombre:text-green-600 opérateur:text-sky-500 on__retire:text-violet-400 on__récupère:text-violet-400 on__stocke:text-violet-400 retourner:text-violet-400 %}
-
-fonction parse_expr (tokens)
-    retourner parse_add(tokens)
-
-fonction parse_add (tokens)
-    left := parse_mult(tokens)
-
-    tant que le token 0 est un plus ou un moins
-        on retire l\'opérateur de la liste de tokens
-        right := parse_mult(tokens)
-        on stocke l\'application du calcul de left et right avec l\'opérateur dans left
-    
-    retourner left
-
-fonction parse_mult (tokens)
-    on récupère le nombre stocké au premier indice dans left
-    on retire le nombre de la liste de tokens
-
-    tant que le token 0 est un fois ou un slash
-        on retire l\'opérateur de la liste de tokens
-        on récupère le nombre stocké au premier indice dans right
-        on retire le nombre de la liste de tokens
-        on stocke l\'application du calcul de left et right avec l\'opérateur dans left
-
-    retourner left
-
-{% endcodeblock %}
     <div class="text-xl px-1 pt-8">
-        Ainsi, le pseudo code ci-dessus nous permet d'effectuer le calcul de chaînes de caractères. Si on souhaite ajouter
-        le principe des parenthèses, il suffit juste de relancer parse_add si le token rencontré dans parse_mult est une
-        parenthèse. Un point important que je n'ai pas expliqué ici est l'évaluation paresseuse, "lazy" en anglais. Elle
-        consiste à stocker un arbre de calculs à effectuer et non de directement appliquer le calcul. Nous verrons cela
-        dans une seconde partie de l'article, où nous introduirons les variables.
+        Charlie peut maintenant différencier les codes d'Alice et Bob, cependant sa
+        liste de tokens ne lui est pas d'une grande utilité à ce jour. Il doit
+        maintenant réussir à effectuer les calculs stockées dans celle-ci. Pour
+        effectuer cela un humain utiliserait les règles d'ordre de calcul. Dans
+        cet article, on n'utilisera seulement les additions / soustractions et multiplications
+        / divisions.
+    </div>
+
+    <div class="text-xl px-1 pt-8">
+        Pour effectuer l'ordre de calcul, nous mettons en place des habitudes de calcul,
+        mais à l'origine nous avons tous commencé par une méthode assez simple, qui est d'abord
+        d'effectuer les multiplications, puis d'effectuer les additions. Prennons un
+        exemple de comment nous raisonnons de cette manière.
+    </div>
+
+    <div class="w-fit relative center-w pt-8">
+        <div class="border border-green-300 rounded-full p-4 flex justify-between gap-3">
+            <div class="border border-red-300 p-2 px-4 rounded-full">2 * 3</div>
+            <div class="py-2">+</div>
+            <div class="border border-red-300 p-2 px-4 rounded-full">2 * 4</div>
+        </div>
+        <div class="flex justify-around">
+            <div class="text-green-600">Somme</div>
+            <div class="text-red-600">Produit</div>
+        </div>
+    </div>
+
+    <div class="text-xl px-1 pt-8">
+        On peut voir sur ce graphique la structure d'un calcul. On vient rechercher
+        pour chacun des termes d'une somme le plus grand produit que l'on peut faire avant
+        trouver un opérateur qui ne correspond ni à un produit ni à une division, dans ce cas
+        là, on additionne le produit au suivant qu'on trouvera.
+    </div>
+
+    <div class="text-xl px-1 pt-8">
+        Ce raisonnement peut-être effectué par un ordinateur d'une manière récursive.
+        Lorsque l'on cherche des termes à additionner, on vient chercher un maximum de
+        nombre que l'on peut utiliser dans un produit. Cette récursive peut marcher de
+        la manière suivante :
+    </div>
+
+    <div class="w-fit relative center-w pt-8 mb-4">
+        <div class="flex border-b-2 border-green-300 px-2">
+            <div class="border-b-2 mb-2 border-red-300 px-1 flex gap-1">
+                <div class="h-1 w-1 relative center-h bg-green-300"></div>
+                1 * 2
+            </div>
+            <div class="mb-2 border-red-300 px-1">+</div>
+            <div class="border-b-2 mb-2 border-red-300 px-1 flex gap-1">
+                <div class="h-1 w-1 relative center-h bg-green-300"></div>
+                2 * 4
+            </div>
+        </div>
+    </div>
+
+    <div class="text-xl px-1 pt-8">
+        Ici, les zones qui sont soulignées représentent les temps d'appel des fonctions.
+        Lorsqu'il y a un trait vert, la fonction de somme est en train d'être appelée.
+        Pour le rouge, il s'agit de la fonction de produit. Un point vert signifie un moment
+        où la fonction de somme appelle la fonction de produit. Le trait rouge se termine Lorsque
+        la fonction de produit termine son calcul. Ainsi, ici, le calcul va d'abord effectuer 1 * 2 
+        et 2 * 4 avant de faire la somme des deux.
+    </div>
+
+    <div class="w-fit relative center-w pt-8 mb-4">
+        <div class="flex border-b-2 border-green-300 px-2">
+            <div class="border-b-2 mb-2 border-red-300 px-1 flex gap-1">
+                <div class="h-1 w-1 relative center-h bg-green-300"></div>
+                1 * 2
+            </div>
+            <div class="mb-2 border-red-300 px-1">+</div>
+            <div class="border-b-2 mb-2 border-red-300 px-1 flex gap-1">
+                <div class="h-1 w-1 relative center-h bg-green-300"></div>
+                2 * 4
+            </div>
+            <div class="mb-2 border-red-300 px-1">-</div>
+            <div class="border-b-2 mb-2 border-red-300 px-1 flex gap-1">
+                <div class="h-1 w-1 relative center-h bg-green-300"></div>
+                1 / 2
+            </div>
+        </div>
+    </div>
+
+    <div class="text-xl px-1 pt-8">
+        Dans cet exemple plus complexe, le programme va d'abord effectuer 1 * 2 et 2 * 4,
+        puis va faire la somme des deux avant de calculer 1 / 2 puis de le soustraire au
+        dernier résultat. On peut ainsi faire le programme suivant pour faire notre calculateur :
+    </div>
+
+    {% codeblock psc %}
+fonction parser(tokens):
+    retourner parser_somme(tokens)
+
+fonction parser_somme(tokens):
+    element_de_gauche := parser_produit(tokens)
+
+    tant que le token actuel est un opérateur d\'addition ou de soustraction:
+        avancer la liste de token d\'un index
+
+        element_de_droite := parser_produit(tokens)
+        on calcule l\'addition ou la soustraction des éléments de gauche et de droite
+        on stocke la valeur dans element_de_gauche
+
+    retourner element_de_gauche
+
+fonction parser_somme(tokens):
+    element_de_gauche := stocke la valeur du nombre du token actuel
+    avancer la liste de token d\'un index
+
+    tant que le token actuel est un opérateur de division ou de multiplication:
+        avancer la liste de token d\'un index
+
+        element_de_droite := stocke la valeur du nombre de token actuel
+        avancer la liste de token d\'un index
+        on calcule le produit ou la division des éléments de gauche et de droite
+        on stocke la valeur dans element_de_gauche
+    
+    retourner element_de_gauche{% endcodeblock %}
+
+    <div class="text-3xl px-1 pt-8">
+        Conclusion
+    </div>
+
+    <div class="text-xl px-1 pt-8">
+        Comme la majeure partie des problèmes en informatique, l'interprétation et la
+        compilation se basent sur la division d'un problème difficile en plusieurs
+        problèmes plus simples. On a donc pu voir comment créer un parser et un lexer
+        simples, qui nous permettent d'effectuer des calculs basiques. Mais il reste
+        encore beaucoup d'étapes avant d'avoir son propre langage de programmation.
     </div>
 
     <div class="text-xl text-gray-400 italic text-right pt-8">Théo Hollender, élève au Lycée Franco-Allemand de Buc</div>
