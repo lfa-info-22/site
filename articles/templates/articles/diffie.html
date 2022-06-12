@@ -66,23 +66,105 @@
     <div class="text-xl px-1 mt-8">
         Une exponentielle peut facilement se calculer à la main. Pour ce faire, prenons un exemple.
 
-        <br>Calculons $3^{30}$ mod $30$.
+        <br>Calculons $3^{31}$ mod $30$.
         
          <br>   On commence par décomposer l’exposant en base 2. On choisit la plus grande puissance de 2 comprise dans le plus nombre, jusqu’à se rapprocher petit à petit du nombre.
         
     </div>
     <div class="text-xl px-1 mt-8">
         Ici :<br>
-$$30-2^4=30-16=15$$
+$$31-2^4=31-16=15$$
 $$15-2^3=7$$
 $$7-2^2=3$$
 $$3-2^1=1$$
 $$1-2^0=0$$
 
     </div>
-    <div class="text-xl px-1 mt-8"></div>
-    <div class="text-xl px-1 mt-8"></div>
-    <div class="text-xl text-gray-400 italic text-right pt-8">Maiten Jouan, élève au Lycée Franco-Allemand de Buc</div>
+    <div class="text-xl px-1 mt-8">
+        On a donc $31 = 2^4 + 2^3 + 2^2 + 2^1 + 2^0$
+        <br>
+Et $3^{31} = 3^{2^4 + 2^3 + 2^2 + 2^1 + 2^0}$
+<br>
+Et on calcule chacun de ses termes modulo 30.
+<br>
+$$3^2 = 9$$
+$$3^4 = 9^2 = 81 = 21$$
+$$3^8 = 81^2 = 6561 = 21$$ 
+$$3^{16} = 25^2 = 625 = 25 $$
+    </div>
+    <div class="text-xl px-1 mt-8">
+Ainsi $$3^{2^4 + 2^3 + 2^2 + 2^1 + 2^0}$$
+$$= 3^{16} \times 3^8 \times 3^4 \times 3^2 \times 3^0$$
+$$= 25 \times 21 \times 21 \times 9 \times 1$$
+$$= 15$$
+
+    </div>
+    <div class="text-xl px-1 mt-8">
+        Calculons $3^{95}$ mod $172$.
+<br>
+On commence par décomposer l’exposant en base 2. On choisit la plus grande puissance de 2 comprise dans le plus nombre, jusqu’à se rapprocher petit à petit du nombre.
+
+Ici : 
+$$95-2^6 = 95-64=31$$
+$$31-2^4=15$$
+$$15-2^3=7$$
+$$7-2^2=3$$
+$$3-2^1=1$$
+$$1-2^0=0$$
+
+On a donc $$95 = 2^6 + 2^4 + 2^3 + 2^2 + 2^1 + 2^0$$
+Et $$3^{95} = 3^{2^6 + 2^4 + 2^3 + 2^2 + 2^1 + 2^0} = 3^{64} \times 3^{16} \times 3^8 \times 3^4 \times 3^2 \times 3\times 1$$
+Et on calcule chacun de ses termes modulo $172$.
+
+$$3^2 = 9$$
+$$3^4 = 9^2 = 81$$
+$$3^8 = 81^2 = 6561 = 25 $$
+$$3^{16} = 25^2 = 625 = 109$$
+$$3^{32} = 13^2 = 13$$
+$$3^{64} = 169 = -3$$
+
+Ici, on n’a pas besoin de $3^{32}$ directement, mais il nous sert à calculer $3^{64}$.
+<br>
+Ainsi $$3^95 = 3^{64} \times 3^{16} \times 3^8 \times 3^4 \times 3^2 \times 3^1$$
+$$= -3 \times 109 \times 25 \times 81 \times 9 \times 3$$
+$$= -(81^2) \times 25 \times 109$$
+$$= -13 = 159$$
+
+Exercice : calculer de la même façon $3^{83}$ mod $172$. (Résultat : $115$)<br>
+
+(On aurait pu le calculer plus directement avec le théorème d’Euler-Fermat)
+<a href="https://www.mathraining.be/chapters/5?type=1&which=25">cf. Mathraining.be</a>
+    </div>
+    <div class="text-xl md:text-3xl px-1 mt-8">
+        Le principe de Diffie-Hellman
+        </div>
+        <div class="text-xl px-1 mt-8">
+            Alice et Bob cherchent toujours à décider du point de rendez-vous auquel ils se retrouveront. Ils conviennent d’un nombre, en discutant à voix haute, ils disent “3”. William entend le nombre.  Il s’agit donc d’une information publique : la clé publique. Ce nombre servira de base exponentielle, et William sait qu’ils vont calculer de cette façon.
+<br>
+Alice pense à un nombre, $a = 95$. Ce nombre est une clé privée que seule elle connaît. Bob pense à un nombre, $b = 83$. Ce nombre est une clé privée que seul lui connaît.
+<br>
+L’enjeu pour eux est donc de parvenir à communiquer à l’autre leur partie de la clé privée pour retrouver le point de rendez-vous, alors que ce fameux William écoute tout ce qu’ils disent.
+<br>
+C’est le principe de Diffie-Hellman.
+<br>
+Pour ce faire :
+<br>
+Alice dit le résultat de $3^a$. Comme on l’a calculé plus haut : $3^a =3^{95} = -13 = 159$. Bob et tous les gens autour l’entendent.
+<br>
+Bob fait de même : il donne le résultat de $3^b = 3^{83} = 115$.
+<br>
+Alice a reçu $3^b$, et élève ce résultat à la puissance $a$. Elle obtient $(3^b)^a = 3^{ba}$. 
+<br>
+Bob a reçu $3^a$, et élève ce résultat à la puissance $b$. Il obtient $(3^a)^b = 3^{ab}$.
+<br>
+Alice et Bob obtiennent ainsi le même résultat ! 
+<br>
+William, qui connaît $3$, $3^a$ et $3^b$ en sachant que c’est $3$ élevé à une puissance, ne connaît par contre pas le résultat. Pour cela, il faudrait qu’il détermine $a$ et $b$ en utilisant la fonction inverse : le logarithme. Mais c’est bien plus difficile à calculer, alors pour peu que les nombres choisis soient assez grands, le calcul deviendra vraiment très compliqué et ne pourra pas être réalisé en un temps raisonnable.
+<br>
+Alice et Bob ont donc réussi à se communiquer le numéro du point de rendez-vous auquel se retrouver, et pourront tranquillement s’y rendre sans être dérangés par William.
+
+            </div>
+    <div class="text-xl text-gray-400 italic text-right pt-8">Maïten Jouan, élève au Lycée Franco-Allemand de Buc</div>
 </div>
 
 
