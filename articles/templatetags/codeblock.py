@@ -182,7 +182,7 @@ class ColorLexer:
                 while self.advanced and self.chr in string.whitespace:
                     self.advance()
                 self.tokens.append(("TEXT", self.string[start:self.idx]))
-            elif self.chr in "()[]{}:+-=*/^|&,.":
+            elif self.chr in "()[]{}<>:+-=*/^|&,.":
                 self.tokens.append(("TEXT", self.string[self.idx:self.idx + 1]))
                 self.advance()
             else:

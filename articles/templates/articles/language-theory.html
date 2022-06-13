@@ -66,15 +66,19 @@
         vous la liste que le lexer donnera si vous lui passez la chaîne "1 + 2" en argument ?
     </div>
 
-    <div class="text-lg mt-8 bg-emerald-200 text-emerald-700 p-4 flex gap-4 rounded-lg">
+    <div class="text-lg mt-8 bg-emerald-200 text-emerald-700 p-4 flex gap-4 rounded-lg group">
         <div>
             <span class="material-icons-outlined h-min relative center-h">check_circle</span>
         </div>
-        <div class="flex-1">
-            <div class="h-fit relative center-h">
+        <div class="flex-1 relative">
+            <div class="h-fit relative center-h opacity-0 group-hover:opacity-100 transition-all duration-1000 delay-100">
                 Ici, le 1 sera représenté par le token (NOMBRE, 1). Les espaces sont
                 ignorés par le lexer. Le "+" sera ensuite représenté par (PLUS, ). Et
                 enfin, le 2 sera représenté par (NOMBRE, 2)
+            </div>
+
+            <div class="h-fit absolute center-h text-emerald-800 opacity-100 group-hover:opacity-0 transition-opacity duration-500 delay-100">
+                Passez la souris pour voir la réponse
             </div>
         </div>
     </div>
@@ -243,6 +247,77 @@ fonction parser_somme(tokens):
         simples, qui nous permettent d'effectuer des calculs basiques. Mais il reste
         encore beaucoup d'étapes avant d'avoir son propre langage de programmation.
     </div>
+<!--
+    <div class="text-3xl px-1 pt-8">Exemple de code</div>
+
+{% codeblock python overflow %}
+
+SPECIAL_CHARACTERS = {
+    "+": "PLUS",
+    "-": "MINUS",
+    "*": "TIMES",
+    "/": "DIVIDE",
+    "=": "EQUALS",
+}
+NUMBER_CHARACTERS = "0123456789"
+
+def lexer(string):
+    tokens = []
+    id = 0
+
+    while id < len(string):
+        if string[id] in SPECIAL_CHARACTERS:
+            tokens.append((SPECIAL_CHARACTERS[string[id]], ))
+        elif string[id] in NUMBER_CHARACTERS:
+            value = ''
+            while id < len(string) and string[id] in NUMBER_CHARACTERS:
+                value += string[id]
+                id += 1
+            id -= 1
+            tokens.append(('NUMBER', value))
+
+        id += 1
+    
+    return tokens
+
+def parse_expr(tokens):
+    return parse_add(tokens)
+
+def parse_add(tokens):
+    left = parse_mult(tokens)
+
+    while len(tokens) > 0 and tokens[0][0] in [ "PLUS", "MINUS" ]:
+        tok = tokens[0][0]
+        tokens.pop(0)
+
+        right = parse_mult(tokens)
+        left = left + right if tok == "PLUS" else left - right
+    
+    return left
+    
+def parse_mult(tokens):
+    left = factor(tokens)
+
+    while len(tokens) > 0 and tokens[0][0] in [ "TIMES", "DIVIDE" ]:
+        tok = tokens[0][0]
+        tokens.pop(0)
+
+        right = factor(tokens)
+        left = left * right if tok == "TIMES" else left / right
+    
+    return left
+
+def factor(tokens):
+    num = float(tokens[0][1])
+    tokens.pop(0)
+    return num
+
+inp = input()
+print("Result: "+str(parse_expr(lexer(inp))))
+print("Expected (Python): " + str(eval(inp)))
+
+{% endcodeblock %}
+-->
 
     <div class="text-xl text-gray-400 italic text-right pt-8">Théo Hollender, élève au Lycée Franco-Allemand de Buc</div>
 </div>

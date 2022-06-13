@@ -1543,6 +1543,10 @@ input.admin.searchbar:focus ~ .admin.query .action {
   overflow-y: hidden;
 }
 
+.overflow-y-visible {
+  overflow-y: visible;
+}
+
 .truncate {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2263,6 +2267,16 @@ input.admin.searchbar:focus ~ .admin.query .action {
   color: rgb(185 28 28 / var(--tw-text-opacity));
 }
 
+.text-emerald-400 {
+  --tw-text-opacity: 1;
+  color: rgb(52 211 153 / var(--tw-text-opacity));
+}
+
+.text-emerald-800 {
+  --tw-text-opacity: 1;
+  color: rgb(6 95 70 / var(--tw-text-opacity));
+}
+
 .underline {
   -webkit-text-decoration-line: underline;
           text-decoration-line: underline;
@@ -2329,6 +2343,16 @@ input.admin.searchbar:focus ~ .admin.query .action {
   transition-duration: 150ms;
 }
 
+.transition-opacity {
+  transition-property: opacity;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.delay-100 {
+  transition-delay: 100ms;
+}
+
 .duration-200 {
   transition-duration: 200ms;
 }
@@ -2339,6 +2363,10 @@ input.admin.searchbar:focus ~ .admin.query .action {
 
 .duration-500 {
   transition-duration: 500ms;
+}
+
+.duration-1000 {
+  transition-duration: 1000ms;
 }
 
 .hover\:border-transparent:hover {
@@ -2526,6 +2554,10 @@ input.admin.searchbar:focus ~ .admin.query .action {
   background-color: rgb(243 244 246 / var(--tw-bg-opacity));
 }
 
+.group:hover .group-hover\:block {
+  display: block;
+}
+
 .group:hover .group-hover\:text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
@@ -2533,6 +2565,10 @@ input.admin.searchbar:focus ~ .admin.query .action {
 
 .group:hover .group-hover\:opacity-100 {
   opacity: 1;
+}
+
+.group:hover .group-hover\:opacity-0 {
+  opacity: 0;
 }
 
 @media (min-width: 640px) {
