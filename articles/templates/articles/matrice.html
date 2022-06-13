@@ -1,0 +1,241 @@
+{% extends 'base/base.html' %}
+
+{% block head %}
+{% include 'base/head.html' with head_url="/static/home/media/image/home_background.jpg" title="Les matrices" subtitle="Que sont les matrices, et quelles sont les applications ?" %}
+<script>
+    window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        }
+      };      
+  </script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js"></script>{% endblock %}
+
+{% block content %}
+{% load codeblock %}
+
+<div class="p-5 divide-transparent max-w-[600px] lg:max-w-[800px] relative center-w">
+    <div class="text-xl px-1">
+        Depuis petit, nous connaissons tous les applications lineaires.
+Une application lineaire est une application qui a un nombre $x$ associe un nombre $y = ax$ avec a un reel.
+
+Exemple :
+
+Si une papaye coute 2 euros, voici l'application qui, au nombre de papaye achete, associe le prix a payer.
+$$
+x \mapsto 2x
+$$
+
+
+Pour diversifier notre alimentation, nous pouvons aussi acheter des mangues a 3 euros, ce qui va donner une application lineaire moins simple:
+
+$$
+x, y \mapsto  2x + 3y  \hspace{ 4cm}    (A1)
+$$
+avec $x$ le nombre de papayes achetees et $y$ le nombre de mangues achetees
+et plus generalement
+
+$$
+x_1, x_2, ... x_n \mapsto a_1x_1 + a_2x_2 + ... + a_n x_n \hspace{1cm} (A2)
+$$
+En particulier pour ces applications, on utilise les matrices.
+Par exemple, on peut noter
+(A1) la matrice (2, 3)
+
+Une matrice peux egalement contenir plusieurs lignes, et dans ce cas elle retournera plusieurs valeurs: une par ligne.
+Souvent, le $(i, j)$-eme element correspond a l'element de la i-eme ligne et j-eme colonne.
+Par exemple, la matrice
+
+$$
+\begin{pmatrix}
+1 & 2 & 6\\
+7 & 8 & 3
+\end{pmatrix}
+$$
+
+
+
+
+correspond a l'application
+
+$$
+(x, y) \mapsto (x + 2y + 6z, 7x + 8y + 3z)
+$$
+
+Pour reprendre l'exemple des fruits, on aurait ici deux marchants, qui correspondent aux deux lignes de la matrices.
+Cette matrice retourne deux valeurs: chacune correspond au prix a payer a chaque marchand.
+
+L'element de coordonnees (2,1) est 7.
+La matrice a pour taille $2 \times 3$.
+</div>
+<br>
+<div class="text-xl md:text-3xl px-1">
+    Somme de matrices
+</div>
+<br>
+<div class="text-xl px-1">
+Bon finalement j'ai encore faim donc je retourne au marché et doit donc sommer mes deux achats.
+On ne peux additionner que des matrices de tailles egales, et l'addition de matrices est commutative.
+L'addition se fait ainsi:
+
+$$
+\begin{pmatrix}
+1 & 2 & 6\\
+7 & 8 & 3
+\end{pmatrix}
+
++
+
+\begin{pmatrix}
+2 & 3 & 7\\
+1 & 5 & 0
+\end{pmatrix}
+
+=
+
+\begin{pmatrix}
+1 + 2 & 2 + 3 & 6 + 7\\
+7 + 1 & 8 + 5 & 3 + 0
+\end{pmatrix}
+
+
+=
+
+
+\begin{pmatrix}
+3 & 5 & 13\\
+8 & 13 & 3
+\end{pmatrix}
+$$
+
+
+
+</div>
+<br>
+<div class="text-xl md:text-3xl px-1">
+    Produit d'un nombre par une matrice
+</div>
+<br>
+<div class="text-xl px-1">
+
+Dans une situation d'hyperinflation, les prix ont doubles et il faut donc doubler la matrice.
+La multiplication d'un nombre par une matrice est commutative et s'effectue ainsi:
+
+
+$$
+5 \cdot
+\begin{pmatrix}
+3 & 5 & 13\\
+8 & 13 & 3
+\end{pmatrix}
+
+=
+
+\begin{pmatrix}
+2 x 3 & 2 x 5 & 2 x 13\\
+2 x 8 & 2 x 13 & 2 x 3
+\end{pmatrix}
+
+=
+
+\begin{pmatrix}
+6 & 10 & 22\\
+16 & 26 & 6
+\end{pmatrix}
+$$
+</div>
+<br>
+<div class="text-xl md:text-3xl px-1">
+    Transposée d'une matrice
+</div>
+<br>
+<div class="text-xl px-1">
+
+La transposee dune matrice $m \times n$ donne une matrice $n \times m$.
+Un element qui avait pour coordonnees $(i, j)$ obtient les coordonnees $(j, i)$ apres transposition de la matrice.
+
+Par exemple,
+ 
+$$
+\begin{pmatrix}
+6 & 10 & 22\\
+16 & 26 & 6
+\end{pmatrix} ^t
+
+=
+
+\begin{pmatrix}
+6 & 16\\
+10 & 26\\
+22 & 6
+\end{pmatrix} ^t
+$$
+
+
+</div>
+<br>
+<div class="text-xl md:text-3xl px-1">
+    Produit matriciel
+</div>
+<br>
+<div class="text-xl px-1">
+
+Prenons deux matrices associees a deux applications $f$ et $g$.
+
+$(Mf)$ $$(a, b)$$
+
+$(Mg)$
+$$
+\begin{pmatrix}
+c & d & e\\
+f & g & h
+\end{pmatrix} ^t
+$$
+
+On peut alors consider l'application $f \circ g$, c'est-a-dire qui va resulter de l'application de la matrice $g$ puis de la matrice $f$ sur le resultat obtenu.
+
+On aura ici $f: (x, y) \xrightarrow[ ]{} ax + by$
+
+et $g: (x, y, z) \xrightarrow[ ]{} (cx + dy + ez, fx + gy + hz)$
+On aura $f \circ g =  a(cx + by + ez) + b(fx +gy + hz) $
+
+On aura donc la matrice $Mh = Mf  \times Mg$ qui est associee a l'application $g \circ f$.
+
+$(Mh)$
+$$
+\begin{pmatrix}
+ac + be\\
+ad + bf
+\end{pmatrix}
+$$
+On a donc defini le produit matriciel.
+On remarque qu'il n'est defini que si la premiere matrice doit avoir un nombre de colonnes egal au nombre de lignes de la deuxieme, et que ce n'est pas une operation commutative.
+
+Concretement, la multiplication de deux matrices se fait ainsi:
+On multiplie une a une les valeurs de la premiere ligne de la premiere et celles de la premiere colonne de la deuxieme, puis on somme les produits (on effectue un produit scalaire de la premiere ligne de la premiere matrice et de la premiere colonne de la seconde pour les connaisseurs).
+On procede aisi pour chaque colonne de l'une et chaque ligne de l'autre.
+
+Par exemple:
+
+$$(1, 2, 3)
+\times
+\begin{pmatrix}
+2 & 3 & 4 \\
+3 & 4 & 5 \\
+4 & 5 & 6
+\end{pmatrix}
+=
+\begin{pmatrix}
+1
+\end{pmatrix}
+$$
+
+
+Sources: M. Garay
+    </div>
+    <div class="text-xl text-gray-400 italic text-right pt-8">Lorenz Thimann, élève au Lycée Franco-Allemand de Buc</div>
+</div>
+
+
+{% endblock %}

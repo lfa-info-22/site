@@ -71,12 +71,32 @@
     },
     {
         "name" : "Article d'Adam",
-        "description" : "waaaaaaaw",
+        "description" : "sur jsp quoi",
         "template" : "articles/adam.html",
         "view" : "ArticleView",
         "route" : "adam/",
         "full_route" : "/articles/adam",
         "image" : "/static/home/media/image/entrainement_post.jpg",
+        "writing" : false
+    },
+    {
+        "name" : "Matrices",
+        "description" : "Que sont les matrices, et quelles sont les applications ?",
+        "template" : "articles/matrice.html",
+        "view" : "ArticleView",
+        "route" : "matrice/",
+        "full_route" : "/articles/matrice/",
+        "image" : "/static/home/media/image/crypto_post.jpg",
+        "writing" : false
+    },
+    {
+        "name" : "La descente de gradient",
+        "description" : "Le minimum d'une fonction en plusieurs variables",
+        "template" : "articles/gradient.html",
+        "view" : "ArticleView",
+        "route" : "gradient/",
+        "full_route" : "/articles/gradient/",
+        "image" : "/static/home/media/image/crypto_post.jpg",
         "writing" : false
     }
 ]

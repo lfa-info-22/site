@@ -1463,12 +1463,16 @@ input.admin.searchbar:focus ~ .admin.query .action {
   justify-content: space-between;
 }
 
-.justify-around {
-  justify-content: space-around;
-}
-
 .gap-4 {
   gap: 1rem;
+}
+
+.gap-5 {
+  gap: 1.25rem;
+}
+
+.justify-around {
+  justify-content: space-around;
 }
 
 .gap-3 {
@@ -2127,6 +2131,11 @@ input.admin.searchbar:focus ~ .admin.query .action {
   color: rgb(156 163 175 / var(--tw-text-opacity));
 }
 
+.text-orange-300 {
+  --tw-text-opacity: 1;
+  color: rgb(156 163 175 / var(--tw-text-opacity));
+}
+
 .text-sky-700 {
   --tw-text-opacity: 1;
   color: rgb(3 105 161 / var(--tw-text-opacity));
@@ -2569,6 +2578,13 @@ input.admin.searchbar:focus ~ .admin.query .action {
 
 .group:hover .group-hover\:opacity-0 {
   opacity: 0;
+}
+
+@media print {
+  .print\:text-sky-400 {
+    --tw-text-opacity: 1;
+    color: rgb(56 189 248 / var(--tw-text-opacity));
+  }
 }
 
 @media (min-width: 640px) {
